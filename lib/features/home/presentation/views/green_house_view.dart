@@ -1,30 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:happyfarm/core/utils/colors.dart';
+import 'package:happyfarm/core/utils/styles.dart';
 
 class GreenhousePage extends StatefulWidget {
   const GreenhousePage({Key? key}) : super(key: key);
-
+  
   @override
-  State<GreenhousePage> createState() => _GreenhousePageState();
+  State createState() => _GreenhousePageState();
 }
 
-class _GreenhousePageState extends State<GreenhousePage> with SingleTickerProviderStateMixin {
+class _GreenhousePageState extends State with SingleTickerProviderStateMixin {
   late AnimationController _fanController;
   double temperature = 26.5;
   double humidity = 55.0;
   double soilMoisture = 72.0;
-
+  
   bool isDoorOpen = false;
   bool isFanOn = false;
   bool isPumpOn = false;
   bool isHeaterOn = false;
-
+  
   List<Map<String, String>> logs = [
     {"time": "10:00 AM", "message": "System initialized"},
     {"time": "10:05 AM", "message": "Optimal conditions reached"},
+    {"time": "10:10 AM", "message": "Fan activated"},
+    {"time": "10:15 AM", "message": "Water pump activated"},
+    {"time": "10:20 AM", "message": "Heater activated"},
   ];
-
+  
   @override
   void initState() {
     super.initState();
@@ -33,39 +38,35 @@ class _GreenhousePageState extends State<GreenhousePage> with SingleTickerProvid
       duration: const Duration(seconds: 2),
     );
   }
-
+  
   void _toggleDevice(String device) {
-    setState(() {
-      switch (device) {
-        case 'Door':
-          isDoorOpen = !isDoorOpen;
-          break;
-        case 'Fan':
-          isFanOn = !isFanOn;
-          if (isFanOn) {
-            _fanController.repeat();
-          } else {
-            _fanController.stop();
-          }
-          break;
-        case 'Pump':
-          isPumpOn = !isPumpOn;
-          break;
-        case 'Heater':
-          isHeaterOn = !isHeaterOn;
-          break;
+  setState(() {
+    // Handle both full titles and partial matches
+    if (device == 'Door') {
+      isDoorOpen = !isDoorOpen;
+    } else if (device == 'Fan') {
+      isFanOn = !isFanOn;
+      if (isFanOn) {
+        _fanController.repeat();
+      } else {
+        _fanController.stop();
       }
-      _addLog(device);
-    });
-  }
-
+    } else if (device.contains('Pump') || device == 'Pump') {
+      isPumpOn = !isPumpOn;
+    } else if (device == 'Heater') {
+      isHeaterOn = !isHeaterOn;
+    }
+    _addLog(device);
+  });
+}
+  
   void _addLog(String device) {
     logs.insert(0, {
       "time": "${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}",
       "message": "$device ${_getStatus(device) ? 'activated' : 'deactivated'}"
     });
   }
-
+  
   bool _getStatus(String device) {
     switch (device) {
       case 'Door':
@@ -80,70 +81,127 @@ class _GreenhousePageState extends State<GreenhousePage> with SingleTickerProvid
         return false;
     }
   }
-
+  
   @override
   void dispose() {
     _fanController.dispose();
     super.dispose();
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[100],
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildEnvironmentalGrid(),
-            SizedBox(height: 20.h),
-            _buildTrendChart(),
-            SizedBox(height: 20.h),
-            _buildControlPanel(),
-            SizedBox(height: 20.h),
-            _buildSystemLogs(),
-          ],
-        ),
+  
+  Widget _buildStatusSummary() {
+    return Container(
+      padding: EdgeInsets.all(16.r),
+      decoration: BoxDecoration(
+        color: ColorsManager.mainGreen.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildStatusItem('Temperature', '$temperature°C', 
+              temperature > 28 ? Colors.red : ColorsManager.mainGreen),
+          _buildStatusItem('Humidity', '$humidity%', 
+              humidity < 40 ? Colors.orange : ColorsManager.mainGreen),
+          _buildStatusItem('Soil', '$soilMoisture%', 
+              soilMoisture < 60 ? Colors.orange : ColorsManager.mainGreen),
+        ],
       ),
     );
   }
 
-  Widget _buildEnvironmentalGrid() {
-    return GridView.count(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      crossAxisCount: 3,
-      childAspectRatio: 0.8,
+  Widget _buildStatusItem(String label, String value, Color color) {
+    return Column(
       children: [
-        _buildMetricCard('Temperature', '${temperature.toStringAsFixed(1)}°C', 
-            Icons.thermostat, Colors.red),
-        _buildMetricCard('Humidity', '${humidity.toStringAsFixed(0)}%', 
-            Icons.water_drop, Colors.blue),
-        _buildMetricCard('Soil Moisture', '${soilMoisture.toStringAsFixed(0)}%', 
-            Icons.grass, Colors.green),
+        Text(label, style: TextStyle(fontSize: 14.sp, color: Colors.black54)),
+        SizedBox(height: 4.h),
+        Text(value, 
+            style: TextStyle(
+              fontSize: 18.sp, 
+              fontWeight: FontWeight.bold,
+              color: color,
+            )),
       ],
     );
   }
 
-  Widget _buildMetricCard(String title, String value, IconData icon, Color color) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      child: Padding(
-        padding: EdgeInsets.all(12.w),
+ Widget _buildEnvironmentalGrid() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text('Environmental Controls',
+          style: Styles.styleBoldText18ButomfontJosefinSans),
+      SizedBox(height: 12.h),
+      LayoutBuilder(
+        builder: (context, constraints) {
+          // Calculate the height needed for 2 rows with the given aspect ratio
+          // Each row height = item width / aspect ratio
+          final itemWidth = (constraints.maxWidth - 16.w) / 2;
+          final itemHeight = itemWidth / 1.5; // Using your aspect ratio of 1.5
+          final gridHeight = itemHeight * 2 + 50.h; // 2 rows + spacing
+          
+          return SizedBox(
+            height: gridHeight,
+            child: GridView.count(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              childAspectRatio: 1.3,
+              crossAxisSpacing: 16.w,
+              mainAxisSpacing: 16.h,
+
+              children: [
+                _buildControlCard('Door', Icons.meeting_room_outlined, isDoorOpen),
+                _buildControlCard('Fan', Icons.air_outlined, isFanOn),
+                _buildControlCard('Pump', Icons.water_drop_outlined, isPumpOn),
+                _buildControlCard('Heater', Icons.local_fire_department_outlined, isHeaterOn),
+              ],
+            ),
+          );
+        }
+      ),
+    ],
+  );
+}
+
+  Widget _buildControlCard(String title, IconData icon, bool isActive) {
+    return GestureDetector(
+      onTap: () => _toggleDevice(title.split(' ')[0]),
+      child: Container(
+        padding: EdgeInsets.all(16.r),
+        decoration: BoxDecoration(
+          color: isActive ? ColorsManager.mainGreen.withOpacity(0.2) : Colors.grey.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(
+            color: isActive ? ColorsManager.mainGreen : Colors.transparent,
+            width: 2,
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 32.w, color: color),
+            Icon(
+              icon,
+              size: 32.r,
+              color: isActive ? ColorsManager.mainGreen : Colors.grey,
+            ),
             SizedBox(height: 8.h),
-            Text(title, style: TextStyle(
-                fontSize: 14.sp, 
-                fontWeight: FontWeight.w500)),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: isActive ? ColorsManager.mainGreen : Colors.black54,
+              ),
+            ),
             SizedBox(height: 4.h),
-            Text(value, style: TextStyle(
-                fontSize: 18.sp, 
-                fontWeight: FontWeight.bold)),
+            Text(
+              isActive ? 'ON' : 'OFF',
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.bold,
+                color: isActive ? ColorsManager.mainGreen : Colors.grey,
+              ),
+            ),
           ],
         ),
       ),
@@ -151,223 +209,330 @@ class _GreenhousePageState extends State<GreenhousePage> with SingleTickerProvid
   }
 
   Widget _buildTrendChart() {
-    final chartData = _getChartData();
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      child: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Environmental Trends", style: TextStyle(
-                fontSize: 18.sp, 
-                fontWeight: FontWeight.bold)),
-            SizedBox(height: 12.h),
-            Container(
-              height: 200.h,
-              child: LineChart(
-                LineChartData(
-                  gridData: FlGridData(show: false),
-                  borderData: FlBorderData(show: false),
-                  titlesData: FlTitlesData(
-                    bottomTitles: AxisTitles(
-                      sideTitles: _bottomTitles(chartData),
-                    ),
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        reservedSize: 40.w,
-                        getTitlesWidget: (value, meta) => Text(
-                          '${value.toInt()}°C',
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                    ),
-                    rightTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        reservedSize: 40.w,
-                        getTitlesWidget: (value, meta) => Text(
-                          '${value.toInt()}%',
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                    ),
-                    topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  ),
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: chartData.map((data) => FlSpot(
-                        data.time.millisecondsSinceEpoch.toDouble(),
-                        data.temperature,
-                      )).toList(),
-                      color: Colors.red,
-                      barWidth: 2,
-                      isCurved: true,
-                      dotData: FlDotData(show: false),
-                      belowBarData: BarAreaData(show: false),
-                    ),
-                    LineChartBarData(
-                      spots: chartData.map((data) => FlSpot(
-                        data.time.millisecondsSinceEpoch.toDouble(),
-                        data.humidity,
-                      )).toList(),
-                      color: Colors.blue,
-                      barWidth: 2,
-                      isCurved: true,
-                      dotData: FlDotData(show: false),
-                      belowBarData: BarAreaData(show: false),
-                    ),
-                  ],
-                  minX: chartData.first.time.millisecondsSinceEpoch.toDouble(),
-                  maxX: chartData.last.time.millisecondsSinceEpoch.toDouble(),
-                  minY: 0,
-                  maxY: 100,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  SideTitles _bottomTitles(List<EnvironmentalData> data) {
-    return SideTitles(
-      showTitles: true,
-      reservedSize: 24.h,
-      getTitlesWidget: (value, meta) {
-        final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
-        return Padding(
-          padding: EdgeInsets.only(top: 8.h),
-          child: Text(
-            '${date.hour}:00',
-            style: TextStyle(
-              fontSize: 10.sp,
-              color: Colors.grey[600],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  List<EnvironmentalData> _getChartData() => [
-    EnvironmentalData(DateTime(2023, 1, 1, 8), 22, 60),
-    EnvironmentalData(DateTime(2023, 1, 1, 10), 25, 58),
-    EnvironmentalData(DateTime(2023, 1, 1, 12), 28, 55),
-    EnvironmentalData(DateTime(2023, 1, 1, 14), 26, 57),
-    EnvironmentalData(DateTime(2023, 1, 1, 16), 24, 62),
-  ];
-  
-Widget _buildControlPanel() {
-  return Card(
-    elevation: 2,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-    child: Padding(
-      padding: EdgeInsets.all(16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Device Controls",
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 12.h),
-          Wrap(
-            spacing: 16.w,
-            runSpacing: 16.h,
-            alignment: WrapAlignment.center,
-            children: [
-              _buildControlButton(Icons.door_front_door_outlined, 'Door', isDoorOpen),
-              _buildControlButton(Icons.toys_outlined, 'Fan', isFanOn),
-              _buildControlButton(Icons.invert_colors_outlined, 'Pump', isPumpOn),
-              _buildControlButton(Icons.heat_pump_outlined, 'Heater', isHeaterOn),
-            ],
+    return Container(
+      height: 200.h,
+      padding: EdgeInsets.all(16.r),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
-    ),
-  );
-}
-  Widget _buildControlButton(IconData icon, String label, bool isActive) {
-    return InkWell(
-      onTap: () => _toggleDevice(label),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Daily Trends', style: Styles.styleBoldText18ButomfontJosefinSans),
+              Row(
+                children: [
+                  _buildLegendItem('Temperature', Colors.red),
+                  SizedBox(width: 8.w),
+                  _buildLegendItem('Humidity', Colors.blue),
+                  SizedBox(width: 8.w),
+                  _buildLegendItem('Soil', Colors.brown),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          Expanded(
+            child: LineChart(
+              LineChartData(
+                minX: 0,
+                maxX: 5,
+                minY: 0,
+                maxY: 100,
+                gridData: FlGridData(
+                  show: true,
+                  drawVerticalLine: true,
+                  horizontalInterval: 20,
+                  verticalInterval: 1,
+                  getDrawingHorizontalLine: (value) {
+                    return FlLine(
+                      color: Colors.grey.withOpacity(0.2),
+                      strokeWidth: 1,
+                    );
+                  },
+                  getDrawingVerticalLine: (value) {
+                    return FlLine(
+                      color: Colors.grey.withOpacity(0.2),
+                      strokeWidth: 1,
+                    );
+                  },
+                ),
+                titlesData: FlTitlesData(
+                  show: true,
+                  rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 30,
+                      interval: 1,
+                      getTitlesWidget: (value, meta) {
+                        final hours = ['8AM', '10AM', '12PM', '2PM', '4PM', '6PM'];
+                        if (value >= 0 && value < hours.length) {
+                          return Text(
+                            hours[value.toInt()],
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 10.sp,
+                            ),
+                          );
+                        }
+                        return const Text('');
+                      },
+                    ),
+                  ),
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      interval: 20,
+                      getTitlesWidget: (value, meta) {
+                        return Text(
+                          value.toInt().toString(),
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 10.sp,
+                          ),
+                        );
+                      },
+                      reservedSize: 30,
+                    ),
+                  ),
+                ),
+                borderData: FlBorderData(
+                  show: true,
+                  border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                ),
+                lineBarsData: [
+                  // Temperature line (scaled down to fit the chart)
+                  LineChartBarData(
+                    spots: [
+                      FlSpot(0, 25),
+                      FlSpot(1, 26),
+                      FlSpot(2, 27),
+                      FlSpot(3, 25.5),
+                      FlSpot(4, 26.5),
+                      FlSpot(5, 26),
+                    ],
+                    isCurved: true,
+                    color: Colors.red,
+                    barWidth: 3,
+                    dotData: FlDotData(show: false),
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: Colors.red.withOpacity(0.1),
+                    ),
+                  ),
+                  // Humidity line
+                  LineChartBarData(
+                    spots: [
+                      FlSpot(0, 50),
+                      FlSpot(1, 54),
+                      FlSpot(2, 52),
+                      FlSpot(3, 58),
+                      FlSpot(4, 55),
+                      FlSpot(5, 53),
+                    ],
+                    isCurved: true,
+                    color: Colors.blue,
+                    barWidth: 3,
+                    dotData: FlDotData(show: false),
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: Colors.blue.withOpacity(0.1),
+                    ),
+                  ),
+                  // Soil moisture line
+                  LineChartBarData(
+                    spots: [
+                      FlSpot(0, 70),
+                      FlSpot(1, 68),
+                      FlSpot(2, 65),
+                      FlSpot(3, 75),
+                      FlSpot(4, 72),
+                      FlSpot(5, 70),
+                    ],
+                    isCurved: true,
+                    color: Colors.brown,
+                    barWidth: 3,
+                    dotData: FlDotData(show: false),
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: Colors.brown.withOpacity(0.1),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLegendItem(String label, Color color) {
+    return Row(
+      children: [
+        Container(
+          width: 12.r,
+          height: 12.r,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
+        SizedBox(width: 4.w),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 10.sp,
+            color: Colors.black54,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildControlPanel() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Quick Controls', style:Styles.styleBoldText18ButomfontJosefinSans),
+        SizedBox(height: 12.h),
+        Container(
+          padding: EdgeInsets.all(16.r),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12.r),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildQuickControlButton('Auto', Icons.auto_mode, false),
+              _buildQuickControlButton('Refresh', Icons.refresh, false),
+              _buildQuickControlButton('Water Now', Icons.water, false),
+              _buildQuickControlButton('Settings', Icons.settings, false),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQuickControlButton(String label, IconData icon, bool isActive) {
+    return GestureDetector(
+      onTap: () {
+        // Implement quick control actions here
+      },
+      child: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(12.w),
+            padding: EdgeInsets.all(12.r),
             decoration: BoxDecoration(
-              color: isActive ? Colors.blue[50] : Colors.grey[200],
+              color: isActive ? ColorsManager.mainGreen : Colors.grey.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: RotationTransition(
-              turns: label == 'Fan' && isActive 
-                  ? Tween(begin: 0.0, end: 1.0).animate(_fanController)
-                  : AlwaysStoppedAnimation(0.0),
-              child: Icon(icon, size: 28.w, 
-                  color: isActive ? Colors.blue : Colors.grey),
+            child: Icon(
+              icon,
+              color: isActive ? Colors.white : Colors.black54,
+              size: 24.r,
             ),
           ),
           SizedBox(height: 8.h),
-          Text(label, style: TextStyle(
+          Text(
+            label,
+            style: TextStyle(
               fontSize: 12.sp,
-              color: isActive ? Colors.blue : Colors.grey)),
+              color: Colors.black54,
+            ),
+          ),
         ],
       ),
     );
   }
 
   Widget _buildSystemLogs() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      child: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("System Logs", style: TextStyle(
-                    fontSize: 18.sp, 
-                    fontWeight: FontWeight.bold)),
-                Icon(Icons.history, size: 24.w),
-              ],
-            ),
-            SizedBox(height: 12.h),
-            Container(
-              height: 150.h,
-              child: ListView.builder(
-                itemCount: logs.length,
-                itemBuilder: (context, index) => ListTile(
-                  leading: Text(logs[index]['time']!, 
-                      style: TextStyle(fontSize: 12.sp)),
-                  title: Text(logs[index]['message']!,
-                      style: TextStyle(fontSize: 14.sp)),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('System Logs', style: Styles.styleBoldText18ButomfontJosefinSans),
+        SizedBox(height: 12.h),
+        Container(
+          height: 150.h,
+          padding: EdgeInsets.all(16.r),
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: ListView.builder(
+            itemCount: logs.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.only(bottom: 8.h),
+                child: Row(
+                  children: [
+                    Text(
+                      logs[index]["time"] ?? "",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black54,
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Expanded(
+                      child: Text(
+                        logs[index]["message"] ?? "",
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-          ],
+              );
+            },
+          ),
         ),
-      ),
+      ],
     );
   }
-}
 
-class EnvironmentalData {
-  final DateTime time;
-  final double temperature;
-  final double humidity;
-
-  EnvironmentalData(this.time, this.temperature, this.humidity);
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildStatusSummary(),
+          SizedBox(height: 20.h),
+          _buildEnvironmentalGrid(),
+          SizedBox(height: 20.h),
+          _buildTrendChart(),
+          SizedBox(height: 20.h),
+          _buildControlPanel(),
+          SizedBox(height: 20.h),
+          _buildSystemLogs(),
+        ],
+      )
+    );
+  }
 }

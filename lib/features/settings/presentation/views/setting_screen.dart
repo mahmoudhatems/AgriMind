@@ -16,7 +16,6 @@ class SettingScreen extends StatelessWidget {
   // Function to handle sign-out logic
   void _signOut(BuildContext context) {
     // Your sign-out logic here (e.g., clearing user session, navigating to login screen)
-    Navigator.of(context).pushReplacementNamed('/login');
   }
 
   @override

@@ -51,7 +51,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
 
                   // Google Button
                   CustomButton(
-                    onPressed: () {},
+                    onPressed: () {  GoRouter.of(context).go(Routes.home);},
                     text: 'Continue with Google',
 
                     backgroundColor: ColorsManager.googleColor,
@@ -81,7 +81,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: CustomButton(
-                      onPressed: () {},
+                      onPressed: () {  GoRouter.of(context).go(Routes.home);},
                       text: 'Continue with Email',
                       backgroundColor: ColorsManager.realWhiteColor,
                       textStyle:

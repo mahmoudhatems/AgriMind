@@ -70,4 +70,10 @@ abstract class Styles {
     fontWeight: FontWeight.w700,
     fontFamily: StringManager.fontJosefinSans,
   );
+  static final styleBoldText18ButomfontJosefinSans = TextStyle(
+    color: ColorsManager.mainGreen,
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w700,
+    fontFamily: StringManager.fontJosefinSans,
+  );
 }
