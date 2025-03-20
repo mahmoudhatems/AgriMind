@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/generated/locale_keys.g.dart';
 
