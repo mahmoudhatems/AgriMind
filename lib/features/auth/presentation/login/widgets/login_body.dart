@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:happyfarm/core/routing/routes.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/core/utils/styles.dart';
@@ -35,7 +36,9 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                 children: [
                   // Facebook Button
                   CustomButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      GoRouter.of(context).go(Routes.home);
+                    },
                     text: 'Continue with Facebook',
                     backgroundColor: ColorsManager.facebookColor,
                     textStyle: Styles.styleBoldText16ButomfontJosefinSans,
@@ -48,7 +51,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
 
                   // Google Button
                   CustomButton(
-                    onPressed: () {},
+                    onPressed: () {  GoRouter.of(context).go(Routes.home);},
                     text: 'Continue with Google',
 
                     backgroundColor: ColorsManager.googleColor,
@@ -78,7 +81,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: CustomButton(
-                      onPressed: () {},
+                      onPressed: () {  GoRouter.of(context).go(Routes.home);},
                       text: 'Continue with Email',
                       backgroundColor: ColorsManager.realWhiteColor,
                       textStyle:

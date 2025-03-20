@@ -8,7 +8,6 @@ static const String appName='Happy Farm';
  // static const String fontFamilyRoboto='Roboto';
 
   static const String bookLogo='assets/images/logo.svg';
-  static const String appLogo='assets/images/applogo.jpg';
   static const String appIcon='assets/images/app_icon.png';
   static const String userImage='assets/images/user.jpg';
   static const String testBookCover='assets/images/book_cover.png';
@@ -16,5 +15,6 @@ static const String appName='Happy Farm';
   static const String cropSelectionImage='assets/images/crop selection.png';  
   static const String cultivatingImage='assets/images/cultivating.png';
   static const String googleIconPath = 'assets/images/google_icon.png';
+  static const String vector = 'assets/images/vector.jpg';
 
 }
