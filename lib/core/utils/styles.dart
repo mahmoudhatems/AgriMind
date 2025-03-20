@@ -51,6 +51,13 @@ abstract class Styles {
     fontWeight: FontWeight.w600,
     fontFamily: StringManager.fontJosefinSans,
   );
+  
+  static final titlesemiBoldText24ButomfontJosefinSans = TextStyle(
+    color: ColorsManager.textIconColorGray,
+    fontSize: 24.sp,
+    fontWeight: FontWeight.w600,
+    fontFamily: StringManager.fontJosefinSans,
+  );
   static final styleBoldText20ButomfontJosefinSans = TextStyle(
     color: ColorsManager.darkBlueTextColor,
     fontSize: 20.sp,

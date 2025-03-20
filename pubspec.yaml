@@ -45,6 +45,10 @@ dependencies:
   smooth_page_indicator: ^1.2.1
   cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
+  google_nav_bar: ^5.0.7
+  package_info_plus: ^4.0.0
+  fl_chart: ^0.66.0
+
 
 dev_dependencies:
   flutter_test:
