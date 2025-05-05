@@ -55,8 +55,8 @@ class _HomeBodyState extends State<HomeBody> {
           gap: 4.w,
           backgroundColor: Colors.white,
           color: Colors.grey,
-          activeColor: ColorsManager.mainGreen,
-          tabBackgroundColor: ColorsManager.mainGreen.withOpacity(0.1),
+          activeColor: ColorsManager.mainBlueGreen,
+          tabBackgroundColor: ColorsManager.mainBlueGreen.withOpacity(0.1),
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
           tabs: const [
             GButton(

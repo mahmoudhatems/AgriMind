@@ -1,8 +1,7 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
-import 'package:happyfarm/core/routing/routes.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/core/utils/styles.dart';
@@ -11,10 +10,9 @@ import 'package:happyfarm/core/widgets/custom_text_form_field.dart';
 import 'package:happyfarm/core/widgets/or_divider.dart';
 import 'package:happyfarm/features/auth/login/widgets/donot_have_acc.dart';
 import 'package:happyfarm/features/auth/login/widgets/scoial_login.dart';
-import 'package:happyfarm/features/auth/onbording/presentation/widgets/app_icon.dart';
 
-class RegisterScreenBody extends StatelessWidget {
-  const RegisterScreenBody({super.key});
+class LoginScreenBody extends StatelessWidget {
+  const LoginScreenBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +23,10 @@ class RegisterScreenBody extends StatelessWidget {
           const SizedBox(height: 30),
           SizedBox(
               child: SvgPicture.asset(
-            StringManager.signUpSvg,
+            StringManager.loginSvg,
             height: 120.h,
           )),
           const SizedBox(height: 24),
-          CustomTextFormField(
-            hintText: 'Name',
-            keyboardType: TextInputType.name,
-          ),
-          const SizedBox(height: 16),
           CustomTextFormField(
             hintText: 'Email',
             keyboardType: TextInputType.emailAddress,
@@ -47,9 +40,19 @@ class RegisterScreenBody extends StatelessWidget {
               color: ColorsManager.textIconColor,
             ),
           ),
-          const SizedBox(height: 16),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () {},
+              child: Text(
+                'Forget Password?',
+                style: Styles.styleText14BlackColofontJosefinSans,
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
           CustomButton(
-              text: "Create Account",
+              text: "Login",
               onPressed: () {},
               backgroundColor: ColorsManager.mainBlueGreen,
               textStyle: Styles.styleBoldText18ButomfontJosefinSans
@@ -57,30 +60,7 @@ class RegisterScreenBody extends StatelessWidget {
               borderColor: ColorsManager.mainBlueGreen,
               borderRadius: BorderRadius.circular(8.r)),
           const SizedBox(height: 16),
-           Align(
-              alignment: Alignment.topCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Already have an account ? ',
-                    style: Styles.styleText14BlackColofontJosefinSans,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                    GoRouter.of(context).push(Routes.login);
-                    },
-                    child: Text(
-                      'Login',
-                      style: Styles.styleText14BlackColofontJosefinSans
-                          .copyWith(
-                              color: ColorsManager.mainBlueGreen,
-                              fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          DonotHaveAcc(),
           const SizedBox(height: 16),
           OrDivider(),
           const SizedBox(height: 16),

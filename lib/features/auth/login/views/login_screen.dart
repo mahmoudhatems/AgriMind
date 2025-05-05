@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:happyfarm/core/utils/colors.dart';
+import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/core/widgets/app_bar.dart';
-import 'package:happyfarm/features/auth/register/widgets/register_body.dart';
+import 'package:happyfarm/features/auth/login/widgets/login_body.dart';
 
-class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsManager.realWhiteColor,
       appBar:buildAppBar(
-        title: "Register",
+        title: "Login",
         context: context,
       ),
       body: SingleChildScrollView(
@@ -19,10 +20,11 @@ class RegisterScreen extends StatelessWidget {
         child: Column(
           children: [
             /// Register Buttons
-            RegisterScreenBody(),
+            LoginScreenBody(),
           ],
         ),
       ),
     );
   }
 }
+ 

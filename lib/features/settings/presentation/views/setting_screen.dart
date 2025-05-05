@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:happyfarm/core/routing/routes.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -15,7 +17,13 @@ class SettingScreen extends StatelessWidget {
 
   // Function to handle sign-out logic
   void _signOut(BuildContext context) {
-    // Your sign-out logic here (e.g., clearing user session, navigating to login screen)
+    // Implement sign-out logic here
+    // For example, clear user session, navigate to login screen, etc.
+    ScaffoldMessenger.of(context).showSnackBar(
+      
+      const SnackBar(content: Text('Signed out successfully',)),
+    );
+    GoRouter.of(context).go(Routes.onboarding); // Navigate to login screen
   }
 
   @override
@@ -39,20 +47,20 @@ class SettingScreen extends StatelessWidget {
             // User Profile Section
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.account_circle, color: ColorsManager.mainGreen, size: 36),
+              leading: Icon(Icons.account_circle, color: ColorsManager.mainBlueGreen, size: 36),
               title: const Text(
                 'Profile',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: ColorsManager.mainGreen,
+                  color: ColorsManager.mainBlueGreen,
                 ),
               ),
               subtitle: const Text(
                 'Update your personal information',
                 style: TextStyle(fontSize: 14, color: ColorsManager.textIconColorGray),
               ),
-              trailing: Icon(Icons.arrow_forward, color: ColorsManager.mainGreen, size: 30),
+              trailing: Icon(Icons.arrow_forward, color: ColorsManager.mainBlueGreen, size: 30),
               onTap: () {
                 // Navigate to profile edit page
               },
@@ -62,20 +70,20 @@ class SettingScreen extends StatelessWidget {
             // Change Password Section
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.lock, color: ColorsManager.mainGreen, size: 36),
+              leading: Icon(Icons.lock, color: ColorsManager.mainBlueGreen, size: 36),
               title: const Text(
                 'Change Password',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: ColorsManager.mainGreen,
+                  color: ColorsManager.mainBlueGreen,
                 ),
               ),
               subtitle: const Text(
                 'Update your password for security',
                 style: TextStyle(fontSize: 14, color: ColorsManager.textIconColorGray),
               ),
-              trailing: Icon(Icons.arrow_forward, color: ColorsManager.mainGreen, size: 30),
+              trailing: Icon(Icons.arrow_forward, color: ColorsManager.mainBlueGreen, size: 30),
               onTap: () {
                 // Navigate to password change page
               },
@@ -113,7 +121,7 @@ class SettingScreen extends StatelessWidget {
                   // Handle toggle logic here
                 },
                 activeColor: ColorsManager.textIconColorGray,
-                activeTrackColor: ColorsManager.mainGreen,
+                activeTrackColor: ColorsManager.mainBlueGreen,
                 inactiveThumbColor: ColorsManager.textIconColorGray,
               ),
             ),
@@ -122,13 +130,13 @@ class SettingScreen extends StatelessWidget {
             // Dark Mode Section
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.brightness_6, color: ColorsManager.mainGreen, size: 36),
+              leading: Icon(Icons.brightness_6, color: ColorsManager.mainBlueGreen, size: 36),
               title: const Text(
                 'Dark Mode',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: ColorsManager.mainGreen,
+                  color: ColorsManager.mainBlueGreen,
                 ),
               ),
               subtitle: const Text(
@@ -140,8 +148,8 @@ class SettingScreen extends StatelessWidget {
                 onChanged: (bool value) {
                   // Handle toggle logic here
                 },
-                activeColor: ColorsManager.mainGreen,
-                activeTrackColor: ColorsManager.mainGreen,
+                activeColor: ColorsManager.mainBlueGreen,
+                activeTrackColor: ColorsManager.mainBlueGreen,
                 inactiveThumbColor: ColorsManager.textIconColorGray,
               ),
             ),
@@ -150,13 +158,13 @@ class SettingScreen extends StatelessWidget {
             // Language Settings Section
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.language, color: ColorsManager.mainGreen, size: 36),
+              leading: Icon(Icons.language, color: ColorsManager.mainBlueGreen, size: 36),
               title: const Text(
                 'Language',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: ColorsManager.mainGreen,
+                  color: ColorsManager.mainBlueGreen,
                 ),
               ),
               subtitle: const Text(
@@ -170,7 +178,7 @@ class SettingScreen extends StatelessWidget {
                   
                   underline: const SizedBox(),
                   value: 'English', // Default language
-                  icon: Icon(Icons.arrow_drop_down, color: ColorsManager.mainGreen),
+                  icon: Icon(Icons.arrow_drop_down, color: ColorsManager.mainBlueGreen),
                   items: ['English', 'Español', 'Français', 'عربي']
                       .map((language) => DropdownMenuItem(
                             value: language,
@@ -191,19 +199,19 @@ class SettingScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorsManager.mainGreen,
+                color: ColorsManager.mainBlueGreen,
               ),
             ),
             const SizedBox(height: 16),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.info, color: ColorsManager.mainGreen, size: 36),
+              leading: Icon(Icons.info, color: ColorsManager.mainBlueGreen, size: 36),
               title: const Text(
                 'App Information',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: ColorsManager.mainGreen,
+                  color: ColorsManager.mainBlueGreen,
                 ),
               ),
               subtitle: FutureBuilder<String>(
@@ -227,7 +235,7 @@ class SettingScreen extends StatelessWidget {
                   }
                 },
               ),
-              trailing: Icon(Icons.arrow_forward, color: ColorsManager.mainGreen, size: 30),
+              trailing: Icon(Icons.arrow_forward, color: ColorsManager.mainBlueGreen, size: 30),
               onTap: () {
                 // Navigate to app info page if needed
               },

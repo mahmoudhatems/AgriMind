@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,16 +27,27 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
     navigateToHome();
   }
+void navigateToHome() async {
+  if (Platform.isAndroid) {
+    final deviceInfo = DeviceInfoPlugin();
+    final androidInfo = await deviceInfo.androidInfo;
 
-  void navigateToHome() async {
-    await Future.delayed(
-        const Duration(
-          seconds: 3,
-        ), () {
-      // ignore: use_build_context_synchronously
+    if (androidInfo.version.sdkInt < 31) {
+      // Android version <12, skip splash
       GoRouter.of(context).pushReplacement(Routes.onboarding);
-    });
+      return;
+    }
   }
+
+  // Show splash for 3 seconds on Android 12 or below or other platforms
+  await Future.delayed(
+    const Duration(seconds: 3),
+    () {
+     
+      GoRouter.of(context).pushReplacement(Routes.onboarding);
+    },
+  );
+}
 
   void initSlidingAnimated() {
     _animationController =

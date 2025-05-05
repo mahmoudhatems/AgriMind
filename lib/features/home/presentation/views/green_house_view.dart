@@ -92,18 +92,18 @@ class _GreenhousePageState extends State with SingleTickerProviderStateMixin {
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: ColorsManager.mainGreen.withOpacity(0.1),
+        color: ColorsManager.mainBlueGreen.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildStatusItem('Temperature', '$temperature°C', 
-              temperature > 28 ? Colors.red : ColorsManager.mainGreen),
+              temperature > 28 ? Colors.red : ColorsManager.mainBlueGreen),
           _buildStatusItem('Humidity', '$humidity%', 
-              humidity < 40 ? Colors.orange : ColorsManager.mainGreen),
+              humidity < 40 ? Colors.orange : ColorsManager.mainBlueGreen),
           _buildStatusItem('Soil', '$soilMoisture%', 
-              soilMoisture < 60 ? Colors.orange : ColorsManager.mainGreen),
+              soilMoisture < 60 ? Colors.orange : ColorsManager.mainBlueGreen),
         ],
       ),
     );
@@ -169,10 +169,10 @@ class _GreenhousePageState extends State with SingleTickerProviderStateMixin {
       child: Container(
         padding: EdgeInsets.all(16.r),
         decoration: BoxDecoration(
-          color: isActive ? ColorsManager.mainGreen.withOpacity(0.2) : Colors.grey.withOpacity(0.1),
+          color: isActive ? ColorsManager.mainBlueGreen.withOpacity(0.2) : Colors.grey.withOpacity(0.1),
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
-            color: isActive ? ColorsManager.mainGreen : Colors.transparent,
+            color: isActive ? ColorsManager.mainBlueGreen : Colors.transparent,
             width: 2,
           ),
         ),
@@ -182,7 +182,7 @@ class _GreenhousePageState extends State with SingleTickerProviderStateMixin {
             Icon(
               icon,
               size: 32.r,
-              color: isActive ? ColorsManager.mainGreen : Colors.grey,
+              color: isActive ? ColorsManager.mainBlueGreen : Colors.grey,
             ),
             SizedBox(height: 8.h),
             Text(
@@ -190,7 +190,7 @@ class _GreenhousePageState extends State with SingleTickerProviderStateMixin {
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
-                color: isActive ? ColorsManager.mainGreen : Colors.black54,
+                color: isActive ? ColorsManager.mainBlueGreen : Colors.black54,
               ),
             ),
             SizedBox(height: 4.h),
@@ -199,7 +199,7 @@ class _GreenhousePageState extends State with SingleTickerProviderStateMixin {
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.bold,
-                color: isActive ? ColorsManager.mainGreen : Colors.grey,
+                color: isActive ? ColorsManager.mainBlueGreen : Colors.grey,
               ),
             ),
           ],
@@ -445,7 +445,7 @@ class _GreenhousePageState extends State with SingleTickerProviderStateMixin {
           Container(
             padding: EdgeInsets.all(12.r),
             decoration: BoxDecoration(
-              color: isActive ? ColorsManager.mainGreen : Colors.grey.withOpacity(0.1),
+              color: isActive ? ColorsManager.mainBlueGreen : Colors.grey.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
