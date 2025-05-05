@@ -22,11 +22,11 @@ class HappyFarm extends StatelessWidget {
           appBarTheme: const AppBarTheme(
             backgroundColor: ColorsManager.realWhiteColor,
             elevation: 0,
-  
           ),
           fontFamily: "Josefin Sans",
-          colorScheme: ColorScheme.fromSeed(seedColor: ColorsManager.primaryGreenColor),
-      
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: ColorsManager.lightBlueGreen,
+          ),
         ),
       ),
     );

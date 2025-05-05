@@ -81,7 +81,7 @@ class _OnBordingBodyState extends State<OnBordingBody> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: CustomButton(
-                      onPressed: () {  GoRouter.of(context).go(Routes.login);},
+                      onPressed: () {  GoRouter.of(context).push(Routes.login);},
                       text: 'Continue with Email',
                       backgroundColor: ColorsManager.realWhiteColor,
                       textStyle:

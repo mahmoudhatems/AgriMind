@@ -3,6 +3,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 
@@ -19,7 +20,8 @@ AppBar buildAppBar({
     leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_new_outlined),
         onPressed: () {
-          Navigator.pop(context);
+        GoRouter.of(context).pop();
+        
         }),
   );
 }

@@ -12,7 +12,7 @@ class CustomButton extends StatelessWidget {
     required this.textStyle,
     this.borderColor,
     required this.borderRadius,
-    required this.icon,
+     this.icon,
     this.iconColor,
     this.iconTextSpacing = 12.0,
     this.iconPosition = IconPosition.left, // Default icon position
@@ -24,7 +24,7 @@ class CustomButton extends StatelessWidget {
   final TextStyle textStyle;
   final Color? borderColor;
   final BorderRadius borderRadius;
-  final Widget icon;
+  final Widget ? icon;
   final Color? iconColor;
   final double iconTextSpacing;
   final IconPosition iconPosition;

@@ -15,11 +15,14 @@ class LoginScreen extends StatelessWidget {
         title: "Login",
         context: context,
       ),
-      body: Column(
-        children: [
-          /// Register Buttons
-          LoginScreenBody(),
-        ],
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            /// Register Buttons
+            LoginScreenBody(),
+          ],
+        ),
       ),
     );
   }
