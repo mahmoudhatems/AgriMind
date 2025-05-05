@@ -31,7 +31,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
           seconds: 3,
         ), () {
       // ignore: use_build_context_synchronously
-      GoRouter.of(context).pushReplacement(Routes.login);
+      GoRouter.of(context).pushReplacement(Routes.onboarding);
     });
   }
 

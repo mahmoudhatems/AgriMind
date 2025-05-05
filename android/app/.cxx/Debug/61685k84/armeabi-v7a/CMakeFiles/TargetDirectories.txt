@@ -1,0 +1,2 @@
+C:/Projectsssssssssssss/Happy Farm/android/app/.cxx/Debug/61685k84/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Projectsssssssssssss/Happy Farm/android/app/.cxx/Debug/61685k84/armeabi-v7a/CMakeFiles/rebuild_cache.dir
