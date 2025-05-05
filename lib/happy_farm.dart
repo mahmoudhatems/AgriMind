@@ -17,8 +17,16 @@ class HappyFarm extends StatelessWidget {
         locale: context.locale,
         routerConfig: AppRouting.router,
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.light().copyWith(
+        theme: ThemeData(
           scaffoldBackgroundColor: ColorsManager.realWhiteColor,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: ColorsManager.realWhiteColor,
+            elevation: 0,
+  
+          ),
+          fontFamily: "Josefin Sans",
+          colorScheme: ColorScheme.fromSeed(seedColor: ColorsManager.primaryGreenColor),
+      
         ),
       ),
     );

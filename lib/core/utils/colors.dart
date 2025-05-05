@@ -15,6 +15,9 @@ import 'package:flutter/material.dart';
   static const Color facebookColor = Color(0xFF3B5997);
   static const Color googleColor = Color(0xFFDB4437);
   static const Color greenColor = Color(0xFF8DC83E);
+  static const Color lightGreenColor = Color(0xFFB2E1B2);
+  static const Color lightGreenColor2 = Color(0xFFB2E1B2);
+  static const Color primaryGreenColor =  Color(0xFF4CAF50);
 
 
   static const LinearGradient mixedWhiteEffectGradient = LinearGradient(

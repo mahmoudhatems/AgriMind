@@ -20,6 +20,14 @@ class RegisterScreenBody extends StatelessWidget {
               child: Column(
                 children: [
                   // Facebook Button
+                  Text(
+                    'Register with',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
                   CustomButton(
                     onPressed: () {
                       // Handle Facebook registration
@@ -35,17 +43,6 @@ class RegisterScreenBody extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   // Google Button
-                  CustomButton(
-                    onPressed: () {
-                      // Handle Google registration
-                    },
-                    text: 'Continue with Google',
-                    backgroundColor: Colors.red,
-                    textStyle: TextStyle(color: Colors.white, fontSize: 16),
-                    borderRadius: BorderRadius.circular(8),
-                    icon: Image.asset('assets/google_icon.png'),
-                    iconColor: Colors.white,
-                  ),
                 ],
               ),
             ),
