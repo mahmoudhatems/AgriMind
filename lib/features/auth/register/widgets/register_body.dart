@@ -34,7 +34,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
       child: Form(
         key: _formKey,
         autovalidateMode: _autovalidateMode,
-
+    
         child: Column(
           children: [
             const SizedBox(height: 30),
@@ -79,7 +79,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                     setState(() {
                       _autovalidateMode = AutovalidateMode.disabled;
                     });
-
+    
                   } else {
                     setState(() {
                       _autovalidateMode = AutovalidateMode.always;

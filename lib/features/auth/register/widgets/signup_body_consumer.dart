@@ -4,9 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:happyfarm/core/routing/routes.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/features/auth/cubits/signup_cubits/signup_cubit.dart';
-import 'package:happyfarm/features/auth/register/widgets/build_snake_bar.dart';
 import 'package:happyfarm/features/auth/register/widgets/register_body.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:happyfarm/core/widgets/show_toast.dart'; // Import your showToast function
 
 class SignupViewBodyBlocConsumer extends StatelessWidget {
   const SignupViewBodyBlocConsumer({
@@ -16,21 +15,32 @@ class SignupViewBodyBlocConsumer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SignupCubit, SignupState>(
-      listener: (context, state) => {
-        if (state is SignupSuccess)
-          {
-            GoRouter.of(context).go(Routes.home),
-          }
-        else if (state is SignupFailure)
-          {
-            buildSnackBar(context, state.error),
-          }
+      listener: (context, state) {
+        if (state is SignupSuccess) {
+          GoRouter.of(context).go(Routes.home);
+        } else if (state is SignupFailure) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            showToast(state.error); 
+          });
+        }
       },
       builder: (context, state) {
-        return ModalProgressHUD(
-            inAsyncCall: state is SignupLoading ? true : false,
-            opacity: 0.5,
-            child: RegisterScreenBody());
+        return Stack(
+          children: [
+            RegisterScreenBody(),
+            if (state is SignupLoading) // Show loading indicator when loading
+              Positioned.fill(
+                child: Container(
+                  
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(ColorsManager.mainBlueGreen), // You can customize the color
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
       },
     );
   }

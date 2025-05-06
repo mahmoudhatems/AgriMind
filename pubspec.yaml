@@ -56,6 +56,7 @@ dependencies:
   firebase_auth: ^5.5.3
   get_it: ^8.0.3
   modal_progress_hud_nsn: ^0.5.1
+  fluttertoast: ^8.0.9
 
 
 dev_dependencies:
