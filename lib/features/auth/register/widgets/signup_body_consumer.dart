@@ -5,12 +5,10 @@ import 'package:happyfarm/core/routing/routes.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/features/auth/cubits/signup_cubits/signup_cubit.dart';
 import 'package:happyfarm/features/auth/register/widgets/register_body.dart';
-import 'package:happyfarm/core/widgets/show_toast.dart'; // Import your showToast function
+import 'package:happyfarm/core/widgets/show_toast.dart'; // Your Flushbar-based toast
 
 class SignupViewBodyBlocConsumer extends StatelessWidget {
-  const SignupViewBodyBlocConsumer({
-    super.key,
-  });
+  const SignupViewBodyBlocConsumer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,21 +18,22 @@ class SignupViewBodyBlocConsumer extends StatelessWidget {
           GoRouter.of(context).go(Routes.home);
         } else if (state is SignupFailure) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            showToast(state.error); 
+            showToast(context, state.error); // ✅ Pass context
           });
         }
       },
       builder: (context, state) {
         return Stack(
           children: [
-            RegisterScreenBody(),
-            if (state is SignupLoading) // Show loading indicator when loading
+            const RegisterScreenBody(),
+            if (state is SignupLoading)
               Positioned.fill(
                 child: Container(
-                  
                   child: Center(
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(ColorsManager.mainBlueGreen), // You can customize the color
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        ColorsManager.mainBlueGreen,
+                      ),
                     ),
                   ),
                 ),
