@@ -4,24 +4,37 @@ import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({super.key,required this.hintText,required this.keyboardType, this.controller, this.suffexIcon});
+  const CustomTextFormField(
+      {super.key,
+      required this.hintText,
+      required this.keyboardType,
+      this.controller,
+      this.suffexIcon, this.onSaved,  this.obscureText = false});
 
   final String hintText;
   final TextInputType keyboardType;
   final TextEditingController? controller;
   final Widget? suffexIcon;
-
+ final void Function(String ?)? onSaved;
+  final bool obscureText ;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      
-        keyboardType: keyboardType ,
+      obscureText: obscureText, 
+      onSaved: onSaved ,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your $hintText';
+          }
+          return null;
+        },
+        keyboardType: keyboardType,
         onTapOutside: (event) => FocusScope.of(context).unfocus(),
         decoration: InputDecoration(
           suffixIcon: suffexIcon,
           hintText: hintText,
-          hintStyle: Styles.styleNormalText14GrayfontJosefinSans
-              .copyWith(fontWeight: FontWeight.w500,color: ColorsManager.textIconColor),
+          hintStyle: Styles.styleNormalText14GrayfontJosefinSans.copyWith(
+              fontWeight: FontWeight.w500, color: ColorsManager.textIconColor),
           filled: true,
           fillColor: ColorsManager.textFieldColor,
           border: buildBorder(),
