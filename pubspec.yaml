@@ -58,6 +58,10 @@ dependencies:
   modal_progress_hud_nsn: ^0.5.1
   fluttertoast: ^8.0.9
   another_flushbar: ^1.12.30
+  google_sign_in: ^6.3.0
+
+
+
 
 
 dev_dependencies:

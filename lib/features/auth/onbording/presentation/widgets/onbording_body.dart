@@ -6,6 +6,7 @@ import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/core/widgets/custom_buttom.dart';
+import 'package:happyfarm/features/auth/login/widgets/scoial_login.dart';
 import 'package:happyfarm/features/auth/onbording/presentation/widgets/app_icon.dart';
 import 'package:happyfarm/features/auth/onbording/presentation/widgets/carousel_slider.dart';
 
@@ -26,7 +27,7 @@ class _OnBordingBodyState extends State<OnBordingBody> {
             /// App Icon
             AppIcon(),
             Column(
-              children: [SizedBox(height: 20.h), CustomCarouselSlider()],
+              children: [SizedBox(height: 50.h), CustomCarouselSlider()],
             ),
 
             /// Login Buttons
@@ -34,40 +35,7 @@ class _OnBordingBodyState extends State<OnBordingBody> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 60.h),
               child: Column(
                 children: [
-                  // Facebook Button
-                  CustomButton(
-                    onPressed: () {
-                      GoRouter.of(context).go(Routes.home);
-                    },
-                    text: 'Continue with Facebook',
-                    backgroundColor: ColorsManager.facebookColor,
-                    textStyle: Styles.styleBoldText16ButomfontJosefinSans,
-                    borderRadius: BorderRadius.circular(8.r),
-                    icon: const Icon(Icons.facebook_outlined),
-                    iconColor: ColorsManager.realWhiteColor,
-                  ),
-
-                  SizedBox(height: 20.h),
-
-                  // Google Button
-                  CustomButton(
-                    onPressed: () {  GoRouter.of(context).go(Routes.home);},
-                    text: 'Continue with Google',
-
-                    backgroundColor: ColorsManager.googleColor,
-                    textStyle: Styles.styleBoldText16ButomfontJosefinSans,
-                    borderRadius: BorderRadius.circular(8),
-                    icon: Image.asset(
-                      StringManager.googleIconPath,
-                      width: 16.w,
-                      height: 16.h,
-                    ),
-                    // iconColor not needed here
-                  ),
-
-                  SizedBox(height: 28.h),
-                  // Email Button
-
+                  SizedBox(height: 100.h),
                   Container(
                     decoration: BoxDecoration(
                       boxShadow: [
@@ -75,24 +43,29 @@ class _OnBordingBodyState extends State<OnBordingBody> {
                           color:
                               ColorsManager.textIconColorGray.withOpacity(0.5),
                           blurRadius: 10,
-                          offset: Offset(0, 8),
+                          offset: Offset(2, 2),
                         ),
                       ],
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: CustomButton(
-                      onPressed: () {  GoRouter.of(context).push(Routes.login);},
-                      text: 'Continue with Email',
+                      iconPosition: IconPosition.right,
+                      onPressed: () {
+                        GoRouter.of(context).push(Routes.login);
+                      },
+                      text: 'Get Started',
                       backgroundColor: ColorsManager.realWhiteColor,
                       textStyle:
                           Styles.styleBoldText16ButomfontJosefinSans.copyWith(
-                        color: ColorsManager.textIconColorGray,
+                        color: ColorsManager.textIconColor,
+                        fontSize: 18.sp,
                       ),
                       borderRadius: BorderRadius.circular(8),
-                      icon:  Icon(Icons.email_outlined,
-                        color: ColorsManager.textIconColorGray,
+                      icon: Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        color: ColorsManager.textIconColor,
                       ),
-                      iconColor: ColorsManager.textIconColorGray,
+                      iconColor: ColorsManager.textIconColor,
                     ),
                   ),
                 ],
