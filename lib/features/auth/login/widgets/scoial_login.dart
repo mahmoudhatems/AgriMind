@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:happyfarm/core/routing/routes.dart';
@@ -6,6 +7,7 @@ import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/core/widgets/custom_buttom.dart';
+import 'package:happyfarm/features/auth/cubits/login_cubits/login_cubit.dart';
 
 class ScoialLogin extends StatelessWidget {
   const ScoialLogin({super.key});
@@ -30,7 +32,9 @@ class ScoialLogin extends StatelessWidget {
 
                   // Google Button
                   CustomButton(
-                    onPressed: () {  GoRouter.of(context).go(Routes.home);},
+                    onPressed: () {  
+                      context.read<LoginCubit>().signInWithGoogle();
+                    },
                     text: 'Continue with Google',
 
                     backgroundColor: ColorsManager.googleColor,

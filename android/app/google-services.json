@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1014184733930",
+    "firebase_url": "https://smart-farm-d21ae-default-rtdb.firebaseio.com",
+    "project_id": "smart-farm-d21ae",
+    "storage_bucket": "smart-farm-d21ae.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014184733930:android:aeaddb3082690dc88afb93",
+        "android_client_info": {
+          "package_name": "com.example.happyfarm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcJ-ksjk2da_DTeuIapfdwGfhn5Aff5fE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

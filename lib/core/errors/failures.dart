@@ -5,6 +5,8 @@ abstract class Failure {
   final String errmessage;
 
   Failure(this.errmessage);
+
+  
 }
 
 /// This class represents a failure that occurs due to a server error.

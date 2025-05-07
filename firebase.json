@@ -1,0 +1,25 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "smart-farm-d21ae",
+                    "appId": "1:1014184733930:android:aeaddb3082690dc88afb93",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "smart-farm-d21ae",
+                    "configurations": {
+                        "android": "1:1014184733930:android:aeaddb3082690dc88afb93",
+                        "ios": "1:1014184733930:ios:4676cdd1972a780c8afb93",
+                        "macos": "1:1014184733930:ios:4676cdd1972a780c8afb93",
+                        "web": "1:1014184733930:web:0438a0a8c562952a8afb93",
+                        "windows": "1:1014184733930:web:3a2221fb3e42fcf68afb93"
+                    }
+                }
+            }
+        }
+    }
+}

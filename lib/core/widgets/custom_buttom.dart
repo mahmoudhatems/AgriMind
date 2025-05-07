@@ -15,7 +15,7 @@ class CustomButton extends StatelessWidget {
      this.icon,
     this.iconColor,
     this.iconTextSpacing = 12.0,
-    this.iconPosition = IconPosition.left, // Default icon position
+    this.iconPosition = IconPosition.left, 
   });
 
   final String text;
