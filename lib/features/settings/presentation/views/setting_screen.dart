@@ -17,13 +17,32 @@ class SettingScreen extends StatelessWidget {
 
   // Function to handle sign-out logic
   void _signOut(BuildContext context) {
-    // Implement sign-out logic here
-    // For example, clear user session, navigate to login screen, etc.
-    ScaffoldMessenger.of(context).showSnackBar(
-      
-      const SnackBar(content: Text('Signed out successfully',)),
+  
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+    return AlertDialog(
+      title: const Text('Sign Out'),
+      content: const Text('Are you sure you want to sign out?'),
+      actions: [
+      TextButton(
+        onPressed: () {
+        Navigator.of(context).pop(); // Close the dialog
+        },
+        child: const Text('Cancel'),
+      ),
+      TextButton(
+        onPressed: () {
+          
+        Navigator.of(context).pop(); // Close the dialog
+        GoRouter.of(context).go(Routes.login); // Navigate to login screen
+        },
+        child: const Text('Sign Out'),
+      ),
+      ],
     );
-    GoRouter.of(context).go(Routes.onboarding); // Navigate to login screen
+    },
+  );
   }
 
   @override
