@@ -253,10 +253,10 @@ packages:
     dependency: "direct main"
     description:
       name: escape_parent_padding
-      sha256: e02c1f848afafb7a87a7a90ed9e324c4da208ce381954b773599fcababf572d1
+      sha256: "32969c8df96cca5fbe46c7bceebaaf8813580d85c1436468289ef38b7a62b2c7"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.2"
+    version: "1.0.2"
   facebook_auth_desktop:
     dependency: transitive
     description:
