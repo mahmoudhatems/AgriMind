@@ -8,14 +8,14 @@ import 'package:happyfarm/features/home/presentation/views/green_house_view.dart
 import 'package:happyfarm/features/home/presentation/views/home_page.dart';
 import 'package:happyfarm/features/settings/presentation/views/setting_screen.dart'; // Your custom app bar
 
-class HomeBody extends StatefulWidget {
-  const HomeBody({Key? key}) : super(key: key);
+class CustomButtomBar extends StatefulWidget {
+  const CustomButtomBar({Key? key}) : super(key: key);
 
   @override
-  State<HomeBody> createState() => _HomeBodyState();
+  State<CustomButtomBar> createState() => _CustomButtomBarState();
 }
 
-class _HomeBodyState extends State<HomeBody> {
+class _CustomButtomBarState extends State<CustomButtomBar> {
   int _currentIndex = 0;
 
   // Four pages: Home, Greenhouse, Logs, Options

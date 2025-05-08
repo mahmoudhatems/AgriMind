@@ -70,6 +70,25 @@ class AuthRepoImplementation extends AuthRepo {
       return Left(ServerFailure(e.toString()));
     }
   }
+  
+  @override
+  Future<Either<Failure, UserEntity>> signInWithFacebook()async {
+    try {
+      final user = await firebaseAuthService.signInWithFacebook();
+      return Right(
+        UserModel.fromFirebaseUser(user),
+      );
+    } on CustomException catch (e) {
+      log('CustomException in signInWithFacebook: ${e.message}');
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      log('Exception in signInWithFacebook: $e');
+      return Left(ServerFailure("Can't sign in with Facebook at the moment"));
+    }
 
+
+
+  }
+  
    
 }

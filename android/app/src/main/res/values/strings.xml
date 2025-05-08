@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="app_name">Happy Farm</string>
+<string name="facebook_app_id">2041974209619764</string>
+<string name="fb_login_protocol_scheme">fb1234</string>
+<string name="facebook_client_token">bf081218a1d0a6c3c452defdf2a90e19</string>
+
+
+</resources>
