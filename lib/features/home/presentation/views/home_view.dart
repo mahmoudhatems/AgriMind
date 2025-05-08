@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:happyfarm/features/home/presentation/widgets/home_body.dart';
+import 'package:happyfarm/features/home/presentation/widgets/bottom_nav_bar.dart';
 
 
 class HomeView extends StatelessWidget {
@@ -8,6 +8,6 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HomeBody();
+    return CustomButtomBar();
   }
 }

@@ -70,6 +70,12 @@ class AuthRepoImplementation extends AuthRepo {
       return Left(ServerFailure(e.toString()));
     }
   }
-
+  
+  @override
+  Future<Either<Failure, UserEntity>> signInWithFacebook() {
+    // TODO: implement signInWithFacebook
+    throw UnimplementedError();
+  }
+  
    
 }

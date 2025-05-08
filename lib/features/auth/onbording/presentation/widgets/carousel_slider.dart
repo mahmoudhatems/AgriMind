@@ -13,7 +13,8 @@ class CustomCarouselSlider extends StatefulWidget {
 }
 
 class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
-  final CarouselSliderController _carouselController = CarouselSliderController();
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
   int _currentIndex = 0;
 
   final List<Map<String, dynamic>> sliderData = [
@@ -39,11 +40,11 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
           carouselController: _carouselController,
           options: CarouselOptions(
             aspectRatio: 3 / 2,
-            height: 300.h,
+            height: 330.h,
             autoPlay: true,
             enlargeCenterPage: false,
             autoPlayInterval: const Duration(seconds: 3),
-            viewportFraction:1,
+            viewportFraction: 1,
             enableInfiniteScroll: true,
             autoPlayAnimationDuration: const Duration(milliseconds: 800),
             onPageChanged: (index, reason) {
@@ -66,9 +67,9 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
                         height: 230.h,
                       ),
                     ),
-                     SizedBox(height: 8.h),
+                    SizedBox(height: 8.h),
                     Padding(
-                      padding:  EdgeInsets.symmetric(horizontal:40.r),
+                      padding: EdgeInsets.symmetric(horizontal: 40.r),
                       child: Text(
                         banner['description'],
                         textAlign: TextAlign.center,
@@ -82,27 +83,29 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
           }).toList(),
         ),
         const SizedBox(height: 8),
-        Row(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: sliderData.asMap().entries.map((entry) {
-    return GestureDetector(
-      onTap: () => _carouselController.animateToPage(entry.key),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        width: _currentIndex == entry.key ? 12.0 : 8.0,
-        height: _currentIndex == entry.key ? 12.0 : 8.0,
-        margin: const EdgeInsets.symmetric(horizontal: 4.0),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: _currentIndex == entry.key
-              ? ColorsManager.greenColor
-              : Colors.grey,
-        ),
-      ),
-    );
-  }).toList(),
-)
-
+        SizedBox(
+          height: 20.h,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: sliderData.asMap().entries.map((entry) {
+              return GestureDetector(
+                onTap: () => _carouselController.animateToPage(entry.key),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  width: _currentIndex == entry.key ? 12.0 : 8.0,
+                  height: _currentIndex == entry.key ? 12.0 : 8.0,
+                  margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _currentIndex == entry.key
+                        ? ColorsManager.greenColor
+                        : Colors.grey,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        )
       ],
     );
   }
