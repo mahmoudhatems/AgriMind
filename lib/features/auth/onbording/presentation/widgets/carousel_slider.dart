@@ -47,7 +47,7 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
             viewportFraction: 1,
             enableInfiniteScroll: true,
             reverse: true ,
-        
+          
             autoPlayAnimationDuration: const Duration(milliseconds: 800),
             onPageChanged: (index, reason) {
               setState(() {
