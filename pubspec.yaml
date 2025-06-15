@@ -62,9 +62,10 @@ dependencies:
   flutter_facebook_auth: ^7.1.2
   escape_parent_padding: ^1.0.2
   shared_preferences: ^2.5.3
-
-
-
+  flutter_switch: ^0.3.2
+  animated_text_kit: ^4.2.2
+  glassmorphism: 
+  flutter_animate: 
 
 
 dev_dependencies:

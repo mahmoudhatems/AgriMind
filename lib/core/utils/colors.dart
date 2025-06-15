@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 /// ColorsManager class is used to store the colors used in the app.
   abstract class ColorsManager {
+static const Color cardBackground = Color(0xFFF4FAFA);
+static const Color tileBackground = Color(0xFFEAF8F8);
+
   static const Color backGroundLight = Color(0xFFF6E7C8);
   static const Color whiteColor = Color(0xFFFCF7EC);
   static const Color realWhiteColor = Color(0xFFFFFFFF);

@@ -4,7 +4,7 @@ import 'package:happyfarm/core/routing/routes.dart';
 import 'package:happyfarm/features/auth/login/views/login_screen.dart';
 import 'package:happyfarm/features/auth/onbording/presentation/view/onbording_screen.dart';
 import 'package:happyfarm/features/auth/register/views/register_screen.dart';
-import 'package:happyfarm/features/home/presentation/views/home_view.dart';
+import 'package:happyfarm/features/home/presentation/views/home.dart';
 import 'package:happyfarm/features/intro/splash/presentation/views/splash_view.dart';
 import 'package:happyfarm/features/settings/presentation/views/setting_screen.dart';
 
