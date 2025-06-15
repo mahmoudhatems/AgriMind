@@ -48,22 +48,24 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ColorsManager.realWhiteColor,
+        elevation: 0,
+        title: const Text(
+          'Settings',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: ColorsManager.mainBlueGreen,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: EdgeInsets.all(24.h),
         child: ListView(
           children: [
-            // Header Section
-            const Text(
-              'Personal Settings',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: ColorsManager.textIconColorGray,
-              ),
-            ),
-            const SizedBox(height: 32),
-
-            // User Profile Section
+         
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: Icon(Icons.account_circle, color: ColorsManager.mainBlueGreen, size: 36),

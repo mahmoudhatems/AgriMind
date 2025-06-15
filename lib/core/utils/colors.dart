@@ -23,7 +23,9 @@ import 'package:flutter/material.dart';
   static const Color errorColor = Color(0xFFEA3A3A);
   static const Color textFieldColor = Color(0xFFF9F9F9);
   static const Color blackTextColor = Color(0xFF000000);
- 
+  static final Color mainBlueGreenBackGround= mainBlueGreen.withValues(
+            alpha: 0.06,
+          );
   static const Color toastErrorColor = Color(0xFFFF7F7F);
   static const LinearGradient mixedWhiteEffectGradient = LinearGradient(
     colors: [Color(0xFFBDBDBD), Color(0xFFFFFFFF)],

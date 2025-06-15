@@ -3,10 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/widgets/custom_app_bar.dart';
+import 'package:happyfarm/features/hydroponics/presentation/views/hydroponics_page.dart';
 import 'package:happyfarm/features/logs/presentation/views/logs_view.dart';
 import 'package:happyfarm/features/home/presentation/views/green_house_view.dart';
 import 'package:happyfarm/features/home/presentation/views/home_page.dart';
-import 'package:happyfarm/features/settings/presentation/views/setting_screen.dart'; // Your custom app bar
+import 'package:happyfarm/features/settings/presentation/views/setting_screen.dart';
+import 'package:happyfarm/features/warehouse/presentation/views/warehouse_barn_page.dart'; // Your custom app bar
 
 class CustomButtomBar extends StatefulWidget {
   const CustomButtomBar({Key? key}) : super(key: key);
@@ -22,8 +24,8 @@ class _CustomButtomBarState extends State<CustomButtomBar> {
   final List<Widget> _screens = [
     const HomePage(),
     const GreenhousePage(),
-    const LogsPage(),
-    const SettingScreen(),
+    const HydroponicsPage(),
+    const WarehouseBarnPage(),
   ];
 
   /// Determines the app bar title based on the current tab.
@@ -34,9 +36,9 @@ class _CustomButtomBarState extends State<CustomButtomBar> {
       case 1:
         return "Greenhouse";
       case 2:
-        return "Logs";
+        return "Hydroponics";
       case 3:
-        return "Options";
+        return "Warehouse & Barn";
       default:
         return "Happy Farm";
     }
@@ -53,13 +55,16 @@ class _CustomButtomBarState extends State<CustomButtomBar> {
         children: _screens,
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
         child: GNav(
           gap: 4.w,
-          backgroundColor: Colors.white,
-          color: Colors.grey,
+          haptic: true, // haptic feedback
+          backgroundColor: Colors.transparent,
+          color: ColorsManager.textIconColorGray,
           activeColor: ColorsManager.mainBlueGreen,
-          tabBackgroundColor: ColorsManager.mainBlueGreen.withOpacity(0.1),
+          curve: Curves.easeInToLinear,
+           duration: Duration(milliseconds: 300),
+          tabBackgroundColor: ColorsManager.mainBlueGreenBackGround,
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
           tabs: const [
             GButton(
@@ -72,12 +77,12 @@ class _CustomButtomBarState extends State<CustomButtomBar> {
                 text: 'Greenhouse',
                 style: GnavStyle.google),
             GButton(
-                icon: Icons.list_alt_outlined,
-                text: 'Logs',
+                icon: Icons.water_drop_outlined,
+                text: 'Hydroponics',
                 style: GnavStyle.google),
             GButton(
-                icon: Icons.settings_outlined,
-                text: 'Options',
+                icon: Icons.warehouse_outlined,
+                text: 'Warehouse & Barn',
                 style: GnavStyle.google),
           ],
           selectedIndex: _currentIndex,

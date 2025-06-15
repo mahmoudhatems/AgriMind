@@ -155,6 +155,7 @@ class _GreenhousePageState extends State with SingleTickerProviderStateMixin {
                 _buildControlCard('Pump', Icons.water_drop_outlined, isPumpOn),
                 _buildControlCard('Heater', Icons.local_fire_department_outlined, isHeaterOn),
               ],
+              
             ),
           );
         }
