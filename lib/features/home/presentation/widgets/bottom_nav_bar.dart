@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/widgets/custom_app_bar.dart';
-import 'package:happyfarm/features/Logs/presentation/views/logs_view.dart';
+import 'package:happyfarm/features/logs/presentation/views/logs_view.dart';
 import 'package:happyfarm/features/home/presentation/views/green_house_view.dart';
 import 'package:happyfarm/features/home/presentation/views/home_page.dart';
 import 'package:happyfarm/features/settings/presentation/views/setting_screen.dart'; // Your custom app bar
@@ -48,7 +48,10 @@ class _CustomButtomBarState extends State<CustomButtomBar> {
       appBar: CustomAppBar(
         title: _getAppBarTitle(),
       ),
-      body: _screens[_currentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
+      ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         child: GNav(
