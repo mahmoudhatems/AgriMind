@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:happyfarm/core/routing/routes.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/core/utils/styles.dart';
@@ -21,14 +23,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       leading: Padding(
         padding: EdgeInsets.symmetric(vertical: 8.0.r, horizontal: 8.0.r),
-        child:ClipRRect(
-          borderRadius: BorderRadius.circular(8.r),
-          child: Image.asset(StringManager.appIcon, width: 12.w, height: 12.h,)),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(8.r),
+            child: Image.asset(
+              StringManager.appIcon,
+              width: 12.w,
+              height: 12.h,
+            )),
       ),
-      title: Text(
-        title,
-        style:Styles.titlesemiBoldText24ButomfontJosefinSans
-      ),
+      title: Text(title, style: Styles.titlesemiBoldText24ButomfontJosefinSans),
       centerTitle: true,
       actions: [
         ProfilePreview(
@@ -67,13 +70,18 @@ class _ProfilePreviewState extends State<ProfilePreview> {
       alignment: Alignment.center,
       clipBehavior: Clip.none,
       children: [
-        GestureDetector(
-          onTap: _togglePreview,
+        InkWell(
+          onTap: (){
+            GoRouter.of(context).push(Routes.settings);
+          },
+          borderRadius: BorderRadius.circular(8.r),
+          splashColor: ColorsManager.mainBlueGreenBackGround,
           child: Padding(
             padding: EdgeInsets.all(8.0.r),
-            child: CircleAvatar(
-              backgroundImage: AssetImage(StringManager.vector),
-              radius: 30.r,
+            child: Icon(
+              Icons.settings_outlined,
+              size: 24.sp,
+              color: ColorsManager.textIconColorGray,
             ),
           ),
         ),
