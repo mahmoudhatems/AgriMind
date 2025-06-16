@@ -59,17 +59,7 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                Icon(Icons.eco_outlined, color: ColorsManager.mainBlueGreen, size: 26.sp),
-                SizedBox(width: 8.w),
-                Text(
-                  'Hydroponics Dashboard',
-                  style: Styles.styleBoldText20GrayfontJosefinSans.copyWith(fontSize: 24.sp),
-                ),
-              ],
-            ).animate().fade().slideX(begin: -0.1),
-
+          
             SizedBox(height: 24.h),
 
             _buildGaugeGrid(

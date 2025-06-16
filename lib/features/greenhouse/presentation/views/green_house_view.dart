@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
-import 'package:happyfarm/features/home/presentation/widgets/glass_card.dart';
-import 'package:happyfarm/features/home/presentation/widgets/info_tile.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class GreenhouseScreen extends StatefulWidget {
   const GreenhouseScreen({super.key});
@@ -14,130 +15,202 @@ class GreenhouseScreen extends StatefulWidget {
   State<GreenhouseScreen> createState() => _GreenhouseScreenState();
 }
 
-class _GreenhouseScreenState extends State<GreenhouseScreen>
-    with TickerProviderStateMixin {
+class _GreenhouseScreenState extends State<GreenhouseScreen> {
   double temperature = 29.6;
   double humidity = 54.7;
-  double soilMoisture = 0;
-  int gasLevel = 1892;
-  int lightLevel = 0;
+  double soilMoisture = 34.5;
+  double gasLevel = 43.6;
+  double motion = 12.4;
 
   final _fanSwitchController = ValueNotifier<bool>(false);
   final _pumpSwitchController = ValueNotifier<bool>(false);
   final _lightSwitchController = ValueNotifier<bool>(false);
 
+  final List<String> _tips = [
+    "Keep barn temperature stable for better animal comfort.",
+    "Check sensor calibration weekly to avoid false alerts.",
+    "Automate irrigation during early morning hours.",
+    "Clean barn windows regularly to maintain lighting.",
+    "Keep pests away by monitoring motion sensors near feed storage."
+  ];
+  int _tipIndex = 0;
+
   @override
   void initState() {
     super.initState();
-
-    _fanSwitchController.addListener(() => _handleSwitchFeedback());
-    _pumpSwitchController.addListener(() => _handleSwitchFeedback());
-    _lightSwitchController.addListener(() {
-      _handleSwitchFeedback();
-      setState(() {
-        lightLevel = _lightSwitchController.value ? 100 : 0;
-      });
-    });
+    _fanSwitchController.addListener(() => HapticFeedback.lightImpact());
+    _pumpSwitchController.addListener(() => HapticFeedback.lightImpact());
+    _lightSwitchController.addListener(() => HapticFeedback.lightImpact());
+    Future.delayed(const Duration(seconds: 6), _rotateTip);
   }
 
-  void _handleSwitchFeedback() {
-    HapticFeedback.lightImpact();
-    setState(() {});
+  void _rotateTip() {
+    if (!mounted) return;
+    setState(() => _tipIndex = (_tipIndex + 1) % _tips.length);
+    Future.delayed(const Duration(seconds: 6), _rotateTip);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsManager.realWhiteColor,
-      body: Center(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 16.h),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-  
-              GlassCard(
-                title: "Environment & Sensors",
-                icon: Icons.eco_outlined,
-                children: [
-                  Wrap(
-                    spacing: 12.w,
-                    runSpacing: 12.h,
-                    alignment: WrapAlignment.center,
-                    children: [
-                      InfoTile(
-                        icon: Icons.speed,
-                        label: "Gas",
-                        value: "$gasLevel ppm",
-                      ),
-                      InfoTile(
-                        icon: Icons.water_drop,
-                        label: "Humidity",
-                        value: "$humidity%",
-                      ),
-                      InfoTile(
-                        icon: Icons.thermostat,
-                        label: "Temp",
-                        value: "$temperature°C",
-                      ),
-                      InfoTile(
-                        icon: Icons.grass,
-                        label: "Soil",
-                        value: "$soilMoisture%",
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(height: 24.h),
-              GlassCard(
-                title: "Device Control",
-                icon: Icons.settings_remote,
-                children: [
-                  _buildDeviceTile(
-                    label: "Fan",
-                    isActive: _fanSwitchController.value,
-                    iconData: Icons.air,
-                    switchController: _fanSwitchController,
-                  ),
-                  SizedBox(height: 16.h),
-                  _buildDeviceTile(
-                    label: "Pump",
-                    isActive: _pumpSwitchController.value,
-                    iconData: Icons.water_drop,
-                    switchController: _pumpSwitchController,
-                  ),
-                  SizedBox(height: 16.h),
-                  _buildDeviceTile(
-                    label: "Light",
-                    isActive: _lightSwitchController.value,
-                    iconData: Icons.light_mode,
-                    switchController: _lightSwitchController,
-                  ),
-                ],
-              ),
-            ],
-          ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+
+            _buildSensorSection(),
+            SizedBox(height: 24.h),
+            _buildDeviceSection(),
+            SizedBox(height: 24.h),
+            _buildTipsCard(),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildDeviceTile({
-    required String label,
-    required bool isActive,
-    required IconData iconData,
-    required ValueNotifier<bool> switchController,
-  }) {
+  Widget _buildSensorSection() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 14.w),
-      margin: EdgeInsets.symmetric(vertical: 4.h),
+      width: double.infinity,
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
-        color: isActive
-            ? ColorsManager.mainBlueGreenBackGround
-            : ColorsManager.textIconColorGray.withValues( alpha:  0.02),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.05),
+            blurRadius: 8,
+            offset: Offset(0, 4),
+          )
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(Icons.sensors, color: ColorsManager.mainBlueGreen, size: 20.sp),
+              SizedBox(width: 8.w),
+              Text("Environment & Sensors", style: Styles.styleText14BlackColofontJosefinSans),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          Wrap(
+            spacing: 16.w,
+            runSpacing: 16.h,
+            alignment: WrapAlignment.center,
+            children: [
+              _buildGauge("Temp", temperature, "°C", Colors.orange),
+              _buildGauge("Humidity", humidity, "%", Colors.blue),
+              _buildGauge("Soil", soilMoisture, "%", Colors.green),
+              _buildGauge("Gas", gasLevel, "ppm", Colors.red),
+              _buildGauge("Motion", motion, "%", Colors.teal),
+            ],
+          ),
+        ],
+      ),
+    ).animate().fade().slideY(begin: 0.1);
+  }
+
+  Widget _buildGauge(String title, double value, String unit, Color color) {
+    return Container(
+      width: MediaQuery.of(context).size.width / 2 - 24.w,
+      padding: EdgeInsets.all(12.r),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: color.withOpacity(0.2)),
+      ),
+      child: Column(
+        children: [
+          Text(title, style: Styles.styleText14BlackColofontJosefinSans),
+          SizedBox(height: 12.h),
+          SizedBox(
+            height: 140.r,
+            width: 140.r,
+            child: SfRadialGauge(
+              axes: <RadialAxis>[
+                RadialAxis(
+                  minimum: 0,
+                  maximum: 100,
+                  showTicks: false,
+                  showLabels: false,
+                  axisLineStyle: AxisLineStyle(
+                    thickness: 0.15,
+                    thicknessUnit: GaugeSizeUnit.factor,
+                    color: color.withOpacity(0.15),
+                  ),
+                  pointers: <GaugePointer>[
+                    RangePointer(
+                      value: value.clamp(0, 100),
+                      width: 0.15,
+                      sizeUnit: GaugeSizeUnit.factor,
+                      color: color,
+                      cornerStyle: CornerStyle.bothCurve,
+                    ),
+                  ],
+                  annotations: <GaugeAnnotation>[
+                    GaugeAnnotation(
+                      widget: Text("${value.toStringAsFixed(1)}$unit",
+                          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+                      positionFactor: 0.1,
+                      angle: 90,
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ).animate().fade().scale();
+  }
+
+  Widget _buildDeviceSection() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(16.r),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.05),
+            blurRadius: 8,
+            offset: Offset(2, 2),
+          )
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(Icons.settings_remote, color: ColorsManager.mainBlueGreen, size: 20.sp),
+              SizedBox(width: 8.w),
+              Text("Device Control", style: Styles.styleText14BlackColofontJosefinSans),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          _buildDeviceTile("Fan", _fanSwitchController, Icons.air),
+          SizedBox(height: 16.h),
+          _buildDeviceTile("Pump", _pumpSwitchController, Icons.water_drop),
+          SizedBox(height: 16.h),
+          _buildDeviceTile("Light", _lightSwitchController, Icons.light_mode),
+        ],
+      ),
+    ).animate().fade().slideY(begin: 0.1);
+  }
+
+  Widget _buildDeviceTile(String label, ValueNotifier<bool> controller, IconData icon) {
+    final isActive = controller.value;
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 18.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18.r),
+        color: isActive ? ColorsManager.mainBlueGreenBackGround : Colors.grey.withAlpha(10),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -145,37 +218,34 @@ class _GreenhouseScreenState extends State<GreenhouseScreen>
           Row(
             children: [
               Container(
-                padding: EdgeInsets.all(6.r),
+                padding: EdgeInsets.all(8.r),
                 decoration: BoxDecoration(
                   color: isActive
                       ? ColorsManager.mainBlueGreen.withOpacity(0.15)
                       : Colors.grey.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  iconData,
-                  size: 22.sp,
-                  color:
-                      isActive ? ColorsManager.mainBlueGreen : Colors.grey,
-                ),
+                child: Icon(icon, size: 26.sp, color: isActive ? ColorsManager.mainBlueGreen : Colors.grey),
               ),
-              SizedBox(width: 12.w),
+              SizedBox(width: 14.w),
               Text(
                 label,
                 style: Styles.styleText14BlackColofontJosefinSans.copyWith(
                   fontWeight: FontWeight.w600,
+                  fontSize: 15.sp,
+                  color: Colors.black87,
                 ),
               ),
             ],
           ),
           AdvancedSwitch(
-            controller: switchController,
+            controller: controller,
             activeColor: ColorsManager.greenColor,
             inactiveColor: ColorsManager.errorColor,
-            height: 30.h,
-            width: 60.w,
+            height: 32.h,
+            width: 62.w,
             thumb: ValueListenableBuilder(
-              valueListenable: switchController,
+              valueListenable: controller,
               builder: (context, value, child) {
                 return Container(
                   decoration: BoxDecoration(
@@ -184,9 +254,7 @@ class _GreenhouseScreenState extends State<GreenhouseScreen>
                   ),
                   child: Icon(
                     value ? Icons.check_rounded : Icons.close_rounded,
-                    color: value
-                        ? ColorsManager.greenColor
-                        : ColorsManager.errorColor,
+                    color: value ? ColorsManager.greenColor : ColorsManager.errorColor,
                     size: 20.sp,
                   ),
                 );
@@ -195,6 +263,33 @@ class _GreenhouseScreenState extends State<GreenhouseScreen>
           ),
         ],
       ),
-    );
+    ).animate().fade().scale();
+  }
+
+  Widget _buildTipsCard() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(16.r),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16.r),
+        color: Colors.grey.shade100,
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.lightbulb_outline, color: Colors.amber.shade600, size: 22.sp),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
+              child: Text(
+                _tips[_tipIndex],
+                key: ValueKey(_tipIndex),
+                style: Styles.styleText14BlackColofontJosefinSans.copyWith(height: 1.6, fontSize: 13.sp),
+              ),
+            ),
+          )
+        ],
+      ),
+    ).animate().fade(duration: 600.ms).slideY(begin: 0.2);
   }
 }

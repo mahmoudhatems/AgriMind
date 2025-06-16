@@ -25,7 +25,9 @@ class HappyFarm extends StatelessWidget {
           ),
           fontFamily: "Josefin Sans",
           colorScheme: ColorScheme.fromSeed(
-            seedColor: ColorsManager.lightBlueGreen,
+            seedColor: ColorsManager.mainBlueGreen,
+            primary: ColorsManager.mainBlueGreen,
+            secondary: ColorsManager.textFieldColor,
           ),
         ),
       ),
