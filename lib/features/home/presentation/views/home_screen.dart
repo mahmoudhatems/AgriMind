@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       color: ColorsManager.realWhiteColor,
       child: SingleChildScrollView(
-        padding: EdgeInsetsDirectional.fromSTEB(16.w, 16.h, 16.w, 0),
+        padding: EdgeInsetsDirectional.fromSTEB(8.w, 8.h, 8.w, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -50,6 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Wrap(
                   spacing: 12.w,
                   runSpacing: 12.h,
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     const InfoTile(
                             icon: Icons.local_fire_department,
