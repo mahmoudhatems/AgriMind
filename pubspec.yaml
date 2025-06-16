@@ -66,8 +66,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   glassmorphism: 
   flutter_animate: 
-
-
+  flutter_advanced_switch:
 dev_dependencies:
   flutter_test:
     sdk: flutter

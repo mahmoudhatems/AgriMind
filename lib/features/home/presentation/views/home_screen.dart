@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_switch/flutter_switch.dart';
+import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
+import 'package:flutter/services.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:happyfarm/features/home/presentation/widgets/data_row.dart';
 import 'package:happyfarm/features/home/presentation/widgets/glass_card.dart';
 import 'package:happyfarm/features/home/presentation/widgets/info_tile.dart';
 
@@ -17,14 +17,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool isGateOpen = false;
+  final _gateSwitchController = ValueNotifier<bool>(false);
+
+  @override
+  void initState() {
+    super.initState();
+    _gateSwitchController.addListener(() => HapticFeedback.lightImpact());
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: ColorsManager.realWhiteColor,
-      child: SingleChildScrollView(
-        padding: EdgeInsetsDirectional.fromSTEB(8.w, 8.h, 8.w, 0),
+    return Scaffold(
+      backgroundColor: ColorsManager.realWhiteColor,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 16.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -41,8 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
               displayFullTextOnTap: true,
             ),
             SizedBox(height: 24.h),
-
-            // Environment & Sensors Card with Animation
             GlassCard(
               title: "Environment & Sensors",
               icon: Icons.sensors_outlined,
@@ -54,91 +58,165 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     const InfoTile(
-                            icon: Icons.local_fire_department,
-                            label: "Flame",
-                            value: "No")
-                        .animate()
-                        .fade()
-                        .scale(delay: 0.ms),
+                      icon: Icons.local_fire_department,
+                      label: "Flame",
+                      value: "No",
+                    ).animate().fade().scale(delay: 0.ms),
                     const InfoTile(
-                            icon: Icons.speed, label: "Gas", value: "436 ppm")
-                        .animate()
-                        .fade()
-                        .scale(delay: 100.ms),
+                      icon: Icons.speed,
+                      label: "Gas",
+                      value: "436 ppm",
+                    ).animate().fade().scale(delay: 100.ms),
                     const InfoTile(
-                            icon: Icons.water_drop,
-                            label: "Humidity",
-                            value: "49%")
-                        .animate()
-                        .fade()
-                        .scale(delay: 200.ms),
+                      icon: Icons.water_drop,
+                      label: "Humidity",
+                      value: "49%",
+                    ).animate().fade().scale(delay: 200.ms),
                     const InfoTile(
-                            icon: Icons.thermostat,
-                            label: "Temp",
-                            value: "23.2°C")
-                        .animate()
-                        .fade()
-                        .scale(delay: 300.ms),
+                      icon: Icons.thermostat,
+                      label: "Temp",
+                      value: "23.2°C",
+                    ).animate().fade().scale(delay: 300.ms),
                     const InfoTile(
-                            icon: Icons.visibility,
-                            label: "Motion",
-                            value: "None")
-                        .animate()
-                        .fade()
-                        .scale(delay: 400.ms),
+                      icon: Icons.visibility,
+                      label: "Motion",
+                      value: "None",
+                    ).animate().fade().scale(delay: 400.ms),
                     const InfoTile(
-                            icon: Icons.window,
-                            label: "Window",
-                            value: "Closed")
-                        .animate()
-                        .fade()
-                        .scale(delay: 500.ms),
+                      icon: Icons.window,
+                      label: "Window",
+                      value: "Closed",
+                    ).animate().fade().scale(delay: 500.ms),
                   ],
                 )
               ],
-            )
-                .animate()
-                .fade(duration: 600.ms)
-                .slideY(begin: 0.1, duration: 600.ms),
-            // Parking Card with Animation
+            ).animate().fade(duration: 600.ms).slideY(begin: 0.1),
+            SizedBox(height: 24.h),
             GlassCard(
               title: "Parking Control",
               icon: Icons.local_parking_outlined,
               children: [
-                 DataRowWidget(label: "Available", value: "5"),
-                 DataRowWidget(label: "Occupied", value: "0"),
-                SizedBox(height: 12.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Wrap(
+                  spacing: 12.w,
+                  runSpacing: 12.h,
+                  alignment: WrapAlignment.center,
                   children: [
-                    Text("Gate Status",
-                        style: Styles.styleText14BlackColofontJosefinSans),
-                    FlutterSwitch(
-                      width: 60.w,
-                      height: 28.h,
-                      value: isGateOpen,
-                      activeText: "Open",
-                      inactiveText: "Closed",
-                      showOnOff: true,
-                      activeColor: ColorsManager.greenColor,
-                      inactiveColor: ColorsManager.errorColor,
-                      onToggle: (val) {
-                        setState(() {
-                          isGateOpen = val;
-                        });
-                      },
+                    const InfoTile(
+                      icon: Icons.directions_car,
+                      label: "Available",
+                      value: "5",
+                    ),
+                    const InfoTile(
+                      icon: Icons.block,
+                      label: "Occupied",
+                      value: "0",
                     ),
                   ],
                 ),
+                SizedBox(height: 16.h),
+                _buildDeviceTile(
+                  label: "Gate",
+                  isActive: _gateSwitchController.value,
+                  iconData: Icons.sensor_door_outlined,
+                  subtitle: "Main entrance gate",
+                  switchController: _gateSwitchController,
+                ),
               ],
-            )
-                .animate()
-                .fade(duration: 600.ms)
-                .slideY(begin: 0.1, duration: 600.ms, delay: 400.ms),
+            ).animate().fade(duration: 600.ms).slideY(begin: 0.1, delay: 400.ms),
           ],
         ),
       ),
     );
   }
-}
 
+  Widget _buildDeviceTile({
+    required String label,
+    required bool isActive,
+    required IconData iconData,
+    required ValueNotifier<bool> switchController,
+    String? subtitle,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 14.w),
+      margin: EdgeInsets.symmetric(vertical: 4.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16.r),
+        color: isActive
+            ? ColorsManager.mainBlueGreenBackGround
+            : ColorsManager.textIconColorGray.withAlpha(5),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(6.r),
+                decoration: BoxDecoration(
+                  color: isActive
+                      ? ColorsManager.mainBlueGreen.withOpacity(0.15)
+                      : Colors.grey.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  iconData,
+                  size: 22.sp,
+                  color: isActive ? ColorsManager.mainBlueGreen : Colors.grey,
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: Styles.styleText14BlackColofontJosefinSans.copyWith(
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.3,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  if (subtitle != null) ...[
+                    SizedBox(height: 2.h),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ],
+          ),
+          AdvancedSwitch(
+            controller: switchController,
+            activeColor: ColorsManager.greenColor,
+            inactiveColor: ColorsManager.errorColor,
+            height: 30.h,
+            width: 60.w,
+            thumb: ValueListenableBuilder(
+              valueListenable: switchController,
+              builder: (context, value, child) {
+                return Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                  child: Icon(
+                    value ? Icons.check_rounded : Icons.close_rounded,
+                    color: value
+                        ? ColorsManager.greenColor
+                        : ColorsManager.errorColor,
+                    size: 20.sp,
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
