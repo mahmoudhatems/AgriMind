@@ -19,8 +19,8 @@ class HappyFarm extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: ColorsManager.realWhiteColor,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: ColorsManager.realWhiteColor,
+          appBarTheme:  AppBarTheme(
+            backgroundColor: ColorsManager.whitegraybackGround.withValues(alpha: 0.45),
             elevation: 0,
           ),
           fontFamily: "Josefin Sans",

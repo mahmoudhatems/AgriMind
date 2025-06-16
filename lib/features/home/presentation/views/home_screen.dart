@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: ColorsManager.whitegraybackGround.withValues(alpha: 0.45),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
         child: Column(
@@ -50,7 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Icon(Icons.home_outlined, color: ColorsManager.mainBlueGreen, size: 26.sp),
+                Icon(Icons.home_outlined,
+                    color: ColorsManager.mainBlueGreen, size: 26.sp),
                 SizedBox(width: 8.w),
                 AnimatedTextKit(
                   isRepeatingAnimation: false,
@@ -59,25 +60,56 @@ class _HomeScreenState extends State<HomeScreen> {
                     TypewriterAnimatedText(
                       'Welcome to Happy Farm',
                       speed: const Duration(milliseconds: 70),
-                      textStyle: Styles.styleBoldText20GrayfontJosefinSans.copyWith(fontSize: 22.sp),
+                      textStyle: Styles.styleBoldText20GrayfontJosefinSans
+                          .copyWith(fontSize: 22.sp),
                     ),
                   ],
                 ),
               ],
             ).animate().fade().slideX(begin: -0.1),
             SizedBox(height: 24.h),
-            Wrap(
-              spacing: 16.w,
-              runSpacing: 16.h,
-              alignment: WrapAlignment.center,
-              children: [
-                _buildSensorTile(Icons.local_fire_department, "Flame", "No"),
-                _buildSensorTile(Icons.speed, "Gas", "436 ppm"),
-                _buildSensorTile(Icons.water_drop, "Humidity", "49%"),
-                _buildSensorTile(Icons.thermostat, "Temp", "23.2°C"),
-                _buildSensorTile(Icons.visibility, "Motion", "None"),
-                _buildSensorTile(Icons.window, "Window", "Closed"),
-              ],
+            Container(
+              padding: EdgeInsets.all(16.r),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.05),
+                    blurRadius: 8,
+                    offset: Offset(0, 4),
+                  )
+                ],
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(Icons.sensors,
+                          color: ColorsManager.mainBlueGreen, size: 20.sp),
+                      SizedBox(width: 8.w),
+                      Text("Environment & Sensors",
+                          style: Styles.styleText14BlackColofontJosefinSans),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  Wrap(
+                    spacing: 16.w,
+                    runSpacing: 16.h,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      _buildSensorTile(
+                          Icons.local_fire_department, "Flame", "No"),
+                      _buildSensorTile(Icons.speed, "Gas", "436 ppm"),
+                      _buildSensorTile(Icons.water_drop, "Humidity", "49%"),
+                      _buildSensorTile(Icons.thermostat, "Temp", "23.2°C"),
+                      _buildSensorTile(Icons.visibility, "Motion", "None"),
+                      _buildSensorTile(Icons.window, "Window", "Closed"),
+                    ],
+                  ),
+                ],
+              ),
             ),
             SizedBox(height: 24.h),
             Container(
@@ -97,9 +129,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.local_parking_outlined, color: ColorsManager.mainBlueGreen, size: 20.sp),
+                      Icon(Icons.local_parking_outlined,
+                          color: ColorsManager.mainBlueGreen, size: 20.sp),
                       SizedBox(width: 8.w),
-                      Text("Parking Control", style: Styles.styleText14BlackColofontJosefinSans),
+                      Text("Parking Control",
+                          style: Styles.styleText14BlackColofontJosefinSans),
                     ],
                   ),
                   SizedBox(height: 16.h),
@@ -113,7 +147,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   SizedBox(height: 16.h),
-                  _buildDeviceTile("Gate", _gateSwitchController, Icons.sensor_door_outlined, subtitle: "Main entrance gate"),
+                  _buildDeviceTile(
+                      "Gate", _gateSwitchController, Icons.sensor_door_outlined,
+                      subtitle: "Main entrance gate"),
                 ],
               ),
             ),
@@ -144,21 +180,30 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Icon(icon, size: 30.sp, color: ColorsManager.mainBlueGreen),
           SizedBox(height: 8.h),
-          Text(label, style: Styles.styleText14BlackColofontJosefinSans.copyWith(fontSize: 14.sp)),
+          Text(label,
+              style: Styles.styleText14BlackColofontJosefinSans
+                  .copyWith(fontSize: 14.sp)),
           Text(value,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp, color: Colors.black87)),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.sp,
+                  color: Colors.black87)),
         ],
       ),
     );
   }
 
-  Widget _buildDeviceTile(String label, ValueNotifier<bool> switchController, IconData iconData, {String? subtitle}) {
+  Widget _buildDeviceTile(
+      String label, ValueNotifier<bool> switchController, IconData iconData,
+      {String? subtitle}) {
     final isActive = switchController.value;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 18.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18.r),
-        color: isActive ? ColorsManager.mainBlueGreenBackGround : Colors.grey.withAlpha(10),
+        color: isActive
+            ? ColorsManager.mainBlueGreenBackGround
+            : Colors.grey.withAlpha(10),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,10 +213,15 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 padding: EdgeInsets.all(8.r),
                 decoration: BoxDecoration(
-                  color: isActive ? ColorsManager.mainBlueGreen.withOpacity(0.15) : Colors.grey.withOpacity(0.1),
+                  color: isActive
+                      ? ColorsManager.mainBlueGreen.withOpacity(0.15)
+                      : Colors.grey.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(iconData, size: 26.sp, color: isActive ? ColorsManager.mainBlueGreen : Colors.grey),
+                child: Icon(iconData,
+                    size: 26.sp,
+                    color:
+                        isActive ? ColorsManager.mainBlueGreen : Colors.grey),
               ),
               SizedBox(width: 14.w),
               Column(
@@ -206,10 +256,13 @@ class _HomeScreenState extends State<HomeScreen> {
               valueListenable: switchController,
               builder: (context, value, child) {
                 return Container(
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: Colors.white),
                   child: Icon(
                     value ? Icons.check_rounded : Icons.close_rounded,
-                    color: value ? ColorsManager.greenColor : ColorsManager.errorColor,
+                    color: value
+                        ? ColorsManager.greenColor
+                        : ColorsManager.errorColor,
                     size: 20.sp,
                   ),
                 );
@@ -238,7 +291,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: Row(
         children: [
-          Icon(Icons.lightbulb_outline, color: Colors.amber.shade600, size: 22.sp),
+          Icon(Icons.lightbulb_outline,
+              color: Colors.amber.shade600, size: 22.sp),
           SizedBox(width: 12.w),
           Expanded(
             child: AnimatedSwitcher(
@@ -246,7 +300,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 _tips[_tipIndex],
                 key: ValueKey(_tipIndex),
-                style: Styles.styleText14BlackColofontJosefinSans.copyWith(height: 1.6, fontSize: 13.sp),
+                style: Styles.styleText14BlackColofontJosefinSans
+                    .copyWith(height: 1.6, fontSize: 13.sp),
               ),
             ),
           )
