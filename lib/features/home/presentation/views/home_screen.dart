@@ -3,7 +3,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/core/utils/styles.dart';
@@ -56,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               _buildHeader(),
                SizedBox(height: 20.h),
-              BuildStatusCard(),
+              StatusCard(),
                SizedBox(height: 20.h),
               _buildSensorGrid(),
              SizedBox(height: 20.h),
@@ -101,92 +100,64 @@ class _HomeScreenState extends State<HomeScreen> {
       {"icon": Icons.visibility, "label": "Motion", "value": "None"},
       {"icon": Icons.window, "label": "Window", "value": "Closed"},
     ];
-    return Container(
-      padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.05),
-            blurRadius: 8,
-            offset: Offset(0, 4),
-          )
-        ],
-      ),
-      child: Column(
-        children: [
-           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(Icons.sensors, color: ColorsManager.mainBlueGreen, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text("Environment & Sensors", style: Styles.styleText14BlackColofontJosefinSans),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          Wrap(
-            spacing: 16.w,
-            runSpacing: 16.h,
-            alignment: WrapAlignment.center,
-            children: sensorItems.map((item) {
-              return InfoTile(
-                icon: item['icon'] as IconData,
-                label: item['label'] as String,
-                value: item['value'] as String,
-              );
-            }).toList(),
-          )
-        ],
-      ),
+    return Column(
+      children: [
+         Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Icon(Icons.sensors, color: ColorsManager.mainBlueGreen, size: 20.sp),
+            SizedBox(width: 8.w),
+            Text("Environment & Sensors", style: Styles.styleText14BlackColofontJosefinSans),
+          ],
+        ),
+        SizedBox(height: 16.h),
+        Wrap(
+          spacing: 16.w,
+          runSpacing: 16.h,
+          alignment: WrapAlignment.center,
+          children: sensorItems.map((item) {
+            return InfoTile(
+              icon: item['icon'] as IconData,
+              label: item['label'] as String,
+              value: item['value'] as String,
+            );
+          }).toList(),
+        )
+      ],
     );
   }
 
   Widget _buildParkingSection() {
-    return Container(
-      padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-         boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.05),
-            blurRadius: 8,
-            offset: Offset(0, 4),
-          )
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Icon(Icons.local_parking_outlined,
-                  color: ColorsManager.mainBlueGreen, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text("Parking Control",
-                  style: Styles.styleText14BlackColofontJosefinSans),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          Wrap(
-            spacing: 16.w,
-            runSpacing: 16.h,
-            alignment: WrapAlignment.center,
-            children: const [
-              InfoTile(
-                  icon: Icons.directions_car, label: "Available", value: "5"),
-              InfoTile(icon: Icons.block, label: "Occupied", value: "0"),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          SwitchTile(
-            icon: Icons.sensor_door_outlined,
-            label: "Gate",
-            subtitle: "Main entrance gate",
-            controller: _gateSwitchController,
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Row(
+          children: [
+            Icon(Icons.local_parking_outlined,
+                color: ColorsManager.mainBlueGreen, size: 20.sp),
+            SizedBox(width: 8.w),
+            Text("Parking Control",
+                style: Styles.styleText14BlackColofontJosefinSans),
+          ],
+        ),
+        SizedBox(height: 16.h),
+        Wrap(
+          spacing: 16.w,
+          runSpacing: 16.h,
+          alignment: WrapAlignment.center,
+          children: const [
+            InfoTile(
+                icon: Icons.directions_car, label: "Available", value: "5"),
+            InfoTile(icon: Icons.block, label: "Occupied", value: "0"),
+          ],
+        ),
+        SizedBox(height: 16.h),
+        SwitchTile(
+          icon: Icons.sensor_door_outlined,
+          label: "Gate",
+          subtitle: "Main entrance gate",
+          controller: _gateSwitchController,
+        ),
+      ],
     );
   }
 }

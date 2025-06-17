@@ -99,85 +99,59 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
       },
     ];
 
-    return Container(
-      padding: EdgeInsets.all(20.r),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 15,
-              offset: Offset(0, 5)),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.sensors,
-                  color: ColorsManager.mainBlueGreen, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text("Hydroponics Sensors",
-                  style: Styles.styleText14BlackColofontJosefinSans),
-            ],
-          ),
-          SizedBox(height: 20.h),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            mainAxisSpacing: 12.h,
-            crossAxisSpacing: 12.w,
-            childAspectRatio: 1.1,
-            children: sensors.map((sensor) {
-              return GaugeSensorCard(
-                label: sensor['label'] as String,
-                value: (sensor['value'] as num).toDouble(),
-                unit: sensor['unit'] as String,
-                icon: sensor['icon'] as IconData,
-                color: sensor['color'] as Color,
-              );
-            }).toList(),
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(Icons.sensors,
+                color: ColorsManager.mainBlueGreen, size: 20.sp),
+            SizedBox(width: 8.w),
+            Text("Hydroponics Sensors",
+                style: Styles.styleText14BlackColofontJosefinSans),
+          ],
+        ),
+        SizedBox(height: 20.h),
+        GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: 2,
+          mainAxisSpacing: 12.h,
+          crossAxisSpacing: 12.w,
+          childAspectRatio: 1.1,
+          children: sensors.map((sensor) {
+            return GaugeSensorCard(
+              label: sensor['label'] as String,
+              value: (sensor['value'] as num).toDouble(),
+              unit: sensor['unit'] as String,
+              icon: sensor['icon'] as IconData,
+              color: sensor['color'] as Color,
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 
   Widget _buildDeviceControlSection() {
-    return Container(
-      padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.05),
-              blurRadius: 8,
-              offset: Offset(0, 4)),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Icon(Icons.settings_remote,
-                  color: ColorsManager.mainBlueGreen, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text("Device Control",
-                  style: Styles.styleText14BlackColofontJosefinSans),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          SwitchTile(
-            label: "Water Pump",
-            icon: Icons.water_drop,
-            controller: _pumpSwitchController,
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Row(
+          children: [
+            Icon(Icons.settings_remote,
+                color: ColorsManager.mainBlueGreen, size: 20.sp),
+            SizedBox(width: 8.w),
+            Text("Device Control",
+                style: Styles.styleText14BlackColofontJosefinSans),
+          ],
+        ),
+        SizedBox(height: 16.h),
+        SwitchTile(
+          label: "Water Pump",
+          icon: Icons.water_drop,
+          controller: _pumpSwitchController,
+        ),
+      ],
     );
   }
 }

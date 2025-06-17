@@ -84,3 +84,4 @@ abstract class Styles {
     fontFamily: StringManager.fontJosefinSans,
   );
 }
+
