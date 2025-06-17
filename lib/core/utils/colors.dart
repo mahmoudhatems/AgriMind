@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
   abstract class ColorsManager {
 static const Color cardBackground = Color(0xFFF4FAFA);
 static const Color tileBackground = Color(0xFFEAF8F8);
-
+  static const Color whitegraybackGround = Color(0xFFF9F9F9);
   static const Color backGroundLight = Color(0xFFF6E7C8);
   static const Color whiteColor = Color(0xFFFCF7EC);
   static const Color realWhiteColor = Color(0xFFFFFFFF);
-  static const Color mainBlueGreen = Color(0xFF069494);
+  static const Color mainBlueGreen = Color(0xFF72B912);
   static const Color lightBlueGreen = Color(0xFFB2E1E1);
   static const Color darkBlueTextColor = Color(0xFF1F2A37);
   static const Color purple = Color(0xFF333E7F);

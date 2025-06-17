@@ -4,10 +4,8 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/widgets/custom_app_bar.dart';
 import 'package:happyfarm/features/hydroponics/presentation/views/hydroponics_page.dart';
-import 'package:happyfarm/features/logs/presentation/views/logs_view.dart';
-import 'package:happyfarm/features/home/presentation/views/green_house_view.dart';
+import 'package:happyfarm/features/greenhouse/presentation/views/green_house_view.dart';
 import 'package:happyfarm/features/home/presentation/views/home_screen.dart';
-import 'package:happyfarm/features/settings/presentation/views/setting_screen.dart';
 import 'package:happyfarm/features/warehouse/presentation/views/warehouse_barn_page.dart'; // Your custom app bar
 
 class CustomButtomBar extends StatefulWidget {
@@ -23,7 +21,7 @@ class _CustomButtomBarState extends State<CustomButtomBar> {
   // Four pages: Home, Greenhouse, Logs, Options
   final List<Widget> _screens = [
     const HomeScreen(),
-    const GreenhousePage(),
+    const GreenhouseScreen(),
     const HydroponicsPage(),
     const WarehouseBarnPage(),
   ];

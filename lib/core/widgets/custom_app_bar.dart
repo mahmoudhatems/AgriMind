@@ -8,135 +8,81 @@ import 'package:happyfarm/core/utils/styles.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final Widget? profilePreviewContent;
+  final VoidCallback? onSettingsTap;
+  final Widget? customAction;
+  final bool showSettingsIcon;
 
   const CustomAppBar({
-    Key? key,
+    super.key,
     required this.title,
-    this.profilePreviewContent,
-  }) : super(key: key);
+    this.onSettingsTap,
+    this.customAction,
+    this.showSettingsIcon = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: ColorsManager.realWhiteColor,
       elevation: 0,
-      leading: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.0.r, horizontal: 8.0.r),
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.r),
-            child: Image.asset(
-              StringManager.appIcon,
-              width: 12.w,
-              height: 12.h,
-            )),
+      leading: _buildAppIcon(),
+      title: Text(
+        title,
+        style: Styles.titlesemiBoldText24ButomfontJosefinSans,
       ),
-      title: Text(title, style: Styles.titlesemiBoldText24ButomfontJosefinSans),
       centerTitle: true,
-      actions: [
-        ProfilePreview(
-          profilePreviewContent: profilePreviewContent,
+      actions: _buildActions(context),
+    );
+  }
+
+  Widget _buildAppIcon() {
+    return Padding(
+      padding: EdgeInsets.all(8.0.r),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.r),
+        child: Image.asset(
+          StringManager.appIcon,
+          width: 12.w,
+          height: 12.h,
+          fit: BoxFit.contain,
         ),
-      ],
+      ),
+    );
+  }
+
+  List<Widget> _buildActions(BuildContext context) {
+    final List<Widget> actions = [];
+
+    if (customAction != null) {
+      actions.add(customAction!);
+    }
+
+    if (showSettingsIcon) {
+      actions.add(_buildSettingsButton(context));
+    }
+
+    return actions;
+  }
+
+  Widget _buildSettingsButton(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(right: 8.0.r),
+      child: InkWell(
+        onTap: onSettingsTap ?? () => context.push(Routes.settings),
+        borderRadius: BorderRadius.circular(8.r),
+        splashColor: ColorsManager.mainBlueGreenBackGround,
+        child: Padding(
+          padding: EdgeInsets.all(8.0.r),
+          child: Icon(
+            Icons.settings_outlined,
+            size: 24.sp,
+            color: ColorsManager.textIconColorGray,
+          ),
+        ),
+      ),
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(56.h);
-}
-
-class ProfilePreview extends StatefulWidget {
-  final Widget? profilePreviewContent;
-
-  const ProfilePreview({Key? key, this.profilePreviewContent})
-      : super(key: key);
-
-  @override
-  State<ProfilePreview> createState() => _ProfilePreviewState();
-}
-
-class _ProfilePreviewState extends State<ProfilePreview> {
-  bool _isPreviewVisible = false;
-
-  void _togglePreview() {
-    setState(() {
-      _isPreviewVisible = !_isPreviewVisible;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      clipBehavior: Clip.none,
-      children: [
-        InkWell(
-          onTap: (){
-            GoRouter.of(context).push(Routes.settings);
-          },
-          borderRadius: BorderRadius.circular(8.r),
-          splashColor: ColorsManager.mainBlueGreenBackGround,
-          child: Padding(
-            padding: EdgeInsets.all(8.0.r),
-            child: Icon(
-              Icons.settings_outlined,
-              size: 24.sp,
-              color: ColorsManager.textIconColorGray,
-            ),
-          ),
-        ),
-        if (_isPreviewVisible)
-          Positioned(
-            top: 56.h,
-            right: 8.w,
-            child: Material(
-              color: Colors.transparent,
-              child: GestureDetector(
-                onTap: () => setState(() {
-                  _isPreviewVisible = false;
-                }),
-                child: Container(
-                  width: 200.w,
-                  padding: EdgeInsets.all(12.0.r),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8.r),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 6,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: widget.profilePreviewContent ??
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Mahmoud Hatem',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
-                              color: ColorsManager.textIconColorGray,
-                            ),
-                          ),
-                          SizedBox(height: 8.h),
-                          Text(
-                            'View Profile',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: ColorsManager.textIconColorGray,
-                            ),
-                          ),
-                        ],
-                      ),
-                ),
-              ),
-            ),
-          ),
-      ],
-    );
-  }
+  Size get preferredSize => Size.fromHeight(52.h);
 }
