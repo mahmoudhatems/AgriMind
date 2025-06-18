@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/widgets/custom_app_bar.dart';
+import 'package:happyfarm/features/greenhouse/presentation/manager/greenhouse_cubit.dart';
 import 'package:happyfarm/features/hydroponics/presentation/views/hydroponics_page.dart';
 import 'package:happyfarm/features/greenhouse/presentation/views/green_house_view.dart';
 import 'package:happyfarm/features/home/presentation/views/home_screen.dart';
@@ -21,7 +23,10 @@ class _CustomButtomBarState extends State<CustomButtomBar> {
   // Four pages: Home, Greenhouse, Logs, Options
   final List<Widget> _screens = [
     const HomeScreen(),
-    const GreenhouseScreen(),
+    BlocProvider<GreenhouseCubit>(
+  create: (_) => GreenhouseCubit()..fetchGreenhouseData(), 
+  child: const GreenhouseScreen(),
+),
     const HydroponicsPage(),
     const WarehouseBarnPage(),
   ];

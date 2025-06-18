@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/core/utils/strings.dart';
+import 'package:happyfarm/features/greenhouse/presentation/manager/greenhouse_cubit.dart';
 import 'package:happyfarm/features/home/presentation/widgets/switch_tile.dart';
 import 'package:happyfarm/features/home/presentation/widgets/tip_card.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -21,20 +23,18 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
   final _pumpSwitchController = ValueNotifier<bool>(false);
   final _lightSwitchController = ValueNotifier<bool>(false);
 
-  final double temperature = 29.6;
-  final double humidity = 54.7;
-  final double soilMoisture = 34.5;
-  final double gasLevel = 43.6;
-  final double motion = 12.4;
-
   int _tipIndex = 0;
 
   @override
   void initState() {
     super.initState();
+
+    context.read<GreenhouseCubit>().fetchGreenhouseData();
+
     _fanSwitchController.addListener(() => HapticFeedback.lightImpact());
     _pumpSwitchController.addListener(() => HapticFeedback.lightImpact());
     _lightSwitchController.addListener(() => HapticFeedback.lightImpact());
+
     Future.delayed(const Duration(seconds: 6), _rotateTip);
   }
 
@@ -46,30 +46,62 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return  RefreshIndicator(
-        onRefresh: () async {
-          HapticFeedback.lightImpact();
-          await Future.delayed(const Duration(milliseconds: 800));
-        },
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-          child: Column(
-            children: [
-              _buildSensorSection(),
-              SizedBox(height: 20.h),
-              _buildDeviceControlSection(),
-              SizedBox(height: 20.h),
-              TipCard(text: StringManager.homeTips[_tipIndex], key: ValueKey(_tipIndex)),
-            ],
-          ),
-        ),
-      );
-    
+    return BlocBuilder<GreenhouseCubit, GreenhouseState>(
+      builder: (context, state) {
+        if (state is GreenhouseLoaded) {
+          final data = state.data;
+
+          final double temperature = (data['temperature'] as num?)?.toDouble() ?? 0;
+          final double humidity = (data['humidity'] as num?)?.toDouble() ?? 0;
+          final double soilMoisture = (data['soil_moisture'] as num?)?.toDouble() ?? 0;
+          final double gasLevel = (data['gas_level'] as num?)?.toDouble() ?? 0;
+
+          final bool fan = data['fan_status'] ?? false;
+          final bool pump = data['pump_status'] ?? false;
+          final bool light = (data['light_level'] ?? 0) > 0;
+
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _fanSwitchController.value = fan;
+            _pumpSwitchController.value = pump;
+            _lightSwitchController.value = light;
+          });
+
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<GreenhouseCubit>().fetchGreenhouseData();
+              HapticFeedback.lightImpact();
+              await Future.delayed(const Duration(milliseconds: 600));
+            },
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+              child: Column(
+                children: [
+                  _buildSensorSection(temperature, humidity, soilMoisture, gasLevel),
+                  SizedBox(height: 20.h),
+                  _buildDeviceControlSection(),
+                  SizedBox(height: 20.h),
+                  TipCard(text: StringManager.homeTips[_tipIndex], key: ValueKey(_tipIndex)),
+                ],
+              ),
+            ),
+          );
+        } else if (state is GreenhouseError) {
+          return Center(
+            child: Text(state.message, style: TextStyle(color: Colors.red, fontSize: 16.sp)),
+          );
+        }
+
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
   }
 
- 
-
-  Widget _buildSensorSection() {
+  Widget _buildSensorSection(
+    double temperature,
+    double humidity,
+    double soilMoisture,
+    double gasLevel,
+  ) {
     final sensors = [
       {"label": "Temp", "value": temperature, "unit": "°C", "color": const Color(0xFFFF6B6B), "icon": Icons.thermostat},
       {"label": "Humidity", "value": humidity, "unit": "%", "color": const Color(0xFF4ECDC4), "icon": Icons.water_drop},
@@ -84,7 +116,7 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
           children: [
             Icon(Icons.sensors, color: ColorsManager.mainBlueGreen, size: 20.sp),
             SizedBox(width: 8.w),
-            Text("Environmental Sensors", style:  Styles.styleText14BlackColofontJosefinSans),
+            Text("Environmental Sensors", style: Styles.styleText14BlackColofontJosefinSans),
           ],
         ),
         SizedBox(height: 20.h),
@@ -176,9 +208,9 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
 
   Widget _buildDeviceControlSection() {
     final devices = [
-      {"label": "Ventilation Fan", "icon": Icons.air, "controller": _fanSwitchController, "color": const Color(0xFF4ECDC4)},
-      {"label": "Water Pump", "icon": Icons.water_drop, "controller": _pumpSwitchController, "color": const Color(0xFF45B7D1)},
-      {"label": "LED Lighting", "icon": Icons.light_mode, "controller": _lightSwitchController, "color": const Color(0xFFFECEA8)},
+      {"label": "Ventilation Fan", "icon": Icons.air, "controller": _fanSwitchController},
+      {"label": "Water Pump", "icon": Icons.water_drop, "controller": _pumpSwitchController},
+      {"label": "LED Lighting", "icon": Icons.light_mode, "controller": _lightSwitchController},
     ];
 
     return Column(
@@ -195,28 +227,17 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
           spacing: 16.w,
           runSpacing: 16.h,
           alignment: WrapAlignment.center,
-          children:  [
-            ...devices.map((device) => _buildDeviceControl(device)).toList(),
-          ],
+          children: devices.map((device) => _buildDeviceControl(device)).toList(),
         ),
-        
       ],
     );
   }
 
-
-
- 
-
-
-
-
- Widget _buildDeviceControl(Map<String, dynamic> device) {
-  return SwitchTile(
-    label: device['label'],
-    icon: device['icon'],
-    controller: device['controller'], // ✅ تمرير الكونترولر
-  ).animate().fadeIn(duration: 500.ms).slideY(begin: -0.3);
-}
-
+  Widget _buildDeviceControl(Map<String, dynamic> device) {
+    return SwitchTile(
+      label: device['label'],
+      icon: device['icon'],
+      controller: device['controller'],
+    ).animate().fadeIn(duration: 500.ms).slideY(begin: -0.3);
+  }
 }
