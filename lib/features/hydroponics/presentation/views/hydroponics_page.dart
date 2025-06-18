@@ -1,11 +1,12 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/features/home/presentation/widgets/switch_tile.dart';
 import 'package:happyfarm/features/home/presentation/widgets/tip_card.dart';
+import 'package:happyfarm/features/hydroponics/presentation/manager/hydroponics_cubit.dart';
 import 'package:happyfarm/features/hydroponics/presentation/widgets/gauge_card.dart';
 
 class HydroponicsPage extends StatefulWidget {
@@ -17,12 +18,6 @@ class HydroponicsPage extends StatefulWidget {
 
 class _HydroponicsPageState extends State<HydroponicsPage> {
   final _pumpSwitchController = ValueNotifier<bool>(false);
-
-  final double temperature = 29.3;
-  final double humidity = 61.3;
-  final double phLevel = 7.0;
-  final double waterLevel = 23.0;
-
   int _tipIndex = 0;
 
   final List<String> _tips = [
@@ -36,6 +31,13 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
   @override
   void initState() {
     super.initState();
+    context.read<HydroponicsCubit>().fetchHydroData();
+
+    _pumpSwitchController.addListener(() {
+      context.read<HydroponicsCubit>().togglePump(_pumpSwitchController.value);
+      HapticFeedback.lightImpact();
+    });
+
     Future.delayed(const Duration(seconds: 6), _rotateTip);
   }
 
@@ -47,52 +49,73 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        HapticFeedback.lightImpact();
-        await Future.delayed(const Duration(milliseconds: 600));
+    return BlocBuilder<HydroponicsCubit, HydroponicsState>(
+      builder: (context, state) {
+        if (state is HydroponicsLoaded) {
+          final data = state.data;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (_pumpSwitchController.value != data.pumpStatus) {
+              _pumpSwitchController.value = data.pumpStatus;
+            }
+          });
+
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<HydroponicsCubit>().fetchHydroData();
+              HapticFeedback.lightImpact();
+              await Future.delayed(const Duration(milliseconds: 600));
+            },
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+              child: Column(
+                children: [
+                  _buildSensorSection(data),
+                  SizedBox(height: 20.h),
+                  _buildDeviceControlSection(),
+                  SizedBox(height: 20.h),
+                  TipCard(text: _tips[_tipIndex], key: ValueKey(_tipIndex)),
+                ],
+              ),
+            ),
+          );
+        } else if (state is HydroponicsError) {
+          return Center(
+            child: Text(state.message,
+                style: TextStyle(color: Colors.red, fontSize: 16.sp)),
+          );
+        }
+
+        return const Center(child: CircularProgressIndicator());
       },
-      child: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-        child: Column(
-          children: [
-            _buildSensorSection(),
-            SizedBox(height: 20.h),
-            _buildDeviceControlSection(),
-            SizedBox(height: 20.h),
-            TipCard(text: _tips[_tipIndex], key: ValueKey(_tipIndex)),
-          ],
-        ),
-      ),
     );
   }
 
-  Widget _buildSensorSection() {
+  Widget _buildSensorSection(hydro) {
     final sensors = [
       {
         "label": "Humidity",
-        "value": humidity,
+        "value": hydro.humidity,
         "unit": "%",
         "color": Colors.blue,
         "icon": Icons.water_drop
       },
       {
         "label": "Temp",
-        "value": temperature,
+        "value": hydro.temperature,
         "unit": "°C",
         "color": Colors.orange,
         "icon": Icons.thermostat
       },
       {
         "label": "pH Level",
-        "value": phLevel * 10,
+        "value": hydro.phLevel * 10,
         "unit": "",
         "color": Colors.purple,
         "icon": Icons.science
       },
       {
         "label": "Water",
-        "value": waterLevel,
+        "value": hydro.waterLevel,
         "unit": "%",
         "color": Colors.teal,
         "icon": Icons.opacity

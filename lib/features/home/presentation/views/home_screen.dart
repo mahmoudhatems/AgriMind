@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/features/home/presentation/widgets/build_status_card.dart';
 import 'package:happyfarm/features/home/presentation/widgets/switch_tile.dart';
 import 'package:happyfarm/features/home/presentation/widgets/tip_card.dart';
+import 'package:happyfarm/features/home/presentation/widgets/welcome_text_animated.dart';
 import '../widgets/info_tile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -84,12 +84,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final status = systemData['status']?.toString().toUpperCase() ?? "Unknown";
-    final updatedAt =
-        systemData['updated_at']?.toString() ?? _formatTime(DateTime.now());
+  final updatedAt = systemData['updated_at'] != null
+    ? _formatTime(DateTime.fromMillisecondsSinceEpoch(systemData['updated_at']))
+    : _formatTime(DateTime.now());
 
     return Scaffold(
-      backgroundColor: ColorsManager.whitegraybackGround.withOpacity(0.45),
+      backgroundColor: ColorsManager.whitegraybackGround.withValues( alpha:  0.45),
       body: RefreshIndicator(
         onRefresh: () async {
           HapticFeedback.lightImpact();
@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
               StatusCard(
                 zoneName: "Zone 1",
                 status: systemData['zone1_status'] ?? "Unknown",
-                lastUpdate: "${systemData['zone1_last_update']} ms",
+                lastUpdate: "$updatedAt ",
               ),
               SizedBox(height: 20.h),
               _buildSensorGrid(),
@@ -121,28 +121,15 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  Widget _buildHeader() {
-    return Row(
-      children: [
-        Icon(Icons.home_outlined,
-            color: ColorsManager.mainBlueGreen, size: 26.sp),
-        SizedBox(width: 8.w),
-        AnimatedTextKit(
-          isRepeatingAnimation: false,
-          totalRepeatCount: 1,
-          animatedTexts: [
-            TypewriterAnimatedText(
-              StringManager.welcomeText,
-              speed: const Duration(milliseconds: 70),
-              textStyle: Styles.styleBoldText20GrayfontJosefinSans
-                  .copyWith(fontSize: 22.sp),
-            ),
-          ],
-        ),
-      ],
-    ).animate().fade().slideX(begin: -0.1);
-  }
+Widget _buildHeader() {
+  return Row(
+    children: [
+      Icon(Icons.home_outlined, color: ColorsManager.mainBlueGreen, size: 26.sp),
+      SizedBox(width: 8.w),
+      const WelcomeText(),
+    ],
+  ).animate().fade().slideX(begin: -0.1);
+}
 
   Widget _buildSensorGrid() {
     final sensors = [
@@ -245,9 +232,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  String _formatTime(DateTime dateTime) {
-    final hour = dateTime.hour.toString().padLeft(2, '0');
-    final minute = dateTime.minute.toString().padLeft(2, '0');
-    return '$hour:$minute';
-  }
+String _formatTime(DateTime dateTime) {
+  final hour = dateTime.hour % 12 == 0 ? 12 : dateTime.hour % 12;
+  final minute = dateTime.minute.toString().padLeft(2, '0');
+  final period = dateTime.hour >= 12 ? 'PM' : 'AM';
+  return '$hour:$minute $period';
+}
+
 }
