@@ -19,7 +19,7 @@ class TipCard extends StatelessWidget {
         color: ColorsManager.realWhiteColor,
       boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.05),
+            color: Colors.grey.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: Offset(0, 4),
           )

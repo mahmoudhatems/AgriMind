@@ -20,7 +20,7 @@ class GetStartedButton extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color:
-                ColorsManager.textIconColorGray.withOpacity(0.5),
+                ColorsManager.textIconColorGray.withValues( alpha:   0.5),
             blurRadius: 10,
             offset: Offset(2, 2),
           ),

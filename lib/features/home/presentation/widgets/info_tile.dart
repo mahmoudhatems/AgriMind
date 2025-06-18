@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 
@@ -23,7 +22,7 @@ class InfoTile extends StatelessWidget {
   Widget build(BuildContext context) {
     // Get screen dimensions
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+   // final screenHeight = MediaQuery.of(context).size.height;
     
     // Define breakpoints
     final isTablet = screenWidth >= 768 && screenWidth < 1024;

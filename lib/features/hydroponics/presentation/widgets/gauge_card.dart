@@ -26,9 +26,9 @@ class GaugeSensorCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: color.withOpacity(0.1)),
+        border: Border.all(color: color.withValues(alpha: 0.1)),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 8, offset: Offset(0, 2)),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 8, offset: Offset(0, 2)),
         ],
       ),
       child: Column(
@@ -39,7 +39,7 @@ class GaugeSensorCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(6.r),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Icon(icon, color: color, size: 16.sp),
@@ -62,7 +62,7 @@ class GaugeSensorCard extends StatelessWidget {
                     axisLineStyle: AxisLineStyle(
                       thickness: 0.2,
                       thicknessUnit: GaugeSizeUnit.factor,
-                      color: color.withOpacity(0.15),
+                      color: color.withValues(alpha: 0.15),
                     ),
                     pointers: [
                       RangePointer(

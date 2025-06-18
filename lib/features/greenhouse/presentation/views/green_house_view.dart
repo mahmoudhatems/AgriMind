@@ -134,9 +134,9 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: (sensor['color'] as Color).withOpacity(0.1)),
+        border: Border.all(color: (sensor['color'] as Color).withValues(alpha:  0.1)),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 8, offset: Offset(0, 2)),
+          BoxShadow(color: ColorsManager.blackTextColor..withValues( alpha:   0.02), blurRadius: 8, offset: Offset(0, 2)),
         ],
       ),
       child: Column(
@@ -147,7 +147,7 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
               Container(
                 padding: EdgeInsets.all(6.r),
                 decoration: BoxDecoration(
-                  color: (sensor['color'] as Color).withOpacity(0.1),
+                  color: (sensor['color'] as Color).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Icon(sensor['icon'], color: sensor['color'], size: 16.sp),
@@ -170,7 +170,7 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
                     axisLineStyle: AxisLineStyle(
                       thickness: 0.2,
                       thicknessUnit: GaugeSizeUnit.factor,
-                      color: (sensor['color'] as Color).withOpacity(0.15),
+                      color: (sensor['color'] as Color).withValues(alpha: 0.15),
                     ),
                     pointers: [
                       RangePointer(

@@ -28,7 +28,7 @@ class SwitchTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.07),
+            color: Colors.grey.withValues(alpha: 0.07),
             blurRadius: 8,
             offset: Offset(2, 2),
           )
@@ -46,8 +46,8 @@ class SwitchTile extends StatelessWidget {
                     padding: EdgeInsets.all(8.r),
                     decoration: BoxDecoration(
                       color: isActive
-                          ? ColorsManager.mainBlueGreen.withOpacity(0.15)
-                          : Colors.grey.withOpacity(0.1),
+                          ? ColorsManager.mainBlueGreen.withValues(alpha: 0.15)
+                          : Colors.grey.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
