@@ -6,6 +6,7 @@ import 'package:happyfarm/core/services/get_it__service.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/widgets/custom_app_bar.dart';
 import 'package:happyfarm/features/greenhouse/presentation/manager/greenhouse_cubit.dart';
+import 'package:happyfarm/features/home/presentation/manager/home_cubit.dart';
 import 'package:happyfarm/features/hydroponics/presentation/views/hydroponics_page.dart';
 import 'package:happyfarm/features/greenhouse/presentation/views/green_house_view.dart';
 import 'package:happyfarm/features/home/presentation/views/home_screen.dart';
@@ -26,7 +27,10 @@ late final List<Widget> _screens;
 void initState() {
   super.initState();
   _screens = [
-    const HomeScreen(),
+    BlocProvider(
+  create: (_) => HomeCubit(getIt())..fetchHomeData(),
+  child: const HomeScreen(),
+),
     _buildGreenhouseScreen(),
     const HydroponicsPage(),
     const WarehouseBarnPage(),
