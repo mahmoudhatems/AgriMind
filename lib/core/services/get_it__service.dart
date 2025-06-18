@@ -8,6 +8,9 @@ import 'package:happyfarm/features/home/domain/repos/home_repo.dart';
 import 'package:happyfarm/features/home/domain/repos/home_repo_empl.dart';
 import 'package:happyfarm/features/hydroponics/domain/repos/hydroponics_repo.dart';
 import 'package:happyfarm/features/hydroponics/domain/repos/hydroponics_repo_impl.dart';
+import 'package:happyfarm/features/warehouseandbarn/domain/repos/warehouse_barn_repo.dart';
+import 'package:happyfarm/features/warehouseandbarn/domain/repos/wearehouse_barn_repo_impl.dart';
+import 'package:happyfarm/features/warehouseandbarn/presentation/manager/warehouse_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -19,5 +22,7 @@ void setupGetIt() {
 getIt.registerSingleton<GreenhouseRepo>(GreenhouseRepoImpl());
 getIt.registerSingleton<HomeRepo>(HomeRepoImpl());
   getIt.registerSingleton<HydroponicsRepo>(HydroponicsRepoImpl());
+  getIt.registerLazySingleton<WarehouseBarnRepo>(() => WarehouseBarnRepoImpl());
+getIt.registerFactory(() => WarehouseBarnCubit(getIt()));
 
 }

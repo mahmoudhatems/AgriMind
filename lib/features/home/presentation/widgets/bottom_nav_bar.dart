@@ -11,7 +11,8 @@ import 'package:happyfarm/features/hydroponics/presentation/manager/hydroponics_
 import 'package:happyfarm/features/hydroponics/presentation/views/hydroponics_page.dart';
 import 'package:happyfarm/features/greenhouse/presentation/views/green_house_view.dart';
 import 'package:happyfarm/features/home/presentation/views/home_screen.dart';
-import 'package:happyfarm/features/warehouse/presentation/views/warehouse_barn_page.dart'; // Your custom app bar
+import 'package:happyfarm/features/warehouseandbarn/presentation/manager/warehouse_cubit.dart';
+import 'package:happyfarm/features/warehouseandbarn/presentation/views/warehouse_barn_page.dart'; // Your custom app bar
 
 class CustomButtomBar extends StatefulWidget {
   const CustomButtomBar({Key? key}) : super(key: key);
@@ -37,7 +38,10 @@ void initState() {
   create: (_) => HydroponicsCubit(getIt())..fetchHydroData(),
   child: const HydroponicsPage(),
 ),
-    const WarehouseBarnPage(),
+    BlocProvider(
+  create: (_) => getIt<WarehouseBarnCubit>()..fetchData(),
+  child: const WarehouseBarnPage(),
+)
   ];
 }
 
