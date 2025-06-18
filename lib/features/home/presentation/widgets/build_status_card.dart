@@ -6,7 +6,18 @@ import 'package:happyfarm/core/utils/strings.dart';
 import 'package:lottie/lottie.dart';
 
 class StatusCard extends StatelessWidget {
-  const StatusCard({Key? key}) : super(key: key);
+  const StatusCard({
+    Key? key,
+    required this.zoneName,
+    required this.status,
+    required this.lastUpdate,
+  }) : super(key: key);
+
+  final String zoneName;
+  final String status;
+  final String lastUpdate;
+
+  bool get isOnline => status.toLowerCase() == 'online';
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +26,17 @@ class StatusCard extends StatelessWidget {
         final isTablet = constraints.maxWidth > 600;
         final cardPadding = isTablet ? 24.r : 20.r;
         final iconSize = isTablet ? 100.r : 80.r;
-        
+
         return Container(
           width: double.infinity,
           padding: EdgeInsets.all(cardPadding),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                ColorsManager.mainBlueGreen,
-                ColorsManager.mainBlueGreen.withOpacity(0.7),
+                isOnline ? ColorsManager.mainBlueGreen : Colors.redAccent,
+                isOnline
+                    ? ColorsManager.mainBlueGreen.withValues( alpha:  0.7)
+                    : Colors.redAccent.withValues( alpha:  0.7),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -31,7 +44,7 @@ class StatusCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20.r),
             boxShadow: [
               BoxShadow(
-                color: ColorsManager.tileBackground.withOpacity(0.15),
+                color: ColorsManager.tileBackground.withValues( alpha:  0.15),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
                 spreadRadius: 0,
@@ -51,14 +64,17 @@ class StatusCard extends StatelessWidget {
               ],
             ),
           ),
-        ).animate().fadeIn(
-          duration: 600.ms,
-          curve: Curves.easeOutCubic,
-        ).slideY(
-          begin: -0.2,
-          duration: 600.ms,
-          curve: Curves.easeOutCubic,
-        );
+        )
+            .animate()
+            .fadeIn(
+              duration: 600.ms,
+              curve: Curves.easeOutCubic,
+            )
+            .slideY(
+              begin: -0.2,
+              duration: 600.ms,
+              curve: Curves.easeOutCubic,
+            );
       },
     );
   }
@@ -68,22 +84,25 @@ class StatusCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildStatusIndicator(isTablet),
-        SizedBox(height: isTablet ? 12.h : 8.h),
+        /// 👇 الهيدر الثابت هنا
         Text(
-          "All systems operational",
+          zoneName,
           style: TextStyle(
             color: Colors.white,
-            fontSize: isTablet ? 20.sp : 16.sp,
+            fontSize: isTablet ? 22.sp : 18.sp,
             fontWeight: FontWeight.bold,
-            height: 1.2,
+            letterSpacing: 0.5,
           ),
         ),
-        SizedBox(height: 4.h),
+        SizedBox(height: isTablet ? 8.h : 6.h),
+
+        _buildStatusIndicator(isTablet),
+
+        SizedBox(height: isTablet ? 12.h : 8.h),
         Text(
-          "Last updated: ${_formatTime(DateTime.now())}",
+          "Last updated: $lastUpdate",
           style: TextStyle(
-            color: Colors.white.withOpacity(0.8),
+            color: ColorsManager.realWhiteColor.withValues( alpha:  0.8),
             fontSize: isTablet ? 13.sp : 11.sp,
             fontWeight: FontWeight.w500,
           ),
@@ -100,32 +119,37 @@ class StatusCard extends StatelessWidget {
           width: isTablet ? 10.r : 8.r,
           height: isTablet ? 10.r : 8.r,
           decoration: BoxDecoration(
-            color: Colors.greenAccent,
+            color: isOnline ? Colors.greenAccent : Colors.redAccent,
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.greenAccent.withOpacity(0.6),
+                color: (isOnline ? Colors.greenAccent : Colors.redAccent)
+                    .withValues( alpha:  0.6),
                 blurRadius: 8,
                 spreadRadius: 2,
               ),
             ],
           ),
-        ).animate(
-          onPlay: (controller) => controller.repeat(),
-        ).scale(
-          begin: const Offset(1.0, 1.0),
-          end: const Offset(1.2, 1.2),
-          duration: 1500.ms,
-          curve: Curves.easeInOut,
-        ).then().scale(
-          begin: const Offset(1.2, 1.2),
-          end: const Offset(1.0, 1.0),
-          duration: 1500.ms,
-          curve: Curves.easeInOut,
-        ),
+        )
+            .animate(
+              onPlay: (controller) => controller.repeat(),
+            )
+            .scale(
+              begin: const Offset(1.0, 1.0),
+              end: const Offset(1.2, 1.2),
+              duration: 1500.ms,
+              curve: Curves.easeInOut,
+            )
+            .then()
+            .scale(
+              begin: const Offset(1.2, 1.2),
+              end: const Offset(1.0, 1.0),
+              duration: 1500.ms,
+              curve: Curves.easeInOut,
+            ),
         SizedBox(width: isTablet ? 10.w : 8.w),
         Text(
-          "System Online",
+          isOnline ? "Zone is Online" : "Zone is Offline",
           style: TextStyle(
             color: Colors.white,
             fontSize: isTablet ? 16.sp : 14.sp,
@@ -141,10 +165,10 @@ class StatusCard extends StatelessWidget {
       height: size,
       width: size,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: ColorsManager.realWhiteColor.withValues( alpha:  0.1),
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
-          color: Colors.white.withOpacity(0.2),
+          color: ColorsManager.realWhiteColor.withValues( alpha:  0.2),
           width: 1,
         ),
       ),
@@ -159,17 +183,12 @@ class StatusCard extends StatelessWidget {
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) => Icon(
             Icons.dashboard_rounded,
-            color: Colors.white.withOpacity(0.8),
+            color: ColorsManager.realWhiteColor.withValues( alpha:  0.8),
             size: size * 0.4,
           ),
         ),
       ),
     );
   }
-
-  String _formatTime(DateTime dateTime) {
-    final hour = dateTime.hour.toString().padLeft(2, '0');
-    final minute = dateTime.minute.toString().padLeft(2, '0');
-    return '$hour:$minute';
-  }
 }
+

@@ -5,7 +5,6 @@ import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/widgets/app_bar.dart';
 import 'package:happyfarm/features/auth/cubits/signup_cubits/signup_cubit.dart';
 import 'package:happyfarm/features/auth/domain/repos/auth_repo.dart';
-import 'package:happyfarm/features/auth/register/widgets/register_body.dart';
 import 'package:happyfarm/features/auth/register/widgets/signup_body_consumer.dart';
 
 class RegisterScreen extends StatelessWidget {

@@ -10,26 +10,25 @@ import 'firebase_options.dart';
 ///  Easy Localization
 /// dart run easy_localization:generate -S assets/translations
 /// dart run easy_localization:generate -f keys -o locale_keys.g.dart -S assets/translations
-
 void main() async {
-  Bloc.observer = CustomBlocObserver(); // Initialize Bloc observer
-  setupGetIt(); // Initialize GetIt service locator
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();  
+  await EasyLocalization.ensureInitialized(); 
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  setupGetIt(); 
+
+  Bloc.observer = CustomBlocObserver();   
+
   runApp(
     EasyLocalization(
       useOnlyLangCode: true,
-      supportedLocales: const [
-        Locale('ar'),
-        Locale('en'),
-      ],
+      supportedLocales: const [Locale('ar'), Locale('en')],
       path: 'assets/translations',
       startLocale: const Locale('en'),
-      child: HappyFarm(),
+      child: const HappyFarm(),
     ),
   );
 }

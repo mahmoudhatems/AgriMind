@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:happyfarm/core/services/get_it__service.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/widgets/custom_app_bar.dart';
+import 'package:happyfarm/features/greenhouse/presentation/manager/greenhouse_cubit.dart';
+import 'package:happyfarm/features/home/presentation/manager/home_cubit.dart';
+import 'package:happyfarm/features/hydroponics/presentation/manager/hydroponics_cubit.dart';
 import 'package:happyfarm/features/hydroponics/presentation/views/hydroponics_page.dart';
 import 'package:happyfarm/features/greenhouse/presentation/views/green_house_view.dart';
 import 'package:happyfarm/features/home/presentation/views/home_screen.dart';
-import 'package:happyfarm/features/warehouse/presentation/views/warehouse_barn_page.dart'; // Your custom app bar
+import 'package:happyfarm/features/warehouseandbarn/presentation/manager/warehouse_cubit.dart';
+import 'package:happyfarm/features/warehouseandbarn/presentation/views/warehouse_barn_page.dart'; // Your custom app bar
 
 class CustomButtomBar extends StatefulWidget {
   const CustomButtomBar({Key? key}) : super(key: key);
@@ -17,16 +23,29 @@ class CustomButtomBar extends StatefulWidget {
 
 class _CustomButtomBarState extends State<CustomButtomBar> {
   int _currentIndex = 0;
+late final List<Widget> _screens;
 
-  // Four pages: Home, Greenhouse, Logs, Options
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const GreenhouseScreen(),
-    const HydroponicsPage(),
-    const WarehouseBarnPage(),
+@override
+void initState() {
+  super.initState();
+  _screens = [
+    BlocProvider(
+  create: (_) => HomeCubit(getIt())..fetchHomeData(),
+  child: const HomeScreen(),
+),
+    _buildGreenhouseScreen(),
+    BlocProvider(
+  create: (_) => HydroponicsCubit(getIt())..fetchHydroData(),
+  child: const HydroponicsPage(),
+),
+    BlocProvider(
+  create: (_) => getIt<WarehouseBarnCubit>()..fetchData(),
+  child: const WarehouseBarnPage(),
+)
   ];
+}
 
-  /// Determines the app bar title based on the current tab.
+  /// Determines the app bar title based on the current tab
   String _getAppBarTitle() {
     switch (_currentIndex) {
       case 0:
@@ -93,4 +112,11 @@ class _CustomButtomBarState extends State<CustomButtomBar> {
       ),
     );
   }
+}
+
+Widget _buildGreenhouseScreen() {
+  return BlocProvider(
+    create: (_) => GreenhouseCubit(getIt())..fetchGreenhouseData(),
+    child: const GreenhouseScreen(),
+  );
 }
