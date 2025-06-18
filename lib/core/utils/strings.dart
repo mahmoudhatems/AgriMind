@@ -18,6 +18,8 @@ static const String appName='Happy Farm';
   static const String vector = 'assets/images/vector.jpg';
   static const String loginSvg = 'assets/images/undraw_login_weas.svg';
   static const String signUpSvg = 'assets/images/undraw_welcome_nk8k.svg';
+  static const String dashboardLottie = 'assets/images/dashanimated.json';
+
 
 
  // Smart Home Tips

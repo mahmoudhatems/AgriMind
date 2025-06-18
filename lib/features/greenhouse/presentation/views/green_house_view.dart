@@ -77,37 +77,27 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
       {"label": "Gas", "value": gasLevel, "unit": "ppm", "color": const Color(0xFF96CEB4), "icon": Icons.air},
     ];
 
-    return Container(
-      padding: EdgeInsets.all(20.r),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 15, offset: Offset(0, 5)),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.sensors, color: ColorsManager.mainBlueGreen, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text("Environmental Sensors", style:  Styles.styleText14BlackColofontJosefinSans),
-            ],
-          ),
-          SizedBox(height: 20.h),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            mainAxisSpacing: 12.h,
-            crossAxisSpacing: 12.w,
-            childAspectRatio: 1.1,
-            children: sensors.map((sensor) => _buildSensorCard(sensor)).toList(),
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(Icons.sensors, color: ColorsManager.mainBlueGreen, size: 20.sp),
+            SizedBox(width: 8.w),
+            Text("Environmental Sensors", style:  Styles.styleText14BlackColofontJosefinSans),
+          ],
+        ),
+        SizedBox(height: 20.h),
+        GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: 2,
+          mainAxisSpacing: 12.h,
+          crossAxisSpacing: 12.w,
+          childAspectRatio: 1.1,
+          children: sensors.map((sensor) => _buildSensorCard(sensor)).toList(),
+        ),
+      ],
     ).animate().fadeIn(duration: 600.ms, delay: 200.ms);
   }
 
@@ -191,40 +181,26 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
       {"label": "LED Lighting", "icon": Icons.light_mode, "controller": _lightSwitchController, "color": const Color(0xFFFECEA8)},
     ];
 
-    return Container(
-      padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-         boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.05),
-            blurRadius: 8,
-            offset: Offset(0, 4),
-          )
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Icon(Icons.settings_remote, color: ColorsManager.mainBlueGreen, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text("Device Control", style: Styles.styleText14BlackColofontJosefinSans),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          Wrap(
-            spacing: 16.w,
-            runSpacing: 16.h,
-            alignment: WrapAlignment.center,
-            children:  [
-              ...devices.map((device) => _buildDeviceControl(device)).toList(),
-            ],
-          ),
-          
-        ],
-      ),
+    return Column(
+      children: [
+        Row(
+          children: [
+            Icon(Icons.settings_remote, color: ColorsManager.mainBlueGreen, size: 20.sp),
+            SizedBox(width: 8.w),
+            Text("Device Control", style: Styles.styleText14BlackColofontJosefinSans),
+          ],
+        ),
+        SizedBox(height: 16.h),
+        Wrap(
+          spacing: 16.w,
+          runSpacing: 16.h,
+          alignment: WrapAlignment.center,
+          children:  [
+            ...devices.map((device) => _buildDeviceControl(device)).toList(),
+          ],
+        ),
+        
+      ],
     );
   }
 

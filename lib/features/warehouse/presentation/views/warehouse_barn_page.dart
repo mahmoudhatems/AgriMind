@@ -91,34 +91,24 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
   }
 
   Widget _buildSection(String title, List<Widget> tiles) {
-    return Container(
-      padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(color:ColorsManager.blackTextColor.withValues( alpha : 0.03), blurRadius: 10, offset: Offset(0, 4)),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.warehouse, color: ColorsManager.mainBlueGreen, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text(title, style: Styles.styleText14BlackColofontJosefinSans),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          Wrap(
-            spacing: 16.w,
-            runSpacing: 16.h,
-            alignment: WrapAlignment.start,
-            children: tiles,
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(Icons.warehouse, color: ColorsManager.mainBlueGreen, size: 20.sp),
+            SizedBox(width: 8.w),
+            Text(title, style: Styles.styleText14BlackColofontJosefinSans),
+          ],
+        ),
+        SizedBox(height: 16.h),
+        Wrap(
+          spacing: 16.w,
+          runSpacing: 16.h,
+          alignment: WrapAlignment.start,
+          children: tiles,
+        ),
+      ],
     );
   }
 
@@ -131,38 +121,28 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
   }
 
   Widget _buildControls(String title, List<Map<String, dynamic>> controls) {
-    return Container(
-      padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(color:ColorsManager.blackTextColor.withValues( alpha : 0.03), blurRadius: 6, offset: Offset(0, 3)),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Icon(Icons.settings, color: ColorsManager.mainBlueGreen, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text(title, style: Styles.styleText14BlackColofontJosefinSans),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          Wrap(
-            spacing: 16.w,
-            runSpacing: 16.h,
-            children: controls
-                .map((device) => SwitchTile(
-                      label: device['label'],
-                      icon: device['icon'],
-                      controller: device['controller'],
-                    ))
-                .toList(),
-          )
-        ],
-      ),
+    return Column(
+      children: [
+        Row(
+          children: [
+            Icon(Icons.settings, color: ColorsManager.mainBlueGreen, size: 20.sp),
+            SizedBox(width: 8.w),
+            Text(title, style: Styles.styleText14BlackColofontJosefinSans),
+          ],
+        ),
+        SizedBox(height: 16.h),
+        Wrap(
+          spacing: 16.w,
+          runSpacing: 16.h,
+          children: controls
+              .map((device) => SwitchTile(
+                    label: device['label'],
+                    icon: device['icon'],
+                    controller: device['controller'],
+                  ))
+              .toList(),
+        )
+      ],
     );
   }
 }
