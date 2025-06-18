@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:happyfarm/core/services/get_it__service.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/widgets/custom_app_bar.dart';
 import 'package:happyfarm/features/greenhouse/presentation/manager/greenhouse_cubit.dart';
@@ -19,19 +20,20 @@ class CustomButtomBar extends StatefulWidget {
 
 class _CustomButtomBarState extends State<CustomButtomBar> {
   int _currentIndex = 0;
+late final List<Widget> _screens;
 
-  // Four pages: Home, Greenhouse, Logs, Options
-  final List<Widget> _screens = [
+@override
+void initState() {
+  super.initState();
+  _screens = [
     const HomeScreen(),
-    BlocProvider<GreenhouseCubit>(
-  create: (_) => GreenhouseCubit()..fetchGreenhouseData(), 
-  child: const GreenhouseScreen(),
-),
+    _buildGreenhouseScreen(),
     const HydroponicsPage(),
     const WarehouseBarnPage(),
   ];
+}
 
-  /// Determines the app bar title based on the current tab.
+  /// Determines the app bar title based on the current tab
   String _getAppBarTitle() {
     switch (_currentIndex) {
       case 0:
@@ -98,4 +100,11 @@ class _CustomButtomBarState extends State<CustomButtomBar> {
       ),
     );
   }
+}
+
+Widget _buildGreenhouseScreen() {
+  return BlocProvider(
+    create: (_) => GreenhouseCubit(getIt())..fetchGreenhouseData(),
+    child: const GreenhouseScreen(),
+  );
 }

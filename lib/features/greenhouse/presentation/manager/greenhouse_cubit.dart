@@ -1,35 +1,48 @@
-import 'package:bloc/bloc.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:happyfarm/features/greenhouse/domain/entites/greenhouse_entity.dart';
+import 'package:happyfarm/features/greenhouse/domain/repos/greenhouse_repo.dart';
 
 part 'greenhouse_state.dart';
 
 class GreenhouseCubit extends Cubit<GreenhouseState> {
-  GreenhouseCubit() : super(GreenhouseInitial());
+  final GreenhouseRepo greenhouseRepo;
+  GreenhouseEntity? _cachedState;
 
-  final _database = FirebaseDatabase.instance.ref('greenhouse');
+  GreenhouseCubit(this.greenhouseRepo) : super(GreenhouseInitial());
 
-  void fetchGreenhouseData() {
-    _database.once().then((event) {
-      final data = event.snapshot.value;
-      if (data != null && data is Map) {
-        emit(GreenhouseLoaded(Map<String, dynamic>.from(data as Map)));
-      } else {
-        emit(GreenhouseError("No data found."));
+  void fetchGreenhouseData() async {
+    try {
+      final data = await greenhouseRepo.fetchGreenhouseData();
+
+      // Avoid emitting if the data hasn't changed
+      if (_cachedState == null || data != _cachedState) {
+        _cachedState = data;
+        emit(GreenhouseLoaded(data));
       }
-    }).catchError((e) {
+    } catch (e) {
       emit(GreenhouseError(e.toString()));
-    });
+    }
   }
 
-  void toggleFan(bool isOn) {
-    _database.update({'fan_status': isOn});
+  void toggleFan(bool isOn) async {
+    await greenhouseRepo.updateFan(isOn);
+    _updateLocalState(_cachedState?.copyWith(fanStatus: isOn));
   }
 
-  void togglePump(bool isOn) {
-    _database.update({'pump_status': isOn});
+  void togglePump(bool isOn) async {
+    await greenhouseRepo.updatePump(isOn);
+    _updateLocalState(_cachedState?.copyWith(pumpStatus: isOn));
   }
 
-  void toggleLight(bool isOn) {
-    _database.update({'light_level': isOn ? 1 : 0});
+  void toggleLight(bool isOn) async {
+    await greenhouseRepo.updateLight(isOn);
+    _updateLocalState(_cachedState?.copyWith(lightStatus: isOn));
+  }
+
+  void _updateLocalState(GreenhouseEntity? newState) {
+    if (newState != null) {
+      _cachedState = newState;
+      emit(GreenhouseLoaded(_cachedState!));
+    }
   }
 }

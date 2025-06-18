@@ -1,3 +1,4 @@
+
 part of 'greenhouse_cubit.dart';
 
 abstract class GreenhouseState {}
@@ -5,7 +6,7 @@ abstract class GreenhouseState {}
 class GreenhouseInitial extends GreenhouseState {}
 
 class GreenhouseLoaded extends GreenhouseState {
-  final Map<String, dynamic> data;
+  final GreenhouseEntity data;
   GreenhouseLoaded(this.data);
 }
 

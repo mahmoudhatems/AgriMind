@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/core/utils/strings.dart';
+import 'package:happyfarm/features/greenhouse/domain/entites/greenhouse_entity.dart';
 import 'package:happyfarm/features/greenhouse/presentation/manager/greenhouse_cubit.dart';
 import 'package:happyfarm/features/home/presentation/widgets/switch_tile.dart';
 import 'package:happyfarm/features/home/presentation/widgets/tip_card.dart';
@@ -28,12 +29,20 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
   @override
   void initState() {
     super.initState();
-
     context.read<GreenhouseCubit>().fetchGreenhouseData();
 
-    _fanSwitchController.addListener(() => HapticFeedback.lightImpact());
-    _pumpSwitchController.addListener(() => HapticFeedback.lightImpact());
-    _lightSwitchController.addListener(() => HapticFeedback.lightImpact());
+    _fanSwitchController.addListener(() {
+      context.read<GreenhouseCubit>().toggleFan(_fanSwitchController.value);
+      HapticFeedback.lightImpact();
+    });
+    _pumpSwitchController.addListener(() {
+      context.read<GreenhouseCubit>().togglePump(_pumpSwitchController.value);
+      HapticFeedback.lightImpact();
+    });
+    _lightSwitchController.addListener(() {
+      context.read<GreenhouseCubit>().toggleLight(_lightSwitchController.value);
+      HapticFeedback.lightImpact();
+    });
 
     Future.delayed(const Duration(seconds: 6), _rotateTip);
   }
@@ -49,21 +58,12 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
     return BlocBuilder<GreenhouseCubit, GreenhouseState>(
       builder: (context, state) {
         if (state is GreenhouseLoaded) {
-          final data = state.data;
-
-          final double temperature = (data['temperature'] as num?)?.toDouble() ?? 0;
-          final double humidity = (data['humidity'] as num?)?.toDouble() ?? 0;
-          final double soilMoisture = (data['soil_moisture'] as num?)?.toDouble() ?? 0;
-          final double gasLevel = (data['gas_level'] as num?)?.toDouble() ?? 0;
-
-          final bool fan = data['fan_status'] ?? false;
-          final bool pump = data['pump_status'] ?? false;
-          final bool light = (data['light_level'] ?? 0) > 0;
+          final GreenhouseEntity data = state.data;
 
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            _fanSwitchController.value = fan;
-            _pumpSwitchController.value = pump;
-            _lightSwitchController.value = light;
+            _fanSwitchController.value = data.fanStatus;
+            _pumpSwitchController.value = data.pumpStatus;
+            _lightSwitchController.value = data.lightStatus;
           });
 
           return RefreshIndicator(
@@ -76,7 +76,7 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
               child: Column(
                 children: [
-                  _buildSensorSection(temperature, humidity, soilMoisture, gasLevel),
+                  _buildSensorSection(data),
                   SizedBox(height: 20.h),
                   _buildDeviceControlSection(),
                   SizedBox(height: 20.h),
@@ -96,17 +96,12 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
     );
   }
 
-  Widget _buildSensorSection(
-    double temperature,
-    double humidity,
-    double soilMoisture,
-    double gasLevel,
-  ) {
+  Widget _buildSensorSection(GreenhouseEntity data) {
     final sensors = [
-      {"label": "Temp", "value": temperature, "unit": "°C", "color": const Color(0xFFFF6B6B), "icon": Icons.thermostat},
-      {"label": "Humidity", "value": humidity, "unit": "%", "color": const Color(0xFF4ECDC4), "icon": Icons.water_drop},
-      {"label": "Soil", "value": soilMoisture, "unit": "%", "color": const Color(0xFF45B7D1), "icon": Icons.grass},
-      {"label": "Gas", "value": gasLevel, "unit": "ppm", "color": const Color(0xFF96CEB4), "icon": Icons.air},
+      {"label": "Temp", "value": data.temperature, "unit": "°C", "color": const Color(0xFFFF6B6B), "icon": Icons.thermostat},
+      {"label": "Humidity", "value": data.humidity, "unit": "%", "color": const Color(0xFF4ECDC4), "icon": Icons.water_drop},
+      {"label": "Soil", "value": data.soilMoisture, "unit": "%", "color": const Color(0xFF45B7D1), "icon": Icons.grass},
+      {"label": "Gas", "value": data.gasLevel, "unit": "ppm", "color": const Color(0xFF96CEB4), "icon": Icons.air},
     ];
 
     return Column(
