@@ -1,18 +1,34 @@
 part of 'settings_cubit.dart';
 
-class SettingsState {
-  final bool notifications;
+class SettingsState extends Equatable {
   final bool darkMode;
+  final bool notifications;
+  final Locale locale;
 
-  SettingsState({required this.notifications, required this.darkMode});
+  const SettingsState({
+    required this.darkMode,
+    required this.notifications,
+    required this.locale,
+  });
 
-  factory SettingsState.initial() =>
-      SettingsState(notifications: true, darkMode: false);
+  factory SettingsState.initial() => const SettingsState(
+        darkMode: false,
+        notifications: true,
+        locale: Locale('en'),
+      );
 
-  SettingsState copyWith({bool? notifications, bool? darkMode}) {
+  SettingsState copyWith({
+    bool? darkMode,
+    bool? notifications,
+    Locale? locale,
+  }) {
     return SettingsState(
-      notifications: notifications ?? this.notifications,
       darkMode: darkMode ?? this.darkMode,
+      notifications: notifications ?? this.notifications,
+      locale: locale ?? this.locale,
     );
   }
+
+  @override
+  List<Object?> get props => [darkMode, notifications, locale];
 }

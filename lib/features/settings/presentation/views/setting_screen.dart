@@ -1,39 +1,30 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:happyfarm/core/routing/routes.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
-import 'package:happyfarm/features/settings/presentation/manager/settings_cubit.dart';
 import 'package:happyfarm/features/settings/presentation/widgets/profile_card.dart';
-import 'package:happyfarm/features/settings/presentation/widgets/setting_group.dart';
-import 'package:happyfarm/features/settings/presentation/widgets/setting_switch_tile.dart';
-import 'package:happyfarm/features/settings/presentation/widgets/setting_tile.dart';
-import 'package:happyfarm/features/settings/presentation/widgets/signout_tile.dart';
-
+import 'package:happyfarm/features/settings/presentation/widgets/setting_screen_body.dart';
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => SettingsCubit(),
-      child: Scaffold(
-        backgroundColor: ColorsManager.whitegraybackGround,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(20.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildHeader(context),
-                SizedBox(height: 30.h),
-                const ProfileCard(),
-                SizedBox(height: 40.h),
-                _buildSettingsBody(context),
-              ],
-            ),
+    return Scaffold(
+      backgroundColor: ColorsManager.whitegraybackGround,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(context),
+              SizedBox(height: 30.h),
+              const ProfileCard(),
+              SizedBox(height: 40.h),
+              SettingsBody(),
+            ],
           ),
         ),
       ),
@@ -51,7 +42,7 @@ class SettingScreen extends StatelessWidget {
         ),
         SizedBox(width: 10.w),
         Text(
-          'Settings',
+          'Settings'.tr(),
           style: Styles.styleNormalText14GrayfontJosefinSans.copyWith(
             fontSize: 22.sp,
             fontWeight: FontWeight.w600,
@@ -59,109 +50,6 @@ class SettingScreen extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildSettingsBody(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsState>(
-      builder: (context, state) {
-        final cubit = context.read<SettingsCubit>();
-
-        return Column(
-          children: [
-            /// --- Account Section ---
-            SettingGroup(
-              title: 'Account',
-              items: [
-                SettingTile(
-                  icon: Icons.person_outline,
-                  title: 'Edit Profile',
-                  onTap: () {},
-                ),
-                SettingTile(
-                  icon: Icons.lock_outline,
-                  title: 'Change Password',
-                  onTap: () {},
-                ),
-              ],
-            ),
-            SizedBox(height: 30.h),
-
-            /// --- Preferences Section ---
-            SettingGroup(
-              title: 'Preferences',
-              items: [
-                SettingSwitchTile(
-                  icon: Icons.notifications_none,
-                  title: 'Notifications',
-                  value: state.notifications,
-                  onChanged: cubit.toggleNotifications,
-                ),
-                SettingSwitchTile(
-                  icon: Icons.dark_mode_outlined,
-                  title: 'Dark Mode',
-                  value: state.darkMode,
-                  onChanged: cubit.toggleDarkMode,
-                ),
-                SettingTile(
-                  icon: Icons.language,
-                  title: 'Language',
-                  subtitle: 'English',
-                  onTap: () {},
-                ),
-              ],
-            ),
-            SizedBox(height: 30.h),
-
-            /// --- About Section ---
-            SettingGroup(
-              title: 'About',
-              items: [
-                SettingTile(
-                  icon: Icons.info_outline,
-                  title: 'App Information',
-                  subtitle: 'v1.0.0',
-                  onTap: () {},
-                ),
-              ],
-            ),
-            SizedBox(height: 40.h),
-
-            /// --- Sign Out ---
-            SignOutTile(
-              onTap: () => _showSignOutDialog(context),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showSignOutDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-        backgroundColor: ColorsManager.realWhiteColor,
-        title: Text('Sign Out', style: Styles.styleBoldText20GrayfontJosefinSans),
-        content: Text(
-          'Are you sure you want to sign out?',
-          style: TextStyle(fontSize: 16.sp, color: ColorsManager.textIconColorGray),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: TextStyle(color: Colors.grey)),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              context.go(Routes.login);
-            },
-            child: Text('Sign Out', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
     );
   }
 }
