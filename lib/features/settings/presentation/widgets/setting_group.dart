@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:happyfarm/core/utils/colors.dart';
 
 class SettingGroup extends StatelessWidget {
   final String title;
@@ -22,7 +21,7 @@ class SettingGroup extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues( alpha:  0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 2),
               ),
@@ -34,7 +33,7 @@ class SettingGroup extends StatelessWidget {
                 children: [
                   items[i],
                   if (i != items.length - 1)
-                    Divider(indent: 56.w, height: 1, color: Colors.grey.shade300),
+                    Divider(indent: 56.w, height: 1, color: Colors.grey.withValues( alpha: 0.1)),
                 ],
               );
             }),
