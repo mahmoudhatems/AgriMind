@@ -136,7 +136,7 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(color: (sensor['color'] as Color).withValues(alpha:  0.1)),
         boxShadow: [
-          BoxShadow(color: ColorsManager.blackTextColor..withValues( alpha:   0.02), blurRadius: 8, offset: Offset(0, 2)),
+          BoxShadow(color: ColorsManager.blackTextColor.withValues( alpha:   0.02), blurRadius: 8, offset: Offset(0, 2)),
         ],
       ),
       child: Column(
