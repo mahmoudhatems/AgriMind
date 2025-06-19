@@ -152,19 +152,18 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
                 ),
                 child: Icon(sensor['icon'], color: sensor['color'], size: 16.sp),
               ),
-              Text(sensor['label'], style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600, color: Colors.black87)),
+              Text(sensor['label'], style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.black87)),
             ],
           ),
-          SizedBox(height: 8.h),
           Expanded(
             child: SizedBox(
               width: 90.r,
-              height: 90.r,
+              height: 98.h,
               child: SfRadialGauge(
                 axes: [
                   RadialAxis(
                     minimum: 0,
-                    maximum: 100,
+                    maximum:   100,
                     showTicks: false,
                     showLabels: false,
                     axisLineStyle: AxisLineStyle(
@@ -175,7 +174,7 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
                     pointers: [
                       RangePointer(
                         value: (sensor['value'] as double).clamp(0, 100),
-                        width: 0.23,
+                        width: 0.22,
                         sizeUnit: GaugeSizeUnit.factor,
                         color: sensor['color'],
                         cornerStyle: CornerStyle.bothCurve,
@@ -185,9 +184,9 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
                       GaugeAnnotation(
                         widget: Text(
                           "${(sensor['value'] as double).toStringAsFixed(1)}${sensor['unit']}",
-                          style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w400, color: Colors.black87),
+                          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400, color: Colors.black87 , overflow: TextOverflow.ellipsis),
                         ),
-                        positionFactor: 0.1,
+                        positionFactor: 0.0,
                         angle: 90,
                       ),
                     ],
