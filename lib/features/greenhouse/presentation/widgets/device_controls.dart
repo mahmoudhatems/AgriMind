@@ -27,12 +27,14 @@ class DeviceControls extends StatelessWidget {
         "icon": Icons.air,
         "value": fanValue,
         "onChanged": onFanChanged,
+        "subtitle": "Controls air circulation"
       },
       {
         "label": "Water Pump",
         "icon": Icons.water_drop,
         "value": pumpValue,
         "onChanged": onPumpChanged,
+        "subtitle": "Controls water flow"
       },
     ];
 
@@ -56,6 +58,7 @@ class DeviceControls extends StatelessWidget {
               label: device['label'] as String,
               icon: device['icon'] as IconData,
               value: device['value'] as bool,
+              subtitle: device['subtitle'] as String,
               onChanged: device['onChanged'] as ValueChanged<bool>,
             ).animate().fadeIn(duration: 500.ms).slideY(begin: -0.2);
           }).toList(),

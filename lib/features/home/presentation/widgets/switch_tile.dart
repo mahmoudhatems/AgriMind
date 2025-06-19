@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 
@@ -67,7 +68,10 @@ class SwitchTile extends StatelessWidget {
           ),
           Switch(
             value: value,
-            onChanged: onChanged,
+            onChanged: (newVal) {
+              HapticFeedback.lightImpact();
+              onChanged(newVal);
+            },
             activeColor: ColorsManager.mainBlueGreen,
           ),
         ],

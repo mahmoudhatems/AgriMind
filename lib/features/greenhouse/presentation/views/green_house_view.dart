@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/features/greenhouse/presentation/manager/greenhouse_cubit.dart';
 import 'package:happyfarm/features/greenhouse/presentation/widgets/environmental_sensors.dart';
-import 'package:happyfarm/features/home/presentation/widgets/switch_tile.dart';
+import 'package:happyfarm/features/greenhouse/presentation/widgets/device_controls.dart';
 import 'package:happyfarm/features/home/presentation/widgets/tip_card.dart';
 
 class GreenhouseScreen extends StatefulWidget {
@@ -50,7 +50,18 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
                 children: [
                   SensorSection(data: data),
                   SizedBox(height: 20.h),
-                  _buildDeviceControls(data),
+                  DeviceControls(
+                    fanValue: data.fanStatus,
+                    pumpValue: data.pumpStatus,
+                    onFanChanged: (val) {
+                      context.read<GreenhouseCubit>().toggleFan(val);
+                      HapticFeedback.lightImpact();
+                    },
+                    onPumpChanged: (val) {
+                      context.read<GreenhouseCubit>().togglePump(val);
+                      HapticFeedback.lightImpact();
+                    },
+                  ),
                   SizedBox(height: 20.h),
                   TipCard(
                     text: StringManager.homeTips[_tipIndex],
@@ -68,45 +79,6 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
 
         return const Center(child: CircularProgressIndicator());
       },
-    );
-  }
-
-  Widget _buildDeviceControls(data) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Icon(Icons.settings_remote, size: 20.sp),
-            SizedBox(width: 8.w),
-            Text("Device Control", style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
-          ],
-        ),
-        SizedBox(height: 16.h),
-        Wrap(
-          spacing: 16.w,
-          runSpacing: 16.h,
-          children: [
-            SwitchTile(
-              label: "Ventilation Fan",
-              icon: Icons.air,
-              value: data.fanStatus,
-              onChanged: (val) {
-                context.read<GreenhouseCubit>().toggleFan(val);
-                HapticFeedback.lightImpact();
-              },
-            ),
-            SwitchTile(
-              label: "Water Pump",
-              icon: Icons.water_drop,
-              value: data.pumpStatus,
-              onChanged: (val) {
-                context.read<GreenhouseCubit>().togglePump(val);
-                HapticFeedback.lightImpact();
-              },
-            ),
-          ],
-        )
-      ],
     );
   }
 }

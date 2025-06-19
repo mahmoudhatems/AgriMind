@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
@@ -27,6 +28,8 @@ class ZoneControls extends StatelessWidget {
           runSpacing: 16.h,
           children: switches.map((device) {
             final ValueNotifier<bool> controller = device['controller'];
+            final String? subtitle = device['subtitle'];
+
             return ValueListenableBuilder<bool>(
               valueListenable: controller,
               builder: (context, value, _) {
@@ -34,6 +37,7 @@ class ZoneControls extends StatelessWidget {
                   label: device['label'],
                   icon: device['icon'],
                   value: value,
+                  subtitle: subtitle,
                   onChanged: (val) => controller.value = val,
                 );
               },

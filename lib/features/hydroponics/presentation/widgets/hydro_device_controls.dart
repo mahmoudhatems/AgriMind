@@ -12,6 +12,7 @@ class HydroDeviceControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
@@ -26,6 +27,7 @@ class HydroDeviceControls extends StatelessWidget {
           builder: (context, value, _) {
             return SwitchTile(
               label: "Water Pump",
+              subtitle: "Controls nutrient water circulation",
               icon: Icons.water_drop,
               value: value,
               onChanged: (val) => pumpController.value = val,
