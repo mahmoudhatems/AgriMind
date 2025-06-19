@@ -34,10 +34,7 @@ class GreenhouseCubit extends Cubit<GreenhouseState> {
     _updateLocalState(_cachedState?.copyWith(pumpStatus: isOn));
   }
 
-  void toggleLight(bool isOn) async {
-    await greenhouseRepo.updateLight(isOn);
-    _updateLocalState(_cachedState?.copyWith(lightStatus: isOn));
-  }
+  // ❌ تم حذف toggleLight لأنها لم تعد تستخدم
 
   void _updateLocalState(GreenhouseEntity? newState) {
     if (newState != null) {

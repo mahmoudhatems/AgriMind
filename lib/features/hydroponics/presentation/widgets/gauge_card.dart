@@ -44,14 +44,13 @@ class GaugeSensorCard extends StatelessWidget {
                 ),
                 child: Icon(icon, color: color, size: 16.sp),
               ),
-              Text(label, style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600, color: Colors.black87)),
+              Text(label, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.black87)),
             ],
           ),
-          SizedBox(height: 8.h),
           Expanded(
             child: SizedBox(
-              width: 90.r,
-              height: 90.r,
+               width: 90.r,
+              height: 98.h,
               child: SfRadialGauge(
                 axes: [
                   RadialAxis(
@@ -67,7 +66,7 @@ class GaugeSensorCard extends StatelessWidget {
                     pointers: [
                       RangePointer(
                         value: value.clamp(0, 100),
-                        width: 0.23,
+                        width: 0.22,
                         sizeUnit: GaugeSizeUnit.factor,
                         color: color,
                         cornerStyle: CornerStyle.bothCurve,
@@ -77,9 +76,9 @@ class GaugeSensorCard extends StatelessWidget {
                       GaugeAnnotation(
                         widget: Text(
                           "${value.toStringAsFixed(1)}$unit",
-                          style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w400, color: Colors.black87),
+                          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400, color: Colors.black87),
                         ),
-                        positionFactor: 0.1,
+                        positionFactor: 0.0,
                         angle: 90,
                       ),
                     ],

@@ -66,6 +66,7 @@ void initState() {
     return Scaffold(
       appBar: CustomAppBar(
         title: _getAppBarTitle(),
+        
       ),
       body: IndexedStack(
         index: _currentIndex,
@@ -75,7 +76,7 @@ void initState() {
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
         child: GNav(
           gap: 4.w,
-          haptic: true, // haptic feedback
+          haptic: true, 
           backgroundColor: Colors.transparent,
           color: ColorsManager.textIconColorGray,
           activeColor: ColorsManager.mainBlueGreen,

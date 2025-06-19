@@ -10,7 +10,9 @@ AppBar buildAppBar({
   return AppBar(
     title: Text(
       title,
-      style: Styles.titlesemiBoldText24DarkfontJosefinSans,
+      style: Styles.titlesemiBoldText24DarkfontJosefinSans.copyWith(
+        color: ColorsManager.darkBlueTextColor,
+      ),
     ),
     centerTitle: true,
     backgroundColor: ColorsManager.realWhiteColor,

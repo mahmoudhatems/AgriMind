@@ -28,8 +28,5 @@ class GreenhouseRepoImpl implements GreenhouseRepo {
     await _ref.update({'pump_status': isOn});
   }
 
-  @override
-  Future<void> updateLight(bool isOn) async {
-    await _ref.update({'light_level': isOn ? 1 : 0});
-  }
+  // ❌ تم حذف updateLight لأنه لم يعد مستخدم
 }
