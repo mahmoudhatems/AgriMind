@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
         : _formatTime(DateTime.now());
 
     return Scaffold(
-      backgroundColor: ColorsManager.whitegraybackGround.withOpacity(0.45),
+      backgroundColor: ColorsManager.whitegraybackGround.withValues( alpha:  0.45),
       body: RefreshIndicator(
         onRefresh: () async {
           HapticFeedback.lightImpact();

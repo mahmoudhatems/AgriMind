@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:happyfarm/core/routing/routes.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/strings.dart';
-import 'package:happyfarm/core/utils/styles.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -22,15 +21,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return AppBar(
-      backgroundColor: ColorsManager.realWhiteColor,
-      elevation: 0,
+      backgroundColor: theme.appBarTheme.backgroundColor,
+      elevation: theme.appBarTheme.elevation ?? 0,
+      centerTitle: theme.appBarTheme.centerTitle ?? true,
       leading: _buildAppIcon(),
       title: Text(
         title,
-        style: Styles.titlesemiBoldText24ButomfontJosefinSans,
+        style: theme.appBarTheme.titleTextStyle,
       ),
-      centerTitle: true,
       actions: _buildActions(context),
     );
   }
@@ -42,8 +43,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         borderRadius: BorderRadius.circular(8.r),
         child: Image.asset(
           StringManager.appIcon,
-          width: 12.w,
-          height: 12.h,
+          width: 32.w,
+          height: 32.h,
           fit: BoxFit.contain,
         ),
       ),
@@ -75,8 +76,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: EdgeInsets.all(8.0.r),
           child: Icon(
             Icons.settings_outlined,
-            size: 24.sp,
-            color: ColorsManager.textIconColorGray,
+            size: 28.sp,
+            color: ColorsManager.mainBlueGreen.withValues(alpha: 0.8),
           ),
         ),
       ),

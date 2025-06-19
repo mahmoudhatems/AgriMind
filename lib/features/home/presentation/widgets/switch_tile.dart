@@ -23,8 +23,8 @@ class SwitchTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final iconColor = value ? ColorsManager.mainBlueGreen : ColorsManager.textIconColorGray;
     final bgColor = value
-        ? ColorsManager.mainBlueGreen.withOpacity(0.15)
-        : ColorsManager.textIconColorGray.withOpacity(0.1);
+        ? ColorsManager.mainBlueGreen.withValues( alpha:  0.15)
+        : ColorsManager.textIconColorGray.withValues( alpha:  0.1);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
@@ -33,7 +33,7 @@ class SwitchTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),

@@ -5,6 +5,6 @@
 abstract class  LocaleKeys {
   static const hello = 'hello';
   static const world = 'world';
-  static const happyFarm = 'happyFarm';
+  static const appName = 'AgriMind';
 
 }

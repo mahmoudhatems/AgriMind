@@ -1,8 +1,8 @@
 /// This file contains all the strings used in the app.
 /// This is done to avoid hardcoding strings in the app.
 class StringManager {
-static const String appName='Happy Farm';
-  static const String welcomeText='Welcome to Happy Farm';
+static const String appName='AgriMind';
+  static const String welcomeText='Welcome to AgriMind';
 
  static const String fontJosefinSans='Josefin Sans';
 

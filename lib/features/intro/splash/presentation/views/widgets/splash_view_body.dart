@@ -3,11 +3,12 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:go_router/go_router.dart';
 import 'package:happyfarm/core/routing/routes.dart';
 import 'package:happyfarm/core/utils/strings.dart';
+import 'package:happyfarm/features/intro/splash/presentation/views/widgets/animated_gradiant_background.dart';
 import 'package:happyfarm/features/intro/splash/presentation/views/widgets/sliding_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,39 +20,59 @@ class SplashViewBody extends StatefulWidget {
 }
 
 class _SplashViewBodyState extends State<SplashViewBody>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController; 
+    with TickerProviderStateMixin {
+  late AnimationController _slideController;
   late Animation<Offset> _slidingAnimation;
+
+late AnimationController _gradientController;
+late Animation<Alignment> _animatedAlign;
+
+
   @override
   void initState() {
     super.initState();
-    initSlidingAnimated();
+    initSlidingAnimation();
+    initGradientAnimation();
     navigateFlow();
   }
 
-  void initSlidingAnimated() {
-    _animationController = AnimationController(
+  void initSlidingAnimation() {
+    _slideController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(milliseconds: 3500),
     );
 
     _slidingAnimation = Tween<Offset>(
       begin: const Offset(0, 5),
-      end: const Offset(0, 0),
+      end: Offset.zero,
     ).animate(CurvedAnimation(
-      parent: _animationController,
+      parent: _slideController,
       curve: Curves.fastLinearToSlowEaseIn,
     ));
 
-    _animationController.forward();
+    _slideController.forward();
   }
+  void initGradientAnimation() {
+  _gradientController = AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 8),
+  )..repeat(reverse: true);
+
+  _animatedAlign = Tween<Alignment>(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomLeft,
+  ).animate(CurvedAnimation(
+    parent: _gradientController,
+    curve: Curves.easeInOut,
+  ));
+}
+
 
   Future<void> navigateFlow() async {
     final prefs = await SharedPreferences.getInstance();
     final user = FirebaseAuth.instance.currentUser;
     final seenOnboarding = prefs.getBool('seen_onboarding') ?? false;
 
-    // شرط خاص بأندرويد قديم (اختياري)
     if (Platform.isAndroid) {
       final deviceInfo = DeviceInfoPlugin();
       final androidInfo = await deviceInfo.androidInfo;
@@ -61,16 +82,12 @@ class _SplashViewBodyState extends State<SplashViewBody>
       }
     }
 
-    // تأخير علشان الأنيميشن
     await Future.delayed(const Duration(seconds: 3));
     _goBasedOnSeenOnboarding(seenOnboarding, user, prefs);
   }
 
   void _goBasedOnSeenOnboarding(
-    bool seenOnboarding,
-    User? user,
-    SharedPreferences prefs,
-  ) async {
+      bool seenOnboarding, User? user, SharedPreferences prefs) async {
     if (!seenOnboarding) {
       await prefs.setBool('seen_onboarding', true);
       context.go(Routes.onboarding);
@@ -85,38 +102,31 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _slideController.dispose();
+    _gradientController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color.fromARGB(255, 229, 246, 241),
-            Color(0xFFFFFFFF),
-          ],
-        ),
-      ),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Image.asset(
-              StringManager.appIcon,
-              width: 200.w,
-              height: 200.h,
-            ),
-            SizedBox(height: 10.h),
-            SlidingText(slidingAnimation: _slidingAnimation)
-          ],
-        ),
-      ),
-    );
+   return AnimatedGradientBackground(
+  animatedAlignment: _animatedAlign,
+  child: Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          StringManager.appIcon,
+          width: 200.w,
+          height: 200.h,
+        ).animate().fadeIn(duration: 700.ms).scale(begin: const Offset(0.9, 0.9)),
+        SizedBox(height: 20.h),
+        SlidingText(slidingAnimation: _slidingAnimation),
+      ],
+    ),
+  ),
+);
+
+
   }
 }

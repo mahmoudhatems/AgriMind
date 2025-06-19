@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 
@@ -41,7 +42,7 @@ class _WelcomeTextState extends State<WelcomeText> {
           TypewriterAnimatedText(
             StringManager.welcomeText,
             speed: const Duration(milliseconds: 90),
-            textStyle: Styles.styleBoldText20GrayfontJosefinSans.copyWith(fontSize: 22.sp),
+            textStyle: Styles.styleBoldText20GrayfontJosefinSans.copyWith(fontSize: 22.sp, color: ColorsManager.darkBlueTextColor),
           ),
         ],
       ),
