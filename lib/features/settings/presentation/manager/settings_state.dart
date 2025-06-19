@@ -1,21 +1,18 @@
 part of 'settings_cubit.dart';
 
 class SettingsState {
-  final bool notificationsEnabled;
-  final bool darkModeEnabled;
+  final bool notifications;
+  final bool darkMode;
 
-  const SettingsState({
-    required this.notificationsEnabled,
-    required this.darkModeEnabled,
-  });
+  SettingsState({required this.notifications, required this.darkMode});
 
-  SettingsState copyWith({
-    bool? notificationsEnabled,
-    bool? darkModeEnabled,
-  }) {
+  factory SettingsState.initial() =>
+      SettingsState(notifications: true, darkMode: false);
+
+  SettingsState copyWith({bool? notifications, bool? darkMode}) {
     return SettingsState(
-      notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
-      darkModeEnabled: darkModeEnabled ?? this.darkModeEnabled,
+      notifications: notifications ?? this.notifications,
+      darkMode: darkMode ?? this.darkMode,
     );
   }
 }

@@ -22,17 +22,14 @@ class SettingSwitchTile extends StatelessWidget {
       padding: EdgeInsets.all(20.w),
       child: Row(
         children: [
-          Icon(icon, size: 22.sp, color: ColorsManager.mainBlueGreen),
+          Icon(icon, color: ColorsManager.mainBlueGreen, size: 22.sp),
           SizedBox(width: 16.w),
-          Expanded(
-            child: Text(title,
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500)),
-          ),
+          Expanded(child: Text(title, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500))),
           Switch.adaptive(
             value: value,
             onChanged: onChanged,
             activeColor: ColorsManager.mainBlueGreen,
-          ),
+          )
         ],
       ),
     );

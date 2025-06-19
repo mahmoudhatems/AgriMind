@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happyfarm/core/utils/colors.dart';
 
 class SettingGroup extends StatelessWidget {
   final String title;
@@ -12,33 +13,30 @@ class SettingGroup extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title,
-            style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600)),
-        SizedBox(height: 12.h),
+        Padding(
+          padding: EdgeInsets.only(left: 4.w, bottom: 12.h),
+          child: Text(title, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600)),
+        ),
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: ColorsManager.realWhiteColor,
             borderRadius: BorderRadius.circular(16.r),
             boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues( alpha:  0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 2),
-              ),
+              BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 15, offset: Offset(0, 2)),
             ],
           ),
           child: Column(
-            children: List.generate(items.length, (i) {
+            children: List.generate(items.length, (index) {
               return Column(
                 children: [
-                  items[i],
-                  if (i != items.length - 1)
-                    Divider(indent: 56.w, height: 1, color: Colors.grey.withValues( alpha: 0.1)),
+                  items[index],
+                  if (index < items.length - 1)
+                    Divider(height: 1, indent: 56.w, color: Colors.grey.shade300),
                 ],
               );
             }),
           ),
-        ),
+        )
       ],
     );
   }
