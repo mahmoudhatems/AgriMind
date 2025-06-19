@@ -87,10 +87,10 @@ class SensorSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: (sensor['color'] as Color).withOpacity(0.1)),
+        border: Border.all(color: (sensor['color'] as Color).withValues(alpha: 0.1)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -104,7 +104,7 @@ class SensorSection extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(6.r),
                 decoration: BoxDecoration(
-                  color: (sensor['color'] as Color).withOpacity(0.1),
+                  color: (sensor['color'] as Color).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child:
@@ -129,7 +129,7 @@ class SensorSection extends StatelessWidget {
                     axisLineStyle: AxisLineStyle(
                       thickness: 0.2,
                       thicknessUnit: GaugeSizeUnit.factor,
-                      color: (sensor['color'] as Color).withOpacity(0.15),
+                      color: (sensor['color'] as Color).withValues(alpha: 0.15),
                     ),
                     pointers: [
                       RangePointer(

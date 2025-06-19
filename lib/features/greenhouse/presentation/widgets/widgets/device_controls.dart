@@ -6,20 +6,34 @@ import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/features/home/presentation/widgets/switch_tile.dart';
 
 class DeviceControls extends StatelessWidget {
-  final ValueNotifier<bool> fanController;
-  final ValueNotifier<bool> pumpController;
+  final bool fanValue;
+  final bool pumpValue;
+  final ValueChanged<bool> onFanChanged;
+  final ValueChanged<bool> onPumpChanged;
 
   const DeviceControls({
     super.key,
-    required this.fanController,
-    required this.pumpController,
+    required this.fanValue,
+    required this.pumpValue,
+    required this.onFanChanged,
+    required this.onPumpChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     final devices = [
-      {"label": "Ventilation Fan", "icon": Icons.air, "controller": fanController},
-      {"label": "Water Pump", "icon": Icons.water_drop, "controller": pumpController},
+      {
+        "label": "Ventilation Fan",
+        "icon": Icons.air,
+        "value": fanValue,
+        "onChanged": onFanChanged,
+      },
+      {
+        "label": "Water Pump",
+        "icon": Icons.water_drop,
+        "value": pumpValue,
+        "onChanged": onPumpChanged,
+      },
     ];
 
     return Column(
@@ -41,7 +55,8 @@ class DeviceControls extends StatelessWidget {
             return SwitchTile(
               label: device['label'] as String,
               icon: device['icon'] as IconData,
-              controller: device['controller'] as ValueNotifier<bool>,
+              value: device['value'] as bool,
+              onChanged: device['onChanged'] as ValueChanged<bool>,
             ).animate().fadeIn(duration: 500.ms).slideY(begin: -0.2);
           }).toList(),
         ),

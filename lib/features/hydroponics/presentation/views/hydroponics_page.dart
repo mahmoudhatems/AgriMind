@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:happyfarm/core/utils/colors.dart';
-import 'package:happyfarm/core/utils/styles.dart';
-import 'package:happyfarm/features/home/presentation/widgets/switch_tile.dart';
 import 'package:happyfarm/features/home/presentation/widgets/tip_card.dart';
 import 'package:happyfarm/features/hydroponics/presentation/manager/hydroponics_cubit.dart';
-import 'package:happyfarm/features/hydroponics/presentation/widgets/gauge_card.dart';
+import 'package:happyfarm/features/hydroponics/presentation/widgets/hydro_device_controls.dart';
+import 'package:happyfarm/features/hydroponics/presentation/widgets/hydro_sensor_section.dart';
 
 class HydroponicsPage extends StatefulWidget {
   const HydroponicsPage({super.key});
@@ -17,7 +15,7 @@ class HydroponicsPage extends StatefulWidget {
 }
 
 class _HydroponicsPageState extends State<HydroponicsPage> {
-  final _pumpSwitchController = ValueNotifier<bool>(false);
+  final _pumpSwitch = ValueNotifier(false);
   int _tipIndex = 0;
 
   final List<String> _tips = [
@@ -33,8 +31,8 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
     super.initState();
     context.read<HydroponicsCubit>().fetchHydroData();
 
-    _pumpSwitchController.addListener(() {
-      context.read<HydroponicsCubit>().togglePump(_pumpSwitchController.value);
+    _pumpSwitch.addListener(() {
+      context.read<HydroponicsCubit>().togglePump(_pumpSwitch.value);
       HapticFeedback.lightImpact();
     });
 
@@ -53,9 +51,10 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
       builder: (context, state) {
         if (state is HydroponicsLoaded) {
           final data = state.data;
+
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (_pumpSwitchController.value != data.pumpStatus) {
-              _pumpSwitchController.value = data.pumpStatus;
+            if (_pumpSwitch.value != data.pumpStatus) {
+              _pumpSwitch.value = data.pumpStatus;
             }
           });
 
@@ -69,9 +68,9 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
               child: Column(
                 children: [
-                  _buildSensorSection(data),
+                  HydroSensorSection(data: data),
                   SizedBox(height: 20.h),
-                  _buildDeviceControlSection(),
+                  HydroDeviceControls(pumpController: _pumpSwitch),
                   SizedBox(height: 20.h),
                   TipCard(text: _tips[_tipIndex], key: ValueKey(_tipIndex)),
                 ],
@@ -80,101 +79,12 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
           );
         } else if (state is HydroponicsError) {
           return Center(
-            child: Text(state.message,
-                style: TextStyle(color: Colors.red, fontSize: 16.sp)),
+            child: Text(state.message, style: TextStyle(color: Colors.red)),
           );
         }
 
         return const Center(child: CircularProgressIndicator());
       },
-    );
-  }
-
-  Widget _buildSensorSection(hydro) {
-    final sensors = [
-      {
-        "label": "Humidity",
-        "value": hydro.humidity,
-        "unit": "%",
-        "color": Colors.blue,
-        "icon": Icons.water_drop
-      },
-      {
-        "label": "Temp",
-        "value": hydro.temperature,
-        "unit": "°C",
-        "color": Colors.orange,
-        "icon": Icons.thermostat
-      },
-      {
-        "label": "pH Level",
-        "value": hydro.phLevel * 10,
-        "unit": "",
-        "color": Colors.purple,
-        "icon": Icons.science
-      },
-      {
-        "label": "Water",
-        "value": hydro.waterLevel,
-        "unit": "%",
-        "color": Colors.teal,
-        "icon": Icons.opacity
-      },
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Icon(Icons.sensors,
-                color: ColorsManager.mainBlueGreen, size: 20.sp),
-            SizedBox(width: 8.w),
-            Text("Hydroponics Sensors",
-                style: Styles.styleText14BlackColofontJosefinSans),
-          ],
-        ),
-        SizedBox(height: 20.h),
-        GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 2,
-          mainAxisSpacing: 12.h,
-          crossAxisSpacing: 12.w,
-          childAspectRatio: 1.1,
-          children: sensors.map((sensor) {
-            return GaugeSensorCard(
-              label: sensor['label'] as String,
-              value: (sensor['value'] as num).toDouble(),
-              unit: sensor['unit'] as String,
-              icon: sensor['icon'] as IconData,
-              color: sensor['color'] as Color,
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDeviceControlSection() {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Icon(Icons.settings_remote,
-                color: ColorsManager.mainBlueGreen, size: 20.sp),
-            SizedBox(width: 8.w),
-            Text("Device Control",
-                style: Styles.styleText14BlackColofontJosefinSans),
-          ],
-        ),
-        SizedBox(height: 16.h),
-        SwitchTile(
-          label: "Water Pump",
-          icon: Icons.water_drop,
-          controller: _pumpSwitchController,
-        ),
-      ],
     );
   }
 }

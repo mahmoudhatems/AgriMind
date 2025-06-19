@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/features/greenhouse/presentation/manager/greenhouse_cubit.dart';
 import 'package:happyfarm/features/greenhouse/presentation/widgets/environmental_sensors.dart';
-import 'package:happyfarm/features/greenhouse/presentation/widgets/widgets/device_controls.dart';
+import 'package:happyfarm/features/home/presentation/widgets/switch_tile.dart';
 import 'package:happyfarm/features/home/presentation/widgets/tip_card.dart';
 
 class GreenhouseScreen extends StatefulWidget {
@@ -16,26 +16,12 @@ class GreenhouseScreen extends StatefulWidget {
 }
 
 class _GreenhouseScreenState extends State<GreenhouseScreen> {
-  final _fanSwitch = ValueNotifier(false);
-  final _pumpSwitch = ValueNotifier(false);
-
   int _tipIndex = 0;
 
   @override
   void initState() {
     super.initState();
     context.read<GreenhouseCubit>().fetchGreenhouseData();
-
-    _fanSwitch.addListener(() {
-      context.read<GreenhouseCubit>().toggleFan(_fanSwitch.value);
-      HapticFeedback.lightImpact();
-    });
-
-    _pumpSwitch.addListener(() {
-      context.read<GreenhouseCubit>().togglePump(_pumpSwitch.value);
-      HapticFeedback.lightImpact();
-    });
-
     Future.delayed(const Duration(seconds: 6), _rotateTip);
   }
 
@@ -52,11 +38,6 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
         if (state is GreenhouseLoaded) {
           final data = state.data;
 
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            _fanSwitch.value = data.fanStatus;
-            _pumpSwitch.value = data.pumpStatus;
-          });
-
           return RefreshIndicator(
             onRefresh: () async {
               context.read<GreenhouseCubit>().fetchGreenhouseData();
@@ -69,10 +50,7 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
                 children: [
                   SensorSection(data: data),
                   SizedBox(height: 20.h),
-                  DeviceControls(
-                    fanController: _fanSwitch,
-                    pumpController: _pumpSwitch,
-                  ),
+                  _buildDeviceControls(data),
                   SizedBox(height: 20.h),
                   TipCard(
                     text: StringManager.homeTips[_tipIndex],
@@ -90,6 +68,45 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
 
         return const Center(child: CircularProgressIndicator());
       },
+    );
+  }
+
+  Widget _buildDeviceControls(data) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Icon(Icons.settings_remote, size: 20.sp),
+            SizedBox(width: 8.w),
+            Text("Device Control", style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+          ],
+        ),
+        SizedBox(height: 16.h),
+        Wrap(
+          spacing: 16.w,
+          runSpacing: 16.h,
+          children: [
+            SwitchTile(
+              label: "Ventilation Fan",
+              icon: Icons.air,
+              value: data.fanStatus,
+              onChanged: (val) {
+                context.read<GreenhouseCubit>().toggleFan(val);
+                HapticFeedback.lightImpact();
+              },
+            ),
+            SwitchTile(
+              label: "Water Pump",
+              icon: Icons.water_drop,
+              value: data.pumpStatus,
+              onChanged: (val) {
+                context.read<GreenhouseCubit>().togglePump(val);
+                HapticFeedback.lightImpact();
+              },
+            ),
+          ],
+        )
+      ],
     );
   }
 }
