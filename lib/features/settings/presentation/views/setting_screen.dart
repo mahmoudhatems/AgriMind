@@ -28,8 +28,8 @@ class SettingScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildHeader(context),
-                SizedBox(height: 30.h),
-                const ProfileCard(),
+               // SizedBox(height: 30.h),
+              //  const ProfileCard(),
                 SizedBox(height: 40.h),
                 _buildSettingsBody(context),
               ],
