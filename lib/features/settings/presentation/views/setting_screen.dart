@@ -6,7 +6,6 @@ import 'package:happyfarm/core/routing/routes.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/features/settings/presentation/manager/settings_cubit.dart';
-import 'package:happyfarm/features/settings/presentation/widgets/profile_card.dart';
 import 'package:happyfarm/features/settings/presentation/widgets/setting_group.dart';
 import 'package:happyfarm/features/settings/presentation/widgets/setting_switch_tile.dart';
 import 'package:happyfarm/features/settings/presentation/widgets/setting_tile.dart';
