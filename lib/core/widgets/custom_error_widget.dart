@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happyfarm/core/utils/colors.dart';
 
 class CustomErrorWidget extends StatelessWidget {
   const CustomErrorWidget({super.key, required this.errorMessage});
@@ -12,7 +13,7 @@ class CustomErrorWidget extends StatelessWidget {
           const Icon(
             Icons.error,
             size: 50,
-            color: Colors.red,
+            color: ColorsManager.errorColor,
           ),
           const SizedBox(height: 10),
           Center(
@@ -21,7 +22,7 @@ class CustomErrorWidget extends StatelessWidget {
               errorMessage,
               style: TextStyle(
                 fontSize: 20,
-                color: Colors.red,
+                color: ColorsManager.errorColor,
               ),
             ),
           ),

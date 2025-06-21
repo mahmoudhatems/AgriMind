@@ -15,7 +15,7 @@ class SignOutTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: ColorsManager.blackTextColor.withValues( alpha: 0.05),
             blurRadius: 15,
             offset: Offset(0, 2),
           ),

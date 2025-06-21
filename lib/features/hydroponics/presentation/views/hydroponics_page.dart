@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/features/home/presentation/widgets/tip_card.dart';
 import 'package:happyfarm/features/hydroponics/presentation/manager/hydroponics_cubit.dart';
 import 'package:happyfarm/features/hydroponics/presentation/widgets/hydro_device_controls.dart';
@@ -79,7 +80,7 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
           );
         } else if (state is HydroponicsError) {
           return Center(
-            child: Text(state.message, style: TextStyle(color: Colors.red)),
+            child: Text(state.message, style: TextStyle(color: ColorsManager.errorColor)),
           );
         }
 

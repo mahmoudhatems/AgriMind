@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/features/home/presentation/widgets/tip_card.dart';
 import 'package:happyfarm/features/warehouseandbarn/presentation/manager/warehouse_cubit.dart';
 import 'package:happyfarm/features/warehouseandbarn/presentation/widgets/zone_section.dart';
@@ -191,7 +192,7 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
           );
         } else if (state is WarehouseBarnError) {
           return Center(
-              child: Text(state.message, style: TextStyle(color: Colors.red)));
+              child: Text(state.message, style: TextStyle(color: ColorsManager.errorColor)));
         }
 
         return const Center(child: CircularProgressIndicator());

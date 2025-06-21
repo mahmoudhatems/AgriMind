@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happyfarm/core/utils/colors.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -24,11 +25,11 @@ class GaugeSensorCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: ColorsManager.realWhiteColor,
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(color: color.withValues(alpha: 0.1)),
         boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 8, offset: Offset(0, 2)),
+          BoxShadow(color: ColorsManager.blackTextColor.withValues(alpha: 0.02), blurRadius: 8, offset: Offset(0, 2)),
         ],
       ),
       child: Column(
@@ -44,7 +45,7 @@ class GaugeSensorCard extends StatelessWidget {
                 ),
                 child: Icon(icon, color: color, size: 16.sp),
               ),
-              Text(label, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.black87)),
+              Text(label, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: ColorsManager.blackTextColor.withValues(alpha: 0.87))),
             ],
           ),
           Expanded(
@@ -76,7 +77,7 @@ class GaugeSensorCard extends StatelessWidget {
                       GaugeAnnotation(
                         widget: Text(
                           "${value.toStringAsFixed(1)}$unit",
-                          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400, color: Colors.black87),
+                          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400, color: ColorsManager.blackTextColor.withValues(alpha: 0.87)),
                         ),
                         positionFactor: 0.0,
                         angle: 90,

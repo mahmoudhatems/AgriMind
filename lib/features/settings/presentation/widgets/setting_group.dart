@@ -22,7 +22,7 @@ class SettingGroup extends StatelessWidget {
             color: ColorsManager.realWhiteColor,
             borderRadius: BorderRadius.circular(16.r),
             boxShadow: [
-              BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 15, offset: Offset(0, 2)),
+              BoxShadow(color: ColorsManager.blackTextColor.withValues(alpha: 0.05), blurRadius: 15, offset: Offset(0, 2)),
             ],
           ),
           child: Column(
@@ -31,7 +31,7 @@ class SettingGroup extends StatelessWidget {
                 children: [
                   items[index],
                   if (index < items.length - 1)
-                    Divider(height: 1, indent: 56.w, color: Colors.grey.shade300),
+                    Divider(height: 1, indent: 56.w, color: ColorsManager.textIconColorGray.withValues(alpha: 0.1)),
                 ],
               );
             }),

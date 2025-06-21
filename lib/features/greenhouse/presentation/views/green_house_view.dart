@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/features/greenhouse/presentation/manager/greenhouse_cubit.dart';
 import 'package:happyfarm/features/greenhouse/presentation/widgets/environmental_sensors.dart';
@@ -73,7 +74,7 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
           );
         } else if (state is GreenhouseError) {
           return Center(
-            child: Text(state.message, style: TextStyle(color: Colors.red)),
+            child: Text(state.message, style: TextStyle(color:ColorsManager.errorColor)),
           );
         }
 

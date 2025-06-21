@@ -33,10 +33,10 @@ class StatusCard extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                isOnline ? ColorsManager.mainBlueGreen : Colors.redAccent,
+                isOnline ? ColorsManager.mainBlueGreen : ColorsManager.errorColor,
                 isOnline
                     ? ColorsManager.mainBlueGreen.withValues( alpha:  0.7)
-                    : Colors.redAccent.withValues( alpha:  0.7),
+                    : ColorsManager.errorColor.withValues( alpha:  0.7),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -84,11 +84,10 @@ class StatusCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        /// 👇 الهيدر الثابت هنا
         Text(
           zoneName,
           style: TextStyle(
-            color: Colors.white,
+            color: ColorsManager.realWhiteColor,
             fontSize: isTablet ? 22.sp : 18.sp,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.5,
@@ -119,11 +118,11 @@ class StatusCard extends StatelessWidget {
           width: isTablet ? 10.r : 8.r,
           height: isTablet ? 10.r : 8.r,
           decoration: BoxDecoration(
-            color: isOnline ? Colors.greenAccent : Colors.redAccent,
+            color: isOnline ? ColorsManager.greenColor : ColorsManager.errorColor,
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: (isOnline ? Colors.greenAccent : Colors.redAccent)
+                color: (isOnline ? ColorsManager.greenColor : ColorsManager.errorColor)
                     .withValues( alpha:  0.6),
                 blurRadius: 8,
                 spreadRadius: 2,
@@ -151,7 +150,7 @@ class StatusCard extends StatelessWidget {
         Text(
           isOnline ? "Zone is Online" : "Zone is Offline",
           style: TextStyle(
-            color: Colors.white,
+            color: ColorsManager.textIconColor,
             fontSize: isTablet ? 16.sp : 14.sp,
             fontWeight: FontWeight.w600,
           ),

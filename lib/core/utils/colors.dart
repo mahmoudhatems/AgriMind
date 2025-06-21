@@ -10,6 +10,13 @@ static const Color tileBackground = Color(0xFFEAF8F8);
   static const Color mainBlueGreen = Color(0xFF72B912);
   static const Color lightBlueGreen = Color(0xFFB2E1E1);
   static const Color darkBlueTextColor = Color(0xFF1F2A37);
+static const Color temperatureColor = Color(0xFFFF6B6B);
+  static const Color humidityColor = Color(0xFF4ECDC4);
+  static const Color soilMoistureColor = Color(0xFF45B7D1);
+  static const Color gasLevelColor = Color(0xFF96CEB4);
+  static const Color lightLevelColor = Color(0xFFFFD93D); 
+  static const Color phLevelColor = Color(0xFF9A27AF);
+  static const Color waterLevelColor = Color(0xFF16BCAB);
 
   static const Color purple = Color(0xFF333E7F);
   static const Color gold = Color(0xFFFBDA72);

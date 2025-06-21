@@ -21,35 +21,35 @@ class SensorSection extends StatelessWidget {
         "label": "Temp",
         "value": data.temperature,
         "unit": "°C",
-        "color": const Color(0xFFFF6B6B),
+        "color": ColorsManager.temperatureColor,
         "icon": Icons.thermostat,
       },
       {
         "label": "Humidity",
         "value": data.humidity,
         "unit": "%",
-        "color": const Color(0xFF4ECDC4),
+        "color": ColorsManager.humidityColor,
         "icon": Icons.water_drop,
       },
       {
         "label": "Soil",
         "value": data.soilMoisture,
         "unit": "%",
-        "color": const Color(0xFF45B7D1),
+        "color": ColorsManager.soilMoistureColor,
         "icon": Icons.grass,
       },
       {
         "label": "Gas",
         "value": data.gasLevel,
         "unit": "ppm",
-        "color": const Color(0xFF96CEB4),
+        "color": ColorsManager.gasLevelColor,
         "icon": Icons.air,
       },
       {
         "label": "Light",
         "value": data.lightLevel ,
         "unit": "%",
-        "color": const Color(0xFFFFD93D),
+        "color": ColorsManager.lightLevelColor,
         "icon": Icons.light_mode,
       },
     ];
@@ -85,13 +85,13 @@ class SensorSection extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: ColorsManager.realWhiteColor,
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(color: (sensor['color'] as Color).withValues(alpha: 0.1)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 6,
+            color: ColorsManager.blackTextColor.withValues(alpha: 0.03),
+            blurRadius: 6.r,
             offset: const Offset(0, 2),
           ),
         ],

@@ -150,14 +150,14 @@ class SettingScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: TextStyle(color: Colors.grey)),
+            child: Text('Cancel', style: TextStyle(color: ColorsManager.textIconColorGray)),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               context.go(Routes.login);
             },
-            child: Text('Sign Out', style: TextStyle(color: Colors.red)),
+            child: Text('Sign Out', style: TextStyle(color: ColorsManager.errorColor)),
           ),
         ],
       ),

@@ -98,14 +98,14 @@ class InfoTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(getResponsiveBorderRadius()),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
+                color: ColorsManager.blackTextColor.withValues(alpha: 0.04),
                 blurRadius: isDesktop ? 12 : (isTablet ? 10 : 8),
                 offset: Offset(0, isDesktop ? 4 : (isTablet ? 3 : 2)),
                 spreadRadius: 0,
               ),
             ],
             border: Border.all(
-              color: Colors.grey.withValues(alpha: 0.08),
+              color: ColorsManager.textIconColorGray.withValues(alpha: 0.08),
               width: isDesktop ? 1.5 : 1.0,
             ),
           ),
@@ -140,7 +140,7 @@ class InfoTile extends StatelessWidget {
                     label,
                     style: Styles.styleText14BlackColofontJosefinSans.copyWith(
                       fontSize: getResponsiveLabelFontSize(),
-                      color: Colors.grey[800],
+                      color: ColorsManager.textIconColorGray.withValues(alpha: 0.8),
                       fontWeight: FontWeight.w500,
                     ),
                     textAlign: TextAlign.center,
@@ -162,7 +162,7 @@ class InfoTile extends StatelessWidget {
                     style: Styles.styleText14BlackColofontJosefinSans.copyWith(
                       fontSize: getResponsiveValueFontSize(),
                       fontWeight: FontWeight.w700,
-                      color: Colors.black87,
+                      color: ColorsManager.blackTextColor.withValues(alpha: 0.9),
                     ),
                     textAlign: TextAlign.center,
                     maxLines: 1,

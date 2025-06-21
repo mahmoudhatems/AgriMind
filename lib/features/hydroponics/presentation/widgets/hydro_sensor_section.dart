@@ -16,28 +16,28 @@ class HydroSensorSection extends StatelessWidget {
         "label": "Humidity",
         "value": data.humidity,
         "unit": "%",
-        "color": Colors.blue,
+        "color": ColorsManager.humidityColor,
         "icon": Icons.water_drop
       },
       {
         "label": "Temp",
         "value": data.temperature,
         "unit": "°C",
-        "color": Colors.orange,
+        "color": ColorsManager.temperatureColor,
         "icon": Icons.thermostat
       },
       {
         "label": "pH Level",
         "value": data.phLevel * 10,
         "unit": "",
-        "color": Colors.purple,
+        "color": ColorsManager.phLevelColor,
         "icon": Icons.science
       },
       {
         "label": "Water",
         "value": data.waterLevel,
         "unit": "%",
-        "color": Colors.teal,
+        "color": ColorsManager.waterLevelColor,
         "icon": Icons.opacity
       },
     ];

@@ -101,7 +101,7 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
                     shape: BoxShape.circle,
                     color: _currentIndex == entry.key
                         ? ColorsManager.greenColor
-                        : Colors.grey,
+                        : ColorsManager.textIconColorGray,
                   ),
                 ),
               );

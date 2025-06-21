@@ -15,7 +15,7 @@ class ProfileCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: ColorsManager.blackTextColor.withValues(alpha: 0.05),
             blurRadius: 15,
             offset: Offset(0, 2),
           ),
@@ -30,7 +30,7 @@ class ProfileCard extends StatelessWidget {
               color: ColorsManager.mainBlueGreen,
               borderRadius: BorderRadius.circular(30.r),
             ),
-            child: Icon(Icons.person, color: Colors.white, size: 28.sp),
+            child: Icon(Icons.person, color: ColorsManager.realWhiteColor, size: 28.sp),
           ),
           SizedBox(width: 16.w),
           Column(
@@ -38,11 +38,11 @@ class ProfileCard extends StatelessWidget {
             children: [
               Text("Mahmoud Hatem", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 4.h),
-              Text("mahmoud@happyfarm.com", style: TextStyle(fontSize: 14.sp, color: Colors.grey)),
+              Text("mhssssss@AgriMind.com", style: TextStyle(fontSize: 14.sp, color: ColorsManager.textIconColorGray)),
             ],
           ),
           Spacer(),
-          Icon(Icons.chevron_right, color: Colors.grey, size: 20.sp)
+          Icon(Icons.chevron_right, color: ColorsManager.textIconColorGray, size: 20.sp)
         ],
       ),
     );

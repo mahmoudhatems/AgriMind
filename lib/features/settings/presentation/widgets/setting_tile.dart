@@ -33,9 +33,9 @@ class SettingTile extends StatelessWidget {
               if (subtitle != null)
                 Padding(
                   padding: EdgeInsets.only(right: 8.w),
-                  child: Text(subtitle!, style: TextStyle(fontSize: 14.sp, color: Colors.grey)),
+                  child: Text(subtitle!, style: TextStyle(fontSize: 14.sp, color: ColorsManager.textIconColorGray)),
                 ),
-              Icon(Icons.chevron_right, color: Colors.grey, size: 18.sp),
+              Icon(Icons.chevron_right, color: ColorsManager.textIconColorGray, size: 18.sp),
             ],
           ),
         ),

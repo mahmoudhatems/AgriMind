@@ -22,7 +22,7 @@ class AnimatedGradientBackground extends StatelessWidget {
               begin: animatedAlignment.value,
               end: Alignment.bottomRight,
               colors: [
-                   Colors.white.withValues( alpha:  0.3),
+                   ColorsManager.realWhiteColor.withValues( alpha:  0.3),
                 ColorsManager.mainBlueGreen.withValues( alpha: 0.25),
              
               ],

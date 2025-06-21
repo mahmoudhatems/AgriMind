@@ -19,7 +19,7 @@ class TipCard extends StatelessWidget {
         color: ColorsManager.realWhiteColor,
       boxShadow: [
           BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.05),
+            color: ColorsManager.textIconColorGray.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: Offset(0, 4),
           )
@@ -27,7 +27,7 @@ class TipCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(Icons.lightbulb_outline, color: Colors.amber.shade600, size: 22.sp),
+          Icon(Icons.lightbulb_outline, color: ColorsManager.lightLevelColor, size: 22.sp),
           SizedBox(width: 12.w),
           Expanded(
             child: Text(
