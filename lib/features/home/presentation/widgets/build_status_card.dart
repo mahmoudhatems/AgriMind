@@ -118,14 +118,14 @@ class StatusCard extends StatelessWidget {
           width: isTablet ? 10.r : 8.r,
           height: isTablet ? 10.r : 8.r,
           decoration: BoxDecoration(
-            color: isOnline ? ColorsManager.greenColor : ColorsManager.errorColor,
+            color: isOnline ? ColorsManager.onlineStatusColor : ColorsManager.errorColor.withValues(alpha: 1),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: (isOnline ? ColorsManager.greenColor : ColorsManager.errorColor)
-                    .withValues( alpha:  0.6),
-                blurRadius: 8,
-                spreadRadius: 2,
+                color: (isOnline ? ColorsManager.onlineStatusColorLight : ColorsManager.errorColor)
+                    .withValues(alpha: 0.9),
+                blurRadius: 12,
+                spreadRadius: 6,
               ),
             ],
           ),

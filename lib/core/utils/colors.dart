@@ -17,6 +17,8 @@ static const Color temperatureColor = Color(0xFFFF6B6B);
   static const Color lightLevelColor = Color(0xFFFFD93D); 
   static const Color phLevelColor = Color(0xFF9A27AF);
   static const Color waterLevelColor = Color(0xFF16BCAB);
+  static const Color onlineStatusColor = Color(0xFF4CAF50);
+  static const Color onlineStatusColorLight = Color.fromARGB(255, 0, 255, 0);
 
   static const Color purple = Color(0xFF333E7F);
   static const Color gold = Color(0xFFFBDA72);
@@ -34,6 +36,7 @@ static const Color temperatureColor = Color(0xFFFF6B6B);
   static const Color errorColor = Color(0xFFEA3A3A);
   static const Color textFieldColor = Color(0xFFF9F9F9);
   static const Color blackTextColor = Color(0xFF000000);
+
   static final Color mainBlueGreenBackGround= mainBlueGreen.withValues(
             alpha: 0.06,
           );
