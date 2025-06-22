@@ -14,7 +14,6 @@ class GreenhouseCubit extends Cubit<GreenhouseState> {
     try {
       final data = await greenhouseRepo.fetchGreenhouseData();
 
-      // Avoid emitting if the data hasn't changed
       if (_cachedState == null || data != _cachedState) {
         _cachedState = data;
         emit(GreenhouseLoaded(data));
@@ -34,7 +33,6 @@ class GreenhouseCubit extends Cubit<GreenhouseState> {
     _updateLocalState(_cachedState?.copyWith(pumpStatus: isOn));
   }
 
-  // ❌ تم حذف toggleLight لأنها لم تعد تستخدم
 
   void _updateLocalState(GreenhouseEntity? newState) {
     if (newState != null) {
