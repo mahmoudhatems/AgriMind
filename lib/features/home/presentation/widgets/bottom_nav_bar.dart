@@ -12,7 +12,7 @@ import 'package:happyfarm/features/hydroponics/presentation/views/hydroponics_pa
 import 'package:happyfarm/features/greenhouse/presentation/views/green_house_view.dart';
 import 'package:happyfarm/features/home/presentation/views/home_screen.dart';
 import 'package:happyfarm/features/warehouseandbarn/presentation/manager/warehouse_cubit.dart';
-import 'package:happyfarm/features/warehouseandbarn/presentation/views/warehouse_barn_page.dart'; // Your custom app bar
+import 'package:happyfarm/features/warehouseandbarn/presentation/views/warehouse_barn_page.dart'; 
 
 class CustomButtomBar extends StatefulWidget {
   const CustomButtomBar({Key? key}) : super(key: key);
@@ -45,7 +45,6 @@ void initState() {
   ];
 }
 
-  /// Determines the app bar title based on the current tab
   String _getAppBarTitle() {
     switch (_currentIndex) {
       case 0:
