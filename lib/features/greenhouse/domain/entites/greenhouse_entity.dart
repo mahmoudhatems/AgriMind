@@ -5,7 +5,7 @@ class GreenhouseEntity {
   final double humidity;
   final double gasLevel;
   final double soilMoisture;
-  final double lightLevel; // ✅ تم التعديل هنا
+  final double lightLevel; 
 
   GreenhouseEntity({
     required this.fanStatus,
