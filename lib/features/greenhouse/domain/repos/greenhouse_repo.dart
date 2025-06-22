@@ -5,5 +5,4 @@ abstract class GreenhouseRepo {
   Future<void> updateFan(bool isOn);
   Future<void> updatePump(bool isOn);
 
-  // ❌ تم حذف updateLight لأنه لم يعد مطلوباً
 }
