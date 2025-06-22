@@ -11,8 +11,8 @@ class HappyFarm extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
-      minTextAdapt: true, // ✅ دي مهمة
-      splitScreenMode: true, // ✅ اختيارية لو فيه دعم لتعدد النوافذ
+      minTextAdapt: true, 
+      splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp.router(
           localizationsDelegates: context.localizationDelegates,
