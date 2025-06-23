@@ -6,6 +6,7 @@ import 'package:happyfarm/features/home/presentation/widgets/tip_card.dart';
 import 'package:happyfarm/features/hydroponics/presentation/manager/hydroponics_cubit.dart';
 import 'package:happyfarm/features/hydroponics/presentation/widgets/hydro_device_controls.dart';
 import 'package:happyfarm/features/hydroponics/presentation/widgets/hydro_sensor_section.dart';
+import 'package:happyfarm/features/hydroponics/presentation/widgets/tds_card.dart';
 
 class HydroponicsPage extends StatefulWidget {
   const HydroponicsPage({super.key});
@@ -51,7 +52,7 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
       builder: (context, state) {
         if (state is HydroponicsLoaded) {
           final data = state.data;
-
+ final historicalTds = state.historicalTds;
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (_pumpSwitch.value != data.pumpStatus) {
               _pumpSwitch.value = data.pumpStatus;
@@ -69,6 +70,8 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
               child: Column(
                 children: [
                   HydroSensorSection(data: data),
+                  SizedBox(height: 20.h),
+                 TDSCard(tdsValue: data.tds, historicalTdsData: historicalTds),
                   SizedBox(height: 20.h),
                   HydroDeviceControls(pumpController: _pumpSwitch),
                   SizedBox(height: 20.h),

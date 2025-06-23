@@ -8,6 +8,7 @@ class HydroponicsModel extends HydroponicsEntity {
     required super.phLevel,
     required super.waterLevel,
     required super.pumpStatus,
+    required super.tds,
   });
 
   factory HydroponicsModel.fromJson(Map<String, dynamic> json) {
@@ -17,6 +18,7 @@ class HydroponicsModel extends HydroponicsEntity {
       phLevel: (json['ph_level'] ?? 0).toDouble(),
       waterLevel: (json['water_level_percent'] ?? 0).toDouble(),
       pumpStatus: json['pump_status'] ?? false,
+      tds: (json['tds'] ?? 0).toDouble(),
     );
   }
 }

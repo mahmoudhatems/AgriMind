@@ -28,7 +28,7 @@ class HydroSensorSection extends StatelessWidget {
       },
       {
         "label": "PH Level",
-        "value": data.phLevel * 10,
+        "value": data.phLevel,
         "unit": "",
         "color": Colors.purple,
         "icon": Icons.science
