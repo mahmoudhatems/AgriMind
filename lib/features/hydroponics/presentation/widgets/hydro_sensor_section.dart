@@ -1,3 +1,4 @@
+// lib/features/hydroponics/presentation/widgets/hydro_sensor_section.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/utils/colors.dart';
@@ -9,14 +10,45 @@ class HydroSensorSection extends StatelessWidget {
 
   const HydroSensorSection({super.key, required this.data});
 
+  /// Determines a color from the PH spectrum based on the PH value (0-14).
+  /// This function simulates the real PH scale colors (red, orange, yellow, green, blue, violet).
+  Color _getPhSpectrumColor(double phValue) {
+    // Clamp the PH value to be within 0-14 to prevent out-of-range errors.
+    final clampedPh = phValue.clamp(0.0, 14.0);
+
+    // Define key colors along the PH scale.
+    // These are approximate and can be fine-tuned based on your preference.
+    // We'll use a simple linear interpolation between these key points.
+    if (clampedPh <= 2.0) { // Deep red for very acidic
+      return Color.lerp(Colors.red[900], Colors.red, clampedPh / 2.0) ?? Colors.red;
+    } else if (clampedPh <= 4.0) { // Red to Orange
+      return Color.lerp(Colors.red, Colors.orange, (clampedPh - 2.0) / 2.0) ?? Colors.orange;
+    } else if (clampedPh <= 6.0) { // Orange to Yellow/Lime
+      return Color.lerp(Colors.orange, Colors.lime, (clampedPh - 4.0) / 2.0) ?? Colors.lime;
+    } else if (clampedPh <= 7.0) { // Yellow/Lime to Green (neutral point)
+      return Color.lerp(Colors.lime, Colors.green, (clampedPh - 6.0) / 1.0) ?? Colors.green;
+    } else if (clampedPh <= 8.0) { // Green to Teal/Cyan (slightly alkaline)
+      return Color.lerp(Colors.green, Colors.teal, (clampedPh - 7.0) / 1.0) ?? Colors.teal;
+    } else if (clampedPh <= 10.0) { // Teal/Cyan to Blue
+      return Color.lerp(Colors.teal, Colors.blue, (clampedPh - 8.0) / 2.0) ?? Colors.blue;
+    } else if (clampedPh <= 12.0) { // Blue to Indigo
+      return Color.lerp(Colors.blue, Colors.indigo, (clampedPh - 10.0) / 2.0) ?? Colors.indigo;
+    } else { // Indigo to Violet/Purple for very alkaline
+      return Color.lerp(Colors.indigo, Colors.purple[800], (clampedPh - 12.0) / 2.0) ?? Colors.purple[800] ?? Colors.purple;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Determine the specific color for PH based on its current value using the spectrum function
+    final Color phDynamicColor = _getPhSpectrumColor(data.phLevel);
+
     final sensors = [
       {
         "label": "Humidity",
         "value": data.humidity,
         "unit": "%",
-        "color": Colors.blue,
+        "color": Colors.blue, // You might want to theme these fixed colors too
         "icon": Icons.water_drop
       },
       {
@@ -30,7 +62,7 @@ class HydroSensorSection extends StatelessWidget {
         "label": "PH Level",
         "value": data.phLevel,
         "unit": "",
-        "color": Colors.purple,
+        "color": phDynamicColor, // Use the dynamically determined spectrum color for PH
         "icon": Icons.science
       },
       {
@@ -62,11 +94,11 @@ class HydroSensorSection extends StatelessWidget {
           childAspectRatio: 1.1,
           children: sensors.map((sensor) {
             return GaugeSensorCard(
-              label: sensor['label'],
+              label: sensor['label'] as String,
               value: (sensor['value'] as num).toDouble(),
-              unit: sensor['unit'],
-              icon: sensor['icon'],
-              color: sensor['color'],
+              unit: sensor['unit'] as String,
+              icon: sensor['icon'] as IconData,
+              color: sensor['color'] as Color, // Pass the dynamic color
             );
           }).toList(),
         ),

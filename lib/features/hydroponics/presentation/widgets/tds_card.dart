@@ -2,8 +2,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:happyfarm/core/utils/colors.dart'; 
-import 'package:happyfarm/core/utils/styles.dart'; 
+import 'package:happyfarm/core/utils/colors.dart'; // Assuming your ColorsManager is here
+import 'package:happyfarm/core/utils/styles.dart'; // Assuming your Styles is here
 
 /// A highly polished and professional card widget to display TDS level
 /// and its historical trend using a Bar Chart from fl_chart.

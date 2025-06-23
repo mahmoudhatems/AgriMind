@@ -1,8 +1,8 @@
-
+// lib/features/hydroponics/data/models/hydroponics_model.dart
 import 'package:happyfarm/features/hydroponics/domain/entites/hydroponics_entity.dart';
 
 class HydroponicsModel extends HydroponicsEntity {
-  HydroponicsModel({
+  const HydroponicsModel({ // Added const constructor
     required super.humidity,
     required super.temperature,
     required super.phLevel,
@@ -18,7 +18,7 @@ class HydroponicsModel extends HydroponicsEntity {
       phLevel: (json['ph_level'] ?? 0).toDouble(),
       waterLevel: (json['water_level_percent'] ?? 0).toDouble(),
       pumpStatus: json['pump_status'] ?? false,
-      tds: (json['tds'] ?? 0).toDouble(),
+      tds: (json['tds'] ?? 0).toDouble(), // Parsed tds from JSON
     );
   }
 }

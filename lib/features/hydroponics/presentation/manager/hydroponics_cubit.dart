@@ -1,104 +1,83 @@
 // lib/features/hydroponics/presentation/manager/hydroponics_cubit.dart
+import 'dart:async'; // Import for StreamSubscription
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:happyfarm/features/hydroponics/domain/entites/hydroponics_entity.dart';
 import 'package:happyfarm/features/hydroponics/domain/repos/hydroponics_repo.dart';
-import 'package:fl_chart/fl_chart.dart'; 
+import 'package:fl_chart/fl_chart.dart'; // Import FlSpot for chart data
 
 part 'hydroponics_state.dart';
 
 class HydroponicsCubit extends Cubit<HydroponicsState> {
   final HydroponicsRepo hydroponicsRepo;
-  HydroponicsEntity? _cache; // Cache current data
-  List<FlSpot> _tdsHistoryCache = []; // Cache historical TDS data
+  List<FlSpot> _tdsHistoryCache = []; // Cache historical TDS data for the chart
+  StreamSubscription? _hydroponicsSubscription; // Stream subscription for real-time updates
 
   HydroponicsCubit(this.hydroponicsRepo) : super(HydroponicsInitial());
 
-  void fetchHydroData() async {
-    try {
-      if (state is! HydroponicsLoading) { // Prevent multiple loading states
-        emit(HydroponicsLoading());
-      }
+  /// Subscribes to the real-time hydroponics data stream.
+  /// Updates the state and manages historical TDS data for the chart.
+  void fetchHydroData() {
+    // Cancel existing subscription to avoid multiple listeners
+    _hydroponicsSubscription?.cancel();
 
-      final data = await hydroponicsRepo.fetchHydroponicsData();
-
-      // --- Simulate fetching historical TDS data ---
-      // In a real app, you would fetch this from your Firebase DB
-      // (e.g., a specific collection/node for historical readings with timestamps).
-      // For demonstration, we'll build a small history:
-      // We will keep the last few (e.g., 2) historical points + the current one.
-      List<FlSpot> currentTdsHistory = List.from(_tdsHistoryCache);
-
-      // Remove the oldest point if history grows too long (e.g., keep last 3 points)
-      if (currentTdsHistory.length >= 3) {
-        currentTdsHistory.removeAt(0); // Keep only the last 2 and add current
-      }
-
-      // Adjust x-coordinates to be relative time (0, 1, 2 for last 3 points)
-      // and add the new current TDS value.
-      final double newX = currentTdsHistory.isEmpty ? 0 : currentTdsHistory.last.x + 1;
-      currentTdsHistory.add(FlSpot(newX, data.tds));
-
-      // Re-index x values to be 0, 1, 2 for the chart's display logic
-      final List<FlSpot> chartReadyHistory = currentTdsHistory.asMap().entries.map((entry) {
-        return FlSpot(entry.key.toDouble(), entry.value.y);
-      }).toList();
-
-      _tdsHistoryCache = chartReadyHistory; // Update cache
-
-
-      // Only emit if data or historical data has changed
-      // This is a basic check; for complex objects, you might need deep equality.
-      // Equatable on HydroponicsEntity and FlSpot helps here.
-      if (data != _cache || !_areFlSpotListsEqual(_tdsHistoryCache, (state is HydroponicsLoaded ? (state as HydroponicsLoaded).historicalTds : []))) {
-        _cache = data;
-        emit(HydroponicsLoaded(data: data, historicalTds: _tdsHistoryCache));
-      } else {
-        // If data hasn't changed, and we're already in a loaded state, do nothing
-        // Or re-emit the same state to trigger rebuild if needed for other reasons
-        // (e.g., refresh indicator completion).
-        // For simplicity, we just don't re-emit if nothing visually changes.
-      }
-
-    } catch (e) {
-      emit(HydroponicsError(e.toString()));
+    // Emit loading state if not already loading
+    if (state is! HydroponicsLoading) {
+      emit(HydroponicsLoading());
     }
+
+    _hydroponicsSubscription = hydroponicsRepo.fetchHydroponicsData().listen(
+      (data) {
+        // Update historical TDS data with the new reading
+        List<FlSpot> currentTdsHistory = List.from(_tdsHistoryCache);
+
+        // Remove the oldest point if history grows too long (e.g., keep last 3 points)
+        // Adjust this number (e.g., 5, 10) based on how much history you want to display.
+        const int maxHistoryPoints = 3;
+        if (currentTdsHistory.length >= maxHistoryPoints) {
+          currentTdsHistory.removeAt(0);
+        }
+
+        // The x-coordinate is simply the new sequential index for the chart.
+        final double newX = currentTdsHistory.isEmpty ? 0 : currentTdsHistory.last.x + 1;
+        currentTdsHistory.add(FlSpot(newX, data.tds));
+
+        // Re-index x values to be 0, 1, 2... for the chart's display logic
+        final List<FlSpot> chartReadyHistory = currentTdsHistory.asMap().entries.map((entry) {
+          return FlSpot(entry.key.toDouble(), entry.value.y);
+        }).toList();
+
+        _tdsHistoryCache = chartReadyHistory; 
+
+        emit(HydroponicsLoaded(data: data, historicalTds: _tdsHistoryCache));
+      },
+      onError: (error) {
+        emit(HydroponicsError(error.toString()));
+      },
+      onDone: () {
+        // Handle stream completion if needed (e.g., Firebase connection closed)
+        print("Hydroponics data stream is done.");
+      },
+    );
   }
 
+  /// Updates the pump status in Firebase and then triggers a data fetch
+  /// to ensure UI reflects the actual state after the update.
   void togglePump(bool isOn) async {
     try {
-      // Optimistically update UI if desired, then fetch actual data
-      if (state is HydroponicsLoaded) {
-        final currentData = (state as HydroponicsLoaded).data;
-        emit(HydroponicsLoaded(
-          data: HydroponicsEntity(
-            humidity: currentData.humidity,
-            temperature: currentData.temperature,
-            phLevel: currentData.phLevel,
-            waterLevel: currentData.waterLevel,
-            pumpStatus: isOn, // Optimistic update
-            tds: currentData.tds,
-          ),
-          historicalTds: (state as HydroponicsLoaded).historicalTds,
-        ));
-      }
+
       await hydroponicsRepo.updatePump(isOn);
-      fetchHydroData(); // Fetch real data to confirm
+
     } catch (e) {
       emit(HydroponicsError(e.toString()));
-      // Revert optimistic update if there was an error
-      fetchHydroData();
     }
   }
 
-  // Helper to compare FlSpot lists for changes
-  bool _areFlSpotListsEqual(List<FlSpot> list1, List<FlSpot> list2) {
-    if (list1.length != list2.length) return false;
-    for (int i = 0; i < list1.length; i++) {
-      if (list1[i].x != list2[i].x || list1[i].y != list2[i].y) {
-        return false;
-      }
-    }
-    return true;
+  /// Override the close method to cancel the stream subscription.
+  /// This is crucial for resource management and preventing memory leaks.
+  @override
+  Future<void> close() {
+    _hydroponicsSubscription?.cancel();
+    return super.close();
   }
 }
