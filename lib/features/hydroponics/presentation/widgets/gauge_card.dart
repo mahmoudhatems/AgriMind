@@ -1,16 +1,14 @@
-// lib/features/hydroponics/presentation/widgets/gauge_card.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:happyfarm/core/utils/colors.dart'; // Ensure ColorsManager is imported
 
 class GaugeSensorCard extends StatelessWidget {
   final String label;
   final double value;
   final String unit;
   final IconData icon;
-  final Color color; // This color will now be dynamically passed for PH and other sensors
+  final Color color;
 
   const GaugeSensorCard({
     super.key,
@@ -23,15 +21,14 @@ class GaugeSensorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Determine the maximum value for the gauge based on the sensor type
-    double gaugeMaxValue = 100; // Default max for humidity, water level
-    String valueFormat = '1'; // Default to 1 decimal place
+    double gaugeMaxValue = 100;
+    String valueFormat = '1';
 
     if (label == "PH Level") {
-      gaugeMaxValue = 14; // PH scale is 0-14
-      valueFormat = '2'; // PH typically requires 2 decimal places for precision
+      gaugeMaxValue = 14;
+      valueFormat = '2';
     } else if (label == "Temp") {
-      gaugeMaxValue = 40; // Assuming typical max temp for hydroponics, adjust as needed
+      gaugeMaxValue = 40;
     }
 
     return Container(
@@ -39,10 +36,12 @@ class GaugeSensorCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
-        // Use the dynamically passed `color` with opacity for the border
-        border: Border.all(color: color.withOpacity(0.1)),
+        border: Border.all(color: color.withValues(alpha: 0.1)),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 8, offset: const Offset(0, 2)),
+          BoxShadow(
+              color: Colors.black.withValues(alpha: 0.02),
+              blurRadius: 8,
+              offset: const Offset(0, 2)),
         ],
       ),
       child: Column(
@@ -53,14 +52,17 @@ class GaugeSensorCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(6.r),
                 decoration: BoxDecoration(
-                  // Use the dynamically passed `color` with opacity for the icon background
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
-                child: Icon(icon, color: color, size: 16.sp), // Icon uses the dynamic color
+                child: Icon(icon,
+                    color: color, size: 16.sp), 
               ),
-              // Label text remains a standard dark color for contrast/readability across different sensor colors.
-              Text(label, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.black87)),
+              Text(label,
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87)),
             ],
           ),
           Expanded(
@@ -71,17 +73,21 @@ class GaugeSensorCard extends StatelessWidget {
                 axes: [
                   RadialAxis(
                     minimum: 0,
-                    maximum: gaugeMaxValue, // Dynamic max value based on sensor type
+                    maximum:
+                        gaugeMaxValue, // Dynamic max value based on sensor type
                     showTicks: false,
                     showLabels: false,
                     axisLineStyle: AxisLineStyle(
                       thickness: 0.2,
                       thicknessUnit: GaugeSizeUnit.factor,
-                      color: color.withOpacity(0.15), // Gauge background line uses dynamic color
+                      color: color.withValues(
+                          alpha:
+                              0.15), // Gauge background line uses dynamic color
                     ),
                     pointers: [
                       RangePointer(
-                        value: value.clamp(0, gaugeMaxValue), // Clamp value within gauge's min/max
+                        value: value.clamp(0,
+                            gaugeMaxValue), // Clamp value within gauge's min/max
                         width: 0.22,
                         sizeUnit: GaugeSizeUnit.factor,
                         color: color, // Gauge pointer uses dynamic color
@@ -95,7 +101,8 @@ class GaugeSensorCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w500, // Slightly bolder
-                            color: color, // **This text now uses the dynamic color!**
+                            color:
+                                color, // **This text now uses the dynamic color!**
                           ),
                         ),
                         positionFactor: 0.0,
