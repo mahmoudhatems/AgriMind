@@ -1,21 +1,24 @@
+// lib/features/greenhouse/data/repos/greenhouse_repo_impl.dart
 import 'package:firebase_database/firebase_database.dart';
 import 'package:happyfarm/features/greenhouse/data/models/greenhouse_model.dart';
 import 'package:happyfarm/features/greenhouse/domain/entites/greenhouse_entity.dart';
 import 'package:happyfarm/features/greenhouse/domain/repos/greenhouse_repo.dart';
 
 class GreenhouseRepoImpl implements GreenhouseRepo {
-  final _ref = FirebaseDatabase.instance.ref("greenhouse");
+  final DatabaseReference _ref = FirebaseDatabase.instance.ref("greenhouse");
+
 
   @override
-  Future<GreenhouseEntity> fetchGreenhouseData() async {
-    final snapshot = await _ref.get();
-
-    if (snapshot.exists) {
-      final data = Map<String, dynamic>.from(snapshot.value as Map);
-      return GreenhouseModel.fromJson(data);
-    } else {
-      throw Exception("No data found");
-    }
+  Stream<GreenhouseEntity> fetchGreenhouseData() {
+    return _ref.onValue.map((event) {
+      if (event.snapshot.exists) {
+        final data = Map<String, dynamic>.from(event.snapshot.value as Map);
+        return GreenhouseModel.fromJson(data);
+      } else {
+       
+        throw Exception("No greenhouse data found or data structure invalid");
+      }
+    });
   }
 
   @override
@@ -27,6 +30,4 @@ class GreenhouseRepoImpl implements GreenhouseRepo {
   Future<void> updatePump(bool isOn) async {
     await _ref.update({'pump_status': isOn});
   }
-
-  // ❌ تم حذف updateLight لأنه لم يعد مستخدم
 }
