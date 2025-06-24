@@ -7,18 +7,17 @@ class WarehouseBarnRepoImpl extends WarehouseBarnRepo {
   final _db = FirebaseDatabase.instance;
 
   @override
-  Future<WarehouseBarnEntity> fetchWarehouseBarnData() async {
-    final warehouseSnap = await _db.ref('warehouse').get();
-    final barnSnap = await _db.ref('barn').get();
+  Stream<WarehouseBarnEntity> watchWarehouseBarnData() {
+    return _db.ref().onValue.map((event) {
+      final data = event.snapshot.value as Map<dynamic, dynamic>;
+      final warehouseData = Map<String, dynamic>.from(data['warehouse'] ?? {});
+      final barnData = Map<String, dynamic>.from(data['barn'] ?? {});
 
-    if (warehouseSnap.exists && barnSnap.exists) {
       return WarehouseBarnModel.fromJson(
-        warehouse: Map<String, dynamic>.from(warehouseSnap.value as Map),
-        barn: Map<String, dynamic>.from(barnSnap.value as Map),
+        warehouse: warehouseData,
+        barn: barnData,
       );
-    } else {
-      throw Exception("Warehouse or Barn data not found.");
-    }
+    });
   }
 
   @override
