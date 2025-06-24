@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:happyfarm/core/routing/routes.dart';
+import 'package:happyfarm/core/services/notification_service.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/features/settings/presentation/manager/settings_cubit.dart';
@@ -60,81 +61,81 @@ class SettingScreen extends StatelessWidget {
       ],
     );
   }
+Widget _buildSettingsBody(BuildContext context) {
+  return BlocBuilder<SettingsCubit, SettingsState>(
+    builder: (context, state) {
+      final cubit = context.read<SettingsCubit>();
 
-  Widget _buildSettingsBody(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsState>(
-      builder: (context, state) {
-        final cubit = context.read<SettingsCubit>();
+      return Column(
+        children: [
+          /// --- Account Section ---
+          SettingGroup(
+            title: 'Account',
+            items: [
+              SettingTile(
+                icon: Icons.person_outline,
+                title: 'Edit Profile',
+                onTap: () {},
+              ),
+              SettingTile(
+                icon: Icons.lock_outline,
+                title: 'Change Password',
+                onTap: () {},
+              ),
+            ],
+          ),
+          SizedBox(height: 30.h),
 
-        return Column(
-          children: [
-            /// --- Account Section ---
-            SettingGroup(
-              title: 'Account',
-              items: [
-                SettingTile(
-                  icon: Icons.person_outline,
-                  title: 'Edit Profile',
-                  onTap: () {},
-                ),
-                SettingTile(
-                  icon: Icons.lock_outline,
-                  title: 'Change Password',
-                  onTap: () {},
-                ),
-              ],
-            ),
-            SizedBox(height: 30.h),
+          /// --- Preferences Section ---
+          SettingGroup(
+            title: 'Preferences',
+            items: [
+              SettingSwitchTile(
+                icon: Icons.notifications_none,
+                title: 'Notifications',
+                value: state.notifications,
+                onChanged: cubit.toggleNotifications,
+              ),
+              SettingSwitchTile(
+                icon: Icons.dark_mode_outlined,
+                title: 'Dark Mode',
+                value: state.darkMode,
+                onChanged: cubit.toggleDarkMode,
+              ),
+              SettingTile(
+                icon: Icons.language,
+                title: 'Language',
+                subtitle: 'English',
+                onTap: () {},
+              ),
+            ],
+          ),
+          SizedBox(height: 30.h),
 
-            /// --- Preferences Section ---
-            SettingGroup(
-              title: 'Preferences',
-              items: [
-                SettingSwitchTile(
-                  icon: Icons.notifications_none,
-                  title: 'Notifications',
-                  value: state.notifications,
-                  onChanged: cubit.toggleNotifications,
-                ),
-                SettingSwitchTile(
-                  icon: Icons.dark_mode_outlined,
-                  title: 'Dark Mode',
-                  value: state.darkMode,
-                  onChanged: cubit.toggleDarkMode,
-                ),
-                SettingTile(
-                  icon: Icons.language,
-                  title: 'Language',
-                  subtitle: 'English',
-                  onTap: () {},
-                ),
-              ],
-            ),
-            SizedBox(height: 30.h),
+          /// --- About Section ---
+          SettingGroup(
+            title: 'About',
+            items: [
+              SettingTile(
+                icon: Icons.info_outline,
+                title: 'App Information',
+                subtitle: 'v1.0.0',
+                onTap: () {},
+              ),
+           
+            ],
+          ),
+          SizedBox(height: 40.h),
 
-            /// --- About Section ---
-            SettingGroup(
-              title: 'About',
-              items: [
-                SettingTile(
-                  icon: Icons.info_outline,
-                  title: 'App Information',
-                  subtitle: 'v1.0.0',
-                  onTap: () {},
-                ),
-              ],
-            ),
-            SizedBox(height: 40.h),
-
-            /// --- Sign Out ---
-            SignOutTile(
-              onTap: () => _showSignOutDialog(context),
-            ),
-          ],
-        );
-      },
-    );
-  }
+          /// --- Sign Out ---
+          SignOutTile(
+            onTap: () => _showSignOutDialog(context),
+          ),
+        ],
+      );
+    },
+  );
+}
 
   void _showSignOutDialog(BuildContext context) {
     showDialog(
