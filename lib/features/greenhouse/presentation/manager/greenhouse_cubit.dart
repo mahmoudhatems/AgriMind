@@ -1,43 +1,65 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:happyfarm/features/greenhouse/domain/entites/greenhouse_entity.dart';
-import 'package:happyfarm/features/greenhouse/domain/repos/greenhouse_repo.dart';
+import 'package:happyfarm/features/greenhouse/domain/repos/greenhouse_repo.dart'; 
 
 part 'greenhouse_state.dart';
 
 class GreenhouseCubit extends Cubit<GreenhouseState> {
   final GreenhouseRepo greenhouseRepo;
-  GreenhouseEntity? _cachedState;
+  StreamSubscription? _greenhouseSubscription; 
 
   GreenhouseCubit(this.greenhouseRepo) : super(GreenhouseInitial());
 
-  void fetchGreenhouseData() async {
-    try {
-      final data = await greenhouseRepo.fetchGreenhouseData();
+  void fetchGreenhouseData() {
+    _greenhouseSubscription?.cancel();
 
-      if (_cachedState == null || data != _cachedState) {
-        _cachedState = data;
+    
+    if (state is! GreenhouseLoading) {
+      emit(GreenhouseLoading());
+    }
+
+    _greenhouseSubscription = greenhouseRepo.fetchGreenhouseData().listen(
+      (data) {
+        
         emit(GreenhouseLoaded(data));
-      }
+      },
+      onError: (error) {
+        
+        emit(GreenhouseError(error.toString()));
+      },
+      onDone: () {
+        
+        print("Greenhouse data stream is done.");
+      },
+    );
+  }
+
+  
+  void toggleFan(bool isOn) async {
+    try {
+      await greenhouseRepo.updateFan(isOn);
+      
     } catch (e) {
       emit(GreenhouseError(e.toString()));
     }
   }
 
-  void toggleFan(bool isOn) async {
-    await greenhouseRepo.updateFan(isOn);
-    _updateLocalState(_cachedState?.copyWith(fanStatus: isOn));
-  }
-
+  
   void togglePump(bool isOn) async {
-    await greenhouseRepo.updatePump(isOn);
-    _updateLocalState(_cachedState?.copyWith(pumpStatus: isOn));
+    try {
+      await greenhouseRepo.updatePump(isOn);
+      
+    } catch (e) {
+      emit(GreenhouseError(e.toString()));
+    }
   }
 
-
-  void _updateLocalState(GreenhouseEntity? newState) {
-    if (newState != null) {
-      _cachedState = newState;
-      emit(GreenhouseLoaded(_cachedState!));
-    }
+  
+  @override
+  Future<void> close() {
+    _greenhouseSubscription?.cancel();
+    return super.close();
   }
 }

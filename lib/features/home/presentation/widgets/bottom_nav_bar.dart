@@ -38,8 +38,8 @@ void initState() {
   create: (_) => HydroponicsCubit(getIt())..fetchHydroData(),
   child: const HydroponicsPage(),
 ),
-    BlocProvider(
-  create: (_) => getIt<WarehouseBarnCubit>()..fetchData(),
+ BlocProvider(
+  create: (_) => getIt<WarehouseBarnCubit>(),
   child: const WarehouseBarnPage(),
 )
   ];

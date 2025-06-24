@@ -1,13 +1,15 @@
-class GreenhouseEntity {
+import 'package:equatable/equatable.dart'; 
+
+class GreenhouseEntity extends Equatable { 
   final bool fanStatus;
   final bool pumpStatus;
   final double temperature;
   final double humidity;
   final double gasLevel;
   final double soilMoisture;
-  final double lightLevel; 
+  final double lightLevel;
 
-  GreenhouseEntity({
+  const GreenhouseEntity({ 
     required this.fanStatus,
     required this.pumpStatus,
     required this.temperature,
@@ -38,24 +40,13 @@ class GreenhouseEntity {
   }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is GreenhouseEntity &&
-          fanStatus == other.fanStatus &&
-          pumpStatus == other.pumpStatus &&
-          temperature == other.temperature &&
-          humidity == other.humidity &&
-          gasLevel == other.gasLevel &&
-          soilMoisture == other.soilMoisture &&
-          lightLevel == other.lightLevel;
-
-  @override
-  int get hashCode =>
-      fanStatus.hashCode ^
-      pumpStatus.hashCode ^
-      temperature.hashCode ^
-      humidity.hashCode ^
-      gasLevel.hashCode ^
-      soilMoisture.hashCode ^
-      lightLevel.hashCode;
+  List<Object> get props => [ 
+        fanStatus,
+        pumpStatus,
+        temperature,
+        humidity,
+        gasLevel,
+        soilMoisture,
+        lightLevel,
+      ];
 }

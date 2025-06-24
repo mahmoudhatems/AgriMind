@@ -1,16 +1,29 @@
 
 part of 'greenhouse_cubit.dart';
 
-abstract class GreenhouseState {}
+abstract class GreenhouseState extends Equatable { 
+  const GreenhouseState(); 
+
+  @override
+  List<Object> get props => []; 
+}
 
 class GreenhouseInitial extends GreenhouseState {}
 
+class GreenhouseLoading extends GreenhouseState {} 
+
 class GreenhouseLoaded extends GreenhouseState {
   final GreenhouseEntity data;
-  GreenhouseLoaded(this.data);
+  const GreenhouseLoaded(this.data); 
+
+  @override
+  List<Object> get props => [data]; 
 }
 
 class GreenhouseError extends GreenhouseState {
   final String message;
-  GreenhouseError(this.message);
+  const GreenhouseError(this.message); 
+
+  @override
+  List<Object> get props => [message]; 
 }
