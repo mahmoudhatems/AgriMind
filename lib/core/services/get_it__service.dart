@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:happyfarm/core/services/firebase_auth_service.dart';
 import 'package:happyfarm/features/auth/data/repos/auth_repo_implementation.dart';
@@ -15,14 +16,20 @@ import 'package:happyfarm/features/warehouseandbarn/presentation/manager/warehou
 final getIt = GetIt.instance;
 
 void setupGetIt() {
-  // Register FirebaseAuthService as a singleton
+
   getIt.registerSingleton<FirebaseAuthService>(FirebaseAuthService());
   getIt.registerSingleton<AuthRepo>(
       AuthRepoImplementation(getIt<FirebaseAuthService>()));
+
 getIt.registerSingleton<GreenhouseRepo>(GreenhouseRepoImpl());
+
+
 getIt.registerSingleton<HomeRepo>(HomeRepoImpl());
   getIt.registerSingleton<HydroponicsRepo>(HydroponicsRepoImpl());
   getIt.registerLazySingleton<WarehouseBarnRepo>(() => WarehouseBarnRepoImpl());
-getIt.registerFactory(() => WarehouseBarnCubit(getIt()));
+  getIt.registerFactoryParam<WarehouseBarnCubit, BuildContext, void>(
+  (context, _) => WarehouseBarnCubit(getIt(), context),
+);
+
 
 }

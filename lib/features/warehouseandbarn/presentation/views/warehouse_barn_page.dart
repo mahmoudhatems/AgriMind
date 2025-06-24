@@ -96,93 +96,100 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
             });
           }
 
-          return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-            child: Column(
-              children: [
-                ZoneSection(title: "Warehouse", sensors: [
-                  {
-                    "label": "Temperature",
-                    "value": "${warehouse.temperature}°C",
-                    "icon": Icons.thermostat
-                  },
-                  {
-                    "label": "Humidity",
-                    "value": "${warehouse.humidity}%",
-                    "icon": Icons.water_drop
-                  },
-                  {
-                    "label": "Gas",
-                    "value": "${warehouse.gasLevel} ppm",
-                    "icon": Icons.gas_meter
-                  },
-                  {
-                    "label": "Motion",
-                    "value": warehouse.motionDetected ? "Detected" : "None",
-                    "icon": Icons.sensors
-                  },
-                  {
-                    "label": "Flame",
-                    "value": warehouse.flameDetected ? "Detected" : "None",
-                    "icon": Icons.local_fire_department
-                  },
-                ]),
-                SizedBox(height: 20.h),
-                ZoneControls(title: "Warehouse Controls", switches: [
-                  {
-                    "label": "Alarm",
-                    "icon": Icons.notifications_active,
-                    "controller": _alarm,
-                    "subtitle": "Warehouse alert system"
-                  },
-                  {
-                    "label": "Door",
-                    "icon": Icons.door_sliding,
-                    "controller": _warehouseDoor,
-                    "subtitle": "Main warehouse door"
-                  },
-                ]),
-                SizedBox(height: 24.h),
-                ZoneSection(title: "Barn", sensors: [
-                  {
-                    "label": "Temperature",
-                    "value": "${barn.temperature}°C",
-                    "icon": Icons.thermostat
-                  },
-                  {
-                    "label": "Humidity",
-                    "value": "${barn.humidity}%",
-                    "icon": Icons.water_drop
-                  },
-                  {
-                    "label": "Sound",
-                    "value": "${barn.soundLevel} dB",
-                    "icon": Icons.speaker
-                  },
-                  {
-                    "label": "Flame",
-                    "value": barn.flameDetected ? "Detected" : "None",
-                    "icon": Icons.local_fire_department
-                  },
-                ]),
-                SizedBox(height: 20.h),
-                ZoneControls(title: "Barn Controls", switches: [
-                  {
-                    "label": "Fan",
-                    "icon": Icons.ac_unit,
-                    "controller": _barnFan,
-                    "subtitle": "Ventilation system"
-                  },
-                  {
-                    "label": "Door",
-                    "icon": Icons.door_sliding,
-                    "controller": _barnDoor,
-                    "subtitle": "Barn entrance"
-                  },
-                ]),
-                SizedBox(height: 20.h),
-                TipCard(text: tips[_tipIndex], key: ValueKey(_tipIndex)),
-              ],
+          return RefreshIndicator(
+            onRefresh: () async {
+         
+              HapticFeedback.lightImpact();
+              await Future.delayed(const Duration(milliseconds: 600));
+            },
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+              child: Column(
+                children: [
+                  ZoneSection(title: "Warehouse", sensors: [
+                    {
+                      "label": "Temperature",
+                      "value": "${warehouse.temperature}°C",
+                      "icon": Icons.thermostat
+                    },
+                    {
+                      "label": "Humidity",
+                      "value": "${warehouse.humidity}%",
+                      "icon": Icons.water_drop
+                    },
+                    {
+                      "label": "Gas",
+                      "value": "${warehouse.gasLevel} ppm",
+                      "icon": Icons.gas_meter
+                    },
+                    {
+                      "label": "Motion",
+                      "value": warehouse.motionDetected ? "Detected" : "None",
+                      "icon": Icons.sensors
+                    },
+                    {
+                      "label": "Flame",
+                      "value": warehouse.flameDetected ? "Detected" : "None",
+                      "icon": Icons.local_fire_department
+                    },
+                  ]),
+                  SizedBox(height: 20.h),
+                  ZoneControls(title: "Warehouse Controls", switches: [
+                    {
+                      "label": "Alarm",
+                      "icon": Icons.notifications_active,
+                      "controller": _alarm,
+                      "subtitle": "Warehouse alert system"
+                    },
+                    {
+                      "label": "Door",
+                      "icon": Icons.door_sliding,
+                      "controller": _warehouseDoor,
+                      "subtitle": "Main warehouse door"
+                    },
+                  ]),
+                  SizedBox(height: 24.h),
+                  ZoneSection(title: "Barn", sensors: [
+                    {
+                      "label": "Temperature",
+                      "value": "${barn.temperature}°C",
+                      "icon": Icons.thermostat
+                    },
+                    {
+                      "label": "Humidity",
+                      "value": "${barn.humidity}%",
+                      "icon": Icons.water_drop
+                    },
+                    {
+                      "label": "Sound",
+                      "value": "${barn.soundLevel} dB",
+                      "icon": Icons.speaker
+                    },
+                    {
+                      "label": "Flame",
+                      "value": barn.flameDetected ? "Detected" : "None",
+                      "icon": Icons.local_fire_department
+                    },
+                  ]),
+                  SizedBox(height: 20.h),
+                  ZoneControls(title: "Barn Controls", switches: [
+                    {
+                      "label": "Fan",
+                      "icon": Icons.ac_unit,
+                      "controller": _barnFan,
+                      "subtitle": "Ventilation system"
+                    },
+                    {
+                      "label": "Door",
+                      "icon": Icons.door_sliding,
+                      "controller": _barnDoor,
+                      "subtitle": "Barn entrance"
+                    },
+                  ]),
+                  SizedBox(height: 20.h),
+                  TipCard(text: tips[_tipIndex], key: ValueKey(_tipIndex)),
+                ],
+              ),
             ),
           );
         } else if (state is WarehouseBarnError) {

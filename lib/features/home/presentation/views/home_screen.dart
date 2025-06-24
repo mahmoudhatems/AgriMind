@@ -2,6 +2,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:happyfarm/core/services/notification_service.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/features/home/presentation/widgets/header_row.dart';
@@ -9,6 +11,7 @@ import 'package:happyfarm/features/home/presentation/widgets/sensor_grid.dart';
 import 'package:happyfarm/features/home/presentation/widgets/parking_section.dart';
 import 'package:happyfarm/features/home/presentation/widgets/tip_card.dart';
 import 'package:happyfarm/features/home/presentation/widgets/build_status_card.dart';
+import 'package:happyfarm/features/settings/presentation/manager/settings_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,6 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final _homeRef = FirebaseDatabase.instance.ref('home');
   final _parkingRef = FirebaseDatabase.instance.ref('parking');
   final _systemRef = FirebaseDatabase.instance.ref('system');
+
+  bool _lastFlameAlert = false;
+  bool _lastMotionAlert = false;
 
   @override
   void initState() {
@@ -50,6 +56,35 @@ class _HomeScreenState extends State<HomeScreen> {
     _homeRef.onValue.listen((event) {
       final data = Map<String, dynamic>.from(event.snapshot.value as Map);
       setState(() => homeData = data);
+
+      final bool isFlameDetected = data['flame_detected'] == true;
+      final bool isMotionDetected = data['motion_detected'] == true;
+
+      final notiEnabled = context.read<SettingsCubit>().state.notifications;
+
+      if (notiEnabled) {
+        if (isFlameDetected && !_lastFlameAlert) {
+          _lastFlameAlert = true;
+          NotificationService.showLocalNotification(
+            id: 10,
+            title: "🔥 Flame Alert!",
+            body: "Flame detected in the home zone. Please check immediately.",
+          );
+        } else if (!isFlameDetected) {
+          _lastFlameAlert = false;
+        }
+
+        if (isMotionDetected && !_lastMotionAlert) {
+          _lastMotionAlert = true;
+          NotificationService.showLocalNotification(
+            id: 11,
+            title: "👀 Motion Alert!",
+            body: "Motion detected in the home area. Be cautious.",
+          );
+        } else if (!isMotionDetected) {
+          _lastMotionAlert = false;
+        }
+      }
     });
   }
 
@@ -90,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
         : _formatTime(DateTime.now());
 
     return Scaffold(
-      backgroundColor: ColorsManager.whitegraybackGround.withValues( alpha:  0.45),
+      backgroundColor: ColorsManager.whitegraybackGround.withAlpha(45),
       body: RefreshIndicator(
         onRefresh: () async {
           HapticFeedback.lightImpact();
@@ -112,17 +147,16 @@ class _HomeScreenState extends State<HomeScreen> {
               SensorGrid(homeData: homeData),
               SizedBox(height: 20.h),
               ParkingSection(
-  parkingData: parkingData,
-  gateStatus: _gateSwitchController.value,
-  onGateToggle: (val) {
-    FirebaseDatabase.instance.ref("parking").update({
-      "gate_status": val,
-    });
-    _gateSwitchController.value = val;
-    HapticFeedback.lightImpact();
-  },
-),
-
+                parkingData: parkingData,
+                gateStatus: _gateSwitchController.value,
+                onGateToggle: (val) {
+                  FirebaseDatabase.instance.ref("parking").update({
+                    "gate_status": val,
+                  });
+                  _gateSwitchController.value = val;
+                  HapticFeedback.lightImpact();
+                },
+              ),
               SizedBox(height: 20.h),
               TipCard(text: StringManager.homeTips[_tipIndex], key: ValueKey(_tipIndex)),
             ],

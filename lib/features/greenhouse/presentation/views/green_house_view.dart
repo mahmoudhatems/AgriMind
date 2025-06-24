@@ -1,3 +1,4 @@
+// lib/features/greenhouse/presentation/views/green_house_view.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +22,9 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<GreenhouseCubit>().fetchGreenhouseData();
+
+    context.read<GreenhouseCubit>().fetchGreenhouseData(context);
+
     Future.delayed(const Duration(seconds: 6), _rotateTip);
   }
 
@@ -40,7 +43,7 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
 
           return RefreshIndicator(
             onRefresh: () async {
-              context.read<GreenhouseCubit>().fetchGreenhouseData();
+              context.read<GreenhouseCubit>().fetchGreenhouseData(context);
               HapticFeedback.lightImpact();
               await Future.delayed(const Duration(milliseconds: 600));
             },
