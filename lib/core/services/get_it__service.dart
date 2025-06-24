@@ -20,7 +20,10 @@ void setupGetIt() {
   getIt.registerSingleton<FirebaseAuthService>(FirebaseAuthService());
   getIt.registerSingleton<AuthRepo>(
       AuthRepoImplementation(getIt<FirebaseAuthService>()));
+
 getIt.registerSingleton<GreenhouseRepo>(GreenhouseRepoImpl());
+
+
 getIt.registerSingleton<HomeRepo>(HomeRepoImpl());
   getIt.registerSingleton<HydroponicsRepo>(HydroponicsRepoImpl());
   getIt.registerLazySingleton<WarehouseBarnRepo>(() => WarehouseBarnRepoImpl());

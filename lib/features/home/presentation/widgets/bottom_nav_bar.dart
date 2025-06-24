@@ -33,9 +33,13 @@ class _CustomButtomBarState extends State<CustomButtomBar> {
         create: (_) => HomeCubit(getIt())..fetchHomeData(),
         child: const HomeScreen(),
       ),
-      _buildGreenhouseScreen(),
       BlocProvider(
-        create: (_) => HydroponicsCubit(getIt())..fetchHydroData(),
+        create: (context) =>
+            GreenhouseCubit(getIt())..fetchGreenhouseData(context),
+        child: const GreenhouseScreen(),
+      ),
+      BlocProvider(
+        create: (context) => HydroponicsCubit(getIt())..fetchHydroData(context),
         child: const HydroponicsPage(),
       ),
       BlocProvider(
@@ -113,9 +117,3 @@ class _CustomButtomBarState extends State<CustomButtomBar> {
   }
 }
 
-Widget _buildGreenhouseScreen() {
-  return BlocProvider(
-    create: (_) => GreenhouseCubit(getIt())..fetchGreenhouseData(),
-    child: const GreenhouseScreen(),
-  );
-}

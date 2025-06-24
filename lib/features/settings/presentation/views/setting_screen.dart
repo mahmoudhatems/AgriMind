@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:happyfarm/core/routing/routes.dart';
-import 'package:happyfarm/core/services/notification_service.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/features/settings/presentation/manager/settings_cubit.dart';
