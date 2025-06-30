@@ -1,4 +1,4 @@
-// lib/features/greenhouse/presentation/views/green_house_view.dart
+import 'package:easy_localization/easy_localization.dart'; 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,11 +25,12 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
 
     context.read<GreenhouseCubit>().fetchGreenhouseData(context);
 
-    Future.delayed(const Duration(seconds: 6), _rotateTip);
+    _rotateTip();
   }
 
   void _rotateTip() {
     if (!mounted) return;
+  
     setState(() => _tipIndex = (_tipIndex + 1) % StringManager.homeTips.length);
     Future.delayed(const Duration(seconds: 6), _rotateTip);
   }
@@ -51,9 +52,9 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
               child: Column(
                 children: [
-                  SensorSection(data: data),
+                  SensorSection(data: data), 
                   SizedBox(height: 20.h),
-                  DeviceControls(
+                  DeviceControls( 
                     fanValue: data.fanStatus,
                     pumpValue: data.pumpStatus,
                     onFanChanged: (val) {
@@ -67,7 +68,7 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
                   ),
                   SizedBox(height: 20.h),
                   TipCard(
-                    text: StringManager.homeTips[_tipIndex],
+                    text: StringManager.homeTips[_tipIndex].tr(), 
                     key: ValueKey(_tipIndex),
                   ),
                 ],
@@ -76,7 +77,7 @@ class _GreenhouseScreenState extends State<GreenhouseScreen> {
           );
         } else if (state is GreenhouseError) {
           return Center(
-            child: Text(state.message, style: TextStyle(color: Colors.red)),
+            child: Text(state.message, style: TextStyle(color: Colors.red)), // Consider localizing error messages too
           );
         }
 

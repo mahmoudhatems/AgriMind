@@ -1,9 +1,10 @@
-// lib/features/hydroponics/presentation/widgets/tds_card.dart
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
+import 'package:easy_localization/easy_localization.dart'; // Import for .tr()
+import 'package:happyfarm/core/utils/strings.dart'; // Import StringManager
 
 class TDSCard extends StatelessWidget {
   final double tdsValue;
@@ -27,13 +28,13 @@ class TDSCard extends StatelessWidget {
     String tdsStatus;
     if (tdsValue < optimalMin) {
       currentTdsColor = ColorsManager.errorColor;
-      tdsStatus = 'Low';
+      tdsStatus = 'Low'; // Will be localized
     } else if (tdsValue > optimalMax) {
       currentTdsColor = ColorsManager.yellow;
-      tdsStatus = 'High';
+      tdsStatus = 'High'; // Will be localized
     } else {
       currentTdsColor = ColorsManager.primaryGreenColor;
-      tdsStatus = 'Optimal';
+      tdsStatus = 'Optimal'; // Will be localized
     }
 
     Color getBarColor(double value) {
@@ -50,15 +51,14 @@ class TDSCard extends StatelessWidget {
     for (int i = 0; i < chartSpots.length; i++) {
       barGroups.add(
         BarChartGroupData(
-          
           x: i,
           barRods: [
             BarChartRodData(
               toY: chartSpots[i].y,
               gradient: LinearGradient(
                 colors: [
-                  getBarColor(chartSpots[i].y).withValues(alpha: 0.8),
-                  getBarColor(chartSpots[i].y).withValues(alpha: 0.5),
+                  getBarColor(chartSpots[i].y).withOpacity(0.8), // Corrected
+                  getBarColor(chartSpots[i].y).withOpacity(0.5), // Corrected
                 ],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
@@ -72,7 +72,7 @@ class TDSCard extends StatelessWidget {
                 show: true,
                 toY: 1500,
                 color: ColorsManager.textIconColorGray
-                    .withValues(alpha: 0.1), // Very subtle background color
+                    .withOpacity(0.1), // Corrected
               ),
             ),
           ],
@@ -83,17 +83,14 @@ class TDSCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
       decoration: BoxDecoration(
-        color: Colors
-            .white, // Solid white background for a clean, consistent card look
-        borderRadius: BorderRadius.circular(16.r), // Uniform rounded corners
-        // Subtle border using your theme's main color with low opacity
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
-            color: ColorsManager.mainBlueGreen.withValues(alpha: 0.1),
+            color: ColorsManager.mainBlueGreen.withOpacity(0.1), // Corrected
             width: 1),
         boxShadow: [
-          // Gentle, diffused shadow for a floating "Meta/Apple" feel
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
+            color: Colors.black.withOpacity(0.03), // Corrected
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -104,7 +101,7 @@ class TDSCard extends StatelessWidget {
         children: [
           // Title for the card, styled with your app's typography
           Text(
-            'TDS Level (ppm)',
+            StringManager.tdsLevelPpm.tr(), // Localized
             style: Styles.titlesemiBoldText24DarkfontJosefinSans.copyWith(
               color: ColorsManager.darkBlueTextColor,
               fontSize: 20.sp,
@@ -113,7 +110,7 @@ class TDSCard extends StatelessWidget {
           SizedBox(height: 8.h),
           // Subtitle providing more context, styled from your app's typography
           Text(
-            'Total Dissolved Solids in nutrient solution',
+            StringManager.totalDissolvedSolids.tr(), // Localized
             style: Styles.styleNormalText14GrayfontJosefinSans.copyWith(
               color: ColorsManager.textIconColorGray,
             ),
@@ -133,9 +130,7 @@ class TDSCard extends StatelessWidget {
                 // Configuration for touch interactions and tooltips on bars
                 barTouchData: BarTouchData(
                   touchTooltipData: BarTouchTooltipData(
-                    tooltipBgColor: ColorsManager.darkBlueTextColor.withValues(
-                        alpha:
-                            0.8), // Dark, slightly transparent tooltip background
+                    tooltipBgColor: ColorsManager.darkBlueTextColor.withOpacity(0.8), // Corrected
                     tooltipPadding:
                         EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                     tooltipRoundedRadius: 8.r,
@@ -143,12 +138,11 @@ class TDSCard extends StatelessWidget {
                     getTooltipItem: (group, groupIndex, rod, rodIndex) {
                       String timeLabel = '';
                       if (group.x == chartSpots.length - 1) {
-                        timeLabel =
-                            'Now'; // Label for the most recent data point
+                        timeLabel = StringManager.now.tr(); // Localized
                       } else {
                         // Calculate time elapsed for historical points
                         final int hoursAgo = (chartSpots.length - 1) - group.x;
-                        timeLabel = '${hoursAgo}h Ago';
+                        timeLabel = '$hoursAgo${'h Ago'.tr()}'; // Localize "h Ago"
                       }
                       return BarTooltipItem(
                         '${rod.toY.toStringAsFixed(0)} ppm\n', // Display TDS value without decimals
@@ -161,7 +155,7 @@ class TDSCard extends StatelessWidget {
                           TextSpan(
                             text: timeLabel, // Display time label below value
                             style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.7),
+                              color: Colors.white.withOpacity(0.7), // Corrected
                               fontSize: 10.sp,
                             ),
                           ),
@@ -183,8 +177,7 @@ class TDSCard extends StatelessWidget {
                       false, // No vertical grid lines for a cleaner look
                   getDrawingHorizontalLine: (value) {
                     return FlLine(
-                      color: ColorsManager.textIconColorGray.withValues(
-                          alpha: 0.2), // Lighter, subtle horizontal grid lines
+                      color: ColorsManager.textIconColorGray.withOpacity(0.2), // Corrected
                       strokeWidth: 0.6,
                       dashArray: [
                         4,
@@ -211,7 +204,7 @@ class TDSCard extends StatelessWidget {
                         if (index == chartSpots.length - 1) {
                           return Padding(
                             padding: const EdgeInsets.only(top: 8.0),
-                            child: Text('Now',
+                            child: Text(StringManager.now.tr(), // Localized
                                 style: Styles
                                     .styleNormalText14GrayfontJosefinSans
                                     .copyWith(fontSize: 10.sp)),
@@ -220,7 +213,7 @@ class TDSCard extends StatelessWidget {
                           final int hoursAgo = (chartSpots.length - 1) - index;
                           return Padding(
                             padding: const EdgeInsets.only(top: 8.0),
-                            child: Text('${hoursAgo}h Ago',
+                            child: Text('$hoursAgo${'h Ago'.tr()}', // Localized "h Ago"
                                 style: Styles
                                     .styleNormalText14GrayfontJosefinSans
                                     .copyWith(fontSize: 10.sp)),
@@ -254,12 +247,10 @@ class TDSCard extends StatelessWidget {
                   show: true,
                   border: Border(
                     bottom: BorderSide(
-                        color: ColorsManager.textIconColorGray
-                            .withValues(alpha: 0.4),
+                        color: ColorsManager.textIconColorGray.withOpacity(0.4), // Corrected
                         width: 0.8),
                     left: BorderSide(
-                        color: ColorsManager.textIconColorGray
-                            .withValues(alpha: 0.4),
+                        color: ColorsManager.textIconColorGray.withOpacity(0.4), // Corrected
                         width: 0.8),
                     right: BorderSide.none,
                     top: BorderSide.none,
@@ -271,8 +262,7 @@ class TDSCard extends StatelessWidget {
                   horizontalLines: [
                     HorizontalLine(
                       y: optimalMin,
-                      color: ColorsManager.gold.withValues(
-                          alpha: 0.6), // Gold for the minimum optimal line
+                      color: ColorsManager.gold.withOpacity(0.6), // Corrected
                       strokeWidth: 1.2,
                       dashArray: [5, 5],
                       label: HorizontalLineLabel(
@@ -281,17 +271,16 @@ class TDSCard extends StatelessWidget {
                         padding: EdgeInsets.only(right: 8.w, bottom: 4.h),
                         style: Styles.styleNormalText14GrayfontJosefinSans
                             .copyWith(
-                          fontSize: 9.sp,
-                          color: ColorsManager.gold,
-                        ),
+                              fontSize: 9.sp,
+                              color: ColorsManager.gold,
+                            ),
                         labelResolver: (line) =>
-                            'Min Optimal (${line.y.toInt()})', // Concise label
+                            '${StringManager.minOptimal.tr()} (${line.y.toInt()})', // Localized
                       ),
                     ),
                     HorizontalLine(
                       y: optimalMax,
-                      color: ColorsManager.primaryGreenColor.withValues(
-                          alpha: 0.6), // Green for the maximum optimal line
+                      color: ColorsManager.primaryGreenColor.withOpacity(0.6), // Corrected
                       strokeWidth: 1.2,
                       dashArray: [5, 5],
                       label: HorizontalLineLabel(
@@ -300,11 +289,11 @@ class TDSCard extends StatelessWidget {
                         padding: EdgeInsets.only(right: 8.w, top: 4.h),
                         style: Styles.styleNormalText14GrayfontJosefinSans
                             .copyWith(
-                          fontSize: 9.sp,
-                          color: ColorsManager.primaryGreenColor,
-                        ),
+                              fontSize: 9.sp,
+                              color: ColorsManager.primaryGreenColor,
+                            ),
                         labelResolver: (line) =>
-                            'Max Optimal (${line.y.toInt()})', // Concise label
+                            '${StringManager.maxOptimal.tr()} (${line.y.toInt()})', // Localized
                       ),
                     ),
                   ],
@@ -322,7 +311,7 @@ class TDSCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.r),
                 // Border color indicates the status (low, optimal, high)
                 border: Border.all(
-                    color: currentTdsColor.withValues(alpha: 0.5), width: 1.2),
+                    color: currentTdsColor.withOpacity(0.5), width: 1.2), // Corrected
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min, // Wrap content tightly
@@ -336,7 +325,8 @@ class TDSCard extends StatelessWidget {
                   ),
                   SizedBox(width: 6.w),
                   Text(
-                    'Current: ${tdsValue.toStringAsFixed(0)} ppm ($tdsStatus)',
+                    // Translate status
+                    'Current: ${tdsValue.toStringAsFixed(0)} ppm (${tdsStatus.tr()})', // Localized status
                     style: Styles.styleBoldText16ButomfontJosefinSans.copyWith(
                       color: currentTdsColor,
                       fontSize: 14.sp,

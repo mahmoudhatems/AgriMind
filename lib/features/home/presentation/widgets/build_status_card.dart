@@ -191,4 +191,3 @@ class StatusCard extends StatelessWidget {
     );
   }
 }
-

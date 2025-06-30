@@ -3,7 +3,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
-import 'package:happyfarm/features/home/presentation/widgets/switch_tile.dart';
+import 'package:happyfarm/features/home/presentation/widgets/switch_tile.dart'; 
+import 'package:easy_localization/easy_localization.dart'; 
+import 'package:happyfarm/core/utils/strings.dart'; 
 
 class DeviceControls extends StatelessWidget {
   final bool fanValue;
@@ -23,18 +25,18 @@ class DeviceControls extends StatelessWidget {
   Widget build(BuildContext context) {
     final devices = [
       {
-        "label": "Ventilation Fan",
+        "label": StringManager.ventilationFan.tr(), 
         "icon": Icons.air,
         "value": fanValue,
         "onChanged": onFanChanged,
-        "subtitle": "Controls air circulation"
+        "subtitle": StringManager.controlsAirCirculation.tr() 
       },
       {
-        "label": "Water Pump",
+        "label": StringManager.waterPump.tr(), 
         "icon": Icons.water_drop,
         "value": pumpValue,
         "onChanged": onPumpChanged,
-        "subtitle": "Controls water flow"
+        "subtitle": StringManager.controlsWaterFlow.tr() 
       },
     ];
 
@@ -45,7 +47,7 @@ class DeviceControls extends StatelessWidget {
           children: [
             Icon(Icons.settings_remote, color: ColorsManager.mainBlueGreen, size: 20.sp),
             SizedBox(width: 8.w),
-            Text("Device Control", style: Styles.styleText14BlackColofontJosefinSans),
+            Text(StringManager.deviceControl.tr(), style: Styles.styleText14BlackColofontJosefinSans), // Localized
           ],
         ),
         SizedBox(height: 16.h),

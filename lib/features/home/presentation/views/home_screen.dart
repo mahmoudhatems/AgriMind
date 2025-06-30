@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart'; 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
       HapticFeedback.lightImpact();
     });
 
-    Future.delayed(const Duration(seconds: 6), _rotateTip);
+    _rotateTip();
   }
 
   void _listenToHome() {
@@ -67,8 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
           _lastFlameAlert = true;
           NotificationService.showLocalNotification(
             id: 10,
-            title: "🔥 Flame Alert!",
-            body: "Flame detected in the home zone. Please check immediately.",
+            title: StringManager.flameAlertTitle.tr(),
+            body: StringManager.flameAlertBody.tr(),
           );
         } else if (!isFlameDetected) {
           _lastFlameAlert = false;
@@ -78,8 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
           _lastMotionAlert = true;
           NotificationService.showLocalNotification(
             id: 11,
-            title: "👀 Motion Alert!",
-            body: "Motion detected in the home area. Be cautious.",
+            title: StringManager.motionAlertTitle.tr(),
+            body: StringManager.motionAlertBody.tr(),
           );
         } else if (!isMotionDetected) {
           _lastMotionAlert = false;
@@ -121,11 +122,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final updatedAt = systemData['updated_at'] != null
-        ? _formatTime(DateTime.fromMillisecondsSinceEpoch(systemData['updated_at']))
+        ? _formatTime(
+              DateTime.fromMillisecondsSinceEpoch(systemData['updated_at']))
         : _formatTime(DateTime.now());
 
     return Scaffold(
-      backgroundColor: ColorsManager.whitegraybackGround.withAlpha(45),
+      backgroundColor: ColorsManager.whitegraybackGround.withAlpha(45), 
       body: RefreshIndicator(
         onRefresh: () async {
           HapticFeedback.lightImpact();
@@ -136,17 +138,17 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const HeaderRow(),
+              const HeaderRow(), 
               SizedBox(height: 20.h),
-              StatusCard(
+                StatusCard(
                 zoneName: "Zone 1",
                 status: systemData['zone1_status'] ?? "Unknown",
                 lastUpdate: "$updatedAt ",
               ),
               SizedBox(height: 20.h),
-              SensorGrid(homeData: homeData),
+              SensorGrid(homeData: homeData), 
               SizedBox(height: 20.h),
-              ParkingSection(
+              ParkingSection(     
                 parkingData: parkingData,
                 gateStatus: _gateSwitchController.value,
                 onGateToggle: (val) {
@@ -158,7 +160,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               SizedBox(height: 20.h),
-              TipCard(text: StringManager.homeTips[_tipIndex], key: ValueKey(_tipIndex)),
+              TipCard(
+                  text: StringManager.homeTips[_tipIndex].tr(),
+                  key: ValueKey(_tipIndex)), 
             ],
           ),
         ),

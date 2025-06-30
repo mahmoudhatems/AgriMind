@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart'; // Import this
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,6 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
   final _pumpSwitch = ValueNotifier(false);
   int _tipIndex = 0;
 
- 
   @override
   void initState() {
     super.initState();
@@ -32,7 +32,8 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
       HapticFeedback.lightImpact();
     });
 
-    Future.delayed(const Duration(seconds: 6), _rotateTip);
+    // Initial call to start tip rotation
+    _rotateTip();
   }
 
   void _rotateTip() {
@@ -71,17 +72,17 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
               child: Column(
                 children: [
-                  HydroSensorSection(data: data),
+                  HydroSensorSection(data: data), // HydroSensorSection will be updated below
                   SizedBox(height: 20.h),
-                  TDSCard(
+                  TDSCard( // TDSCard will be updated below
                     tdsValue: data.tds,
                     historicalTdsData: historicalTds,
                   ),
                   SizedBox(height: 20.h),
-                  HydroDeviceControls(pumpController: _pumpSwitch),
+                  HydroDeviceControls(pumpController: _pumpSwitch), // HydroDeviceControls will be updated below
                   SizedBox(height: 20.h),
                   TipCard(
-                    text: StringManager.hydroponicsTips[_tipIndex],
+                    text: StringManager.hydroponicsTips[_tipIndex].tr(), // Localized tip
                     key: ValueKey(_tipIndex),
                   ),
                 ],
@@ -90,7 +91,7 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
           );
         } else if (state is HydroponicsError) {
           return Center(
-            child: Text(state.message, style: TextStyle(color: Colors.red)),
+            child: Text(state.message, style: TextStyle(color: Colors.red)), // Consider localizing error messages too
           );
         }
 

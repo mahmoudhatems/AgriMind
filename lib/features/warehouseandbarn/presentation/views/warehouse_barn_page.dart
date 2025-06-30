@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart'; // Import this
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,8 +23,6 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
   final _barnFan = ValueNotifier(false);
   int _tipIndex = 0;
   bool _syncedOnce = false;
-
-  
 
   @override
   void initState() {
@@ -70,7 +69,7 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
 
   void _rotateTip() {
     if (!mounted) return;
-    setState(() =>  _tipIndex = (_tipIndex + 1) % StringManager.warehouseandbarnTips.length);
+    setState(() => _tipIndex = (_tipIndex + 1) % StringManager.warehouseandbarnTips.length);
     Future.delayed(const Duration(seconds: 6), _rotateTip);
   }
 
@@ -94,7 +93,7 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
 
           return RefreshIndicator(
             onRefresh: () async {
-         
+              // Re-fetch data if needed or just simulate a refresh
               HapticFeedback.lightImpact();
               await Future.delayed(const Duration(milliseconds: 600));
             },
@@ -102,89 +101,89 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
               child: Column(
                 children: [
-                  ZoneSection(title: "Warehouse", sensors: [
+                  ZoneSection(title: StringManager.warehouse.tr(), sensors: [ // Localized
                     {
-                      "label": "Temperature",
+                      "label": StringManager.temperature.tr(),
                       "value": "${warehouse.temperature}°C",
                       "icon": Icons.thermostat
                     },
                     {
-                      "label": "Humidity",
+                      "label": StringManager.humidity.tr(),
                       "value": "${warehouse.humidity}%",
                       "icon": Icons.water_drop
                     },
                     {
-                      "label": "Gas",
+                      "label": StringManager.gas.tr(),
                       "value": "${warehouse.gasLevel} ppm",
                       "icon": Icons.gas_meter
                     },
                     {
-                      "label": "Motion",
-                      "value": warehouse.motionDetected ? "Detected" : "None",
+                      "label": StringManager.motion.tr(),
+                      "value": warehouse.motionDetected ? StringManager.detected.tr() : StringManager.none.tr(),
                       "icon": Icons.sensors
                     },
                     {
-                      "label": "Flame",
-                      "value": warehouse.flameDetected ? "Detected" : "None",
+                      "label": StringManager.flame.tr(),
+                      "value": warehouse.flameDetected ? StringManager.detected.tr() : StringManager.none.tr(),
                       "icon": Icons.local_fire_department
                     },
                   ]),
                   SizedBox(height: 20.h),
-                  ZoneControls(title: "Warehouse Controls", switches: [
+                  ZoneControls(title: StringManager.warehouseControls.tr(), switches: [ // Localized
                     {
-                      "label": "Alarm",
+                      "label": StringManager.alarm.tr(),
                       "icon": Icons.notifications_active,
                       "controller": _alarm,
-                      "subtitle": "Warehouse alert system"
+                      "subtitle": StringManager.warehouseAlertSystem.tr()
                     },
                     {
-                      "label": "Door",
+                      "label": StringManager.door.tr(),
                       "icon": Icons.door_sliding,
                       "controller": _warehouseDoor,
-                      "subtitle": "Main warehouse door"
+                      "subtitle": StringManager.mainWarehouseDoor.tr()
                     },
                   ]),
                   SizedBox(height: 24.h),
-                  ZoneSection(title: "Barn", sensors: [
+                  ZoneSection(title: StringManager.barn.tr(), sensors: [ // Localized
                     {
-                      "label": "Temperature",
+                      "label": StringManager.temperature.tr(),
                       "value": "${barn.temperature}°C",
                       "icon": Icons.thermostat
                     },
                     {
-                      "label": "Humidity",
+                      "label": StringManager.humidity.tr(),
                       "value": "${barn.humidity}%",
                       "icon": Icons.water_drop
                     },
                     {
-                      "label": "Sound",
+                      "label": StringManager.sound.tr(),
                       "value": "${barn.soundLevel} dB",
                       "icon": Icons.speaker
                     },
                     {
-                      "label": "Flame",
-                      "value": barn.flameDetected ? "Detected" : "None",
+                      "label": StringManager.flame.tr(),
+                      "value": barn.flameDetected ? StringManager.detected.tr() : StringManager.none.tr(),
                       "icon": Icons.local_fire_department
                     },
                   ]),
                   SizedBox(height: 20.h),
-                  ZoneControls(title: "Barn Controls", switches: [
+                  ZoneControls(title: StringManager.barnControls.tr(), switches: [ // Localized
                     {
-                      "label": "Fan",
+                      "label": StringManager.fan.tr(),
                       "icon": Icons.ac_unit,
                       "controller": _barnFan,
-                      "subtitle": "Ventilation system"
+                      "subtitle": StringManager.ventilationSystem.tr()
                     },
                     {
-                      "label": "Door",
+                      "label": StringManager.door.tr(),
                       "icon": Icons.door_sliding,
                       "controller": _barnDoor,
-                      "subtitle": "Barn entrance"
+                      "subtitle": StringManager.barnEntrance.tr()
                     },
                   ]),
                   SizedBox(height: 20.h),
-                 TipCard(
-                    text: StringManager.warehouseandbarnTips[_tipIndex],
+                  TipCard(
+                    text: StringManager.warehouseandbarnTips[_tipIndex].tr(), // Localized tip
                     key: ValueKey(_tipIndex),
                   ),
                 ],
@@ -193,7 +192,7 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
           );
         } else if (state is WarehouseBarnError) {
           return Center(
-              child: Text(state.message, style: TextStyle(color: Colors.red)));
+              child: Text(state.message, style: TextStyle(color: Colors.red))); // Consider localizing
         }
 
         return const Center(child: CircularProgressIndicator());

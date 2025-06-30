@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/routing/app_routing.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 
+// العودة إلى StatelessWidget
 class HappyFarm extends StatelessWidget {
   const HappyFarm({super.key});
 
@@ -11,13 +12,13 @@ class HappyFarm extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
-      minTextAdapt: true, 
+      minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp.router(
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
-          locale: context.locale,
+          locale: context.locale, 
           routerConfig: AppRouting.router,
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
@@ -29,7 +30,7 @@ class HappyFarm extends StatelessWidget {
                 color: ColorsManager.darkBlueTextColor,
                 fontFamily: "Josefin Sans",
               ),
-              backgroundColor: ColorsManager.whitegraybackGround.withValues(alpha: 0.45),
+              backgroundColor: ColorsManager.whitegraybackGround.withValues( alpha: 0.45),
               elevation: 0,
               centerTitle: true,
             ),

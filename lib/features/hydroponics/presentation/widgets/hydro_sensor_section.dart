@@ -1,12 +1,13 @@
-// lib/features/hydroponics/presentation/widgets/hydro_sensor_section.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/features/hydroponics/presentation/widgets/gauge_card.dart';
+import 'package:easy_localization/easy_localization.dart'; // Import for .tr()
+import 'package:happyfarm/core/utils/strings.dart'; // Import StringManager
 
 class HydroSensorSection extends StatelessWidget {
-  final dynamic data;
+  final dynamic data; // Assuming data has .humidity, .temperature, .phLevel, .waterLevel properties
 
   const HydroSensorSection({super.key, required this.data});
 
@@ -45,28 +46,28 @@ class HydroSensorSection extends StatelessWidget {
 
     final sensors = [
       {
-        "label": "Humidity",
+        "label": StringManager.humidity.tr(), // Localized
         "value": data.humidity,
         "unit": "%",
         "color": Colors.blue, // You might want to theme these fixed colors too
         "icon": Icons.water_drop
       },
       {
-        "label": "Temp",
+        "label": StringManager.temp.tr(), // Localized
         "value": data.temperature,
         "unit": "°C",
         "color": Colors.orange,
         "icon": Icons.thermostat
       },
       {
-        "label": "PH Level",
+        "label": StringManager.phLevel.tr(), // Localized
         "value": data.phLevel,
         "unit": "",
         "color": phDynamicColor, // Use the dynamically determined spectrum color for PH
         "icon": Icons.science
       },
       {
-        "label": "Water",
+        "label": StringManager.water.tr(), // Localized
         "value": data.waterLevel,
         "unit": "%",
         "color": Colors.teal,
@@ -81,7 +82,7 @@ class HydroSensorSection extends StatelessWidget {
           children: [
             Icon(Icons.sensors, color: ColorsManager.mainBlueGreen, size: 20.sp),
             SizedBox(width: 8.w),
-            Text("Hydroponics Sensors", style: Styles.styleText14BlackColofontJosefinSans),
+            Text(StringManager.hydroponicsSensors.tr(), style: Styles.styleText14BlackColofontJosefinSans), // Localized
           ],
         ),
         SizedBox(height: 20.h),

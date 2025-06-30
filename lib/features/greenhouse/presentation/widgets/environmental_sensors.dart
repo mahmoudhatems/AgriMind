@@ -5,6 +5,8 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/features/greenhouse/domain/entites/greenhouse_entity.dart';
+import 'package:easy_localization/easy_localization.dart'; 
+import 'package:happyfarm/core/utils/strings.dart'; 
 
 class SensorSection extends StatelessWidget {
   final GreenhouseEntity data;
@@ -18,36 +20,36 @@ class SensorSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final sensors = [
       {
-        "label": "Temp",
+        "label": StringManager.temp.tr(), 
         "value": data.temperature,
         "unit": "°C",
         "color": const Color(0xFFFF6B6B),
         "icon": Icons.thermostat,
       },
       {
-        "label": "Humidity",
+        "label": StringManager.humidity.tr(), 
         "value": data.humidity,
         "unit": "%",
         "color": const Color(0xFF4ECDC4),
         "icon": Icons.water_drop,
       },
       {
-        "label": "Soil",
+        "label": StringManager.soil.tr(), 
         "value": data.soilMoisture,
         "unit": "%",
         "color": const Color(0xFF45B7D1),
         "icon": Icons.grass,
       },
       {
-        "label": "Gas",
+        "label": StringManager.gas.tr(), 
         "value": data.gasLevel,
         "unit": "ppm",
         "color": const Color(0xFF96CEB4),
         "icon": Icons.air,
       },
       {
-        "label": "Light",
-        "value": data.lightLevel ,
+        "label": StringManager.light.tr(), 
+        "value": data.lightLevel,
         "unit": "%",
         "color": const Color(0xFFFFD93D),
         "icon": Icons.light_mode,
@@ -62,7 +64,7 @@ class SensorSection extends StatelessWidget {
             Icon(Icons.sensors,
                 color: ColorsManager.mainBlueGreen, size: 20.sp),
             SizedBox(width: 8.w),
-            Text("Environmental Sensors",
+            Text(StringManager.environmentalSensors.tr(), 
                 style: Styles.styleText14BlackColofontJosefinSans),
           ],
         ),
@@ -87,10 +89,10 @@ class SensorSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: (sensor['color'] as Color).withValues(alpha: 0.1)),
+        border: Border.all(color: (sensor['color'] as Color).withValues( alpha: 0.1)), 
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
+            color: Colors.black.withValues( alpha:   0.03), 
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -104,13 +106,13 @@ class SensorSection extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(6.r),
                 decoration: BoxDecoration(
-                  color: (sensor['color'] as Color).withValues(alpha: 0.1),
+                  color: (sensor['color'] as Color).withValues(alpha:   0.1), 
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child:
                     Icon(sensor['icon'], color: sensor['color'], size: 16.sp),
               ),
-              Text(sensor['label'],
+              Text(sensor['label'] as String, 
                   style:
                       TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
             ],
@@ -129,7 +131,7 @@ class SensorSection extends StatelessWidget {
                     axisLineStyle: AxisLineStyle(
                       thickness: 0.2,
                       thicknessUnit: GaugeSizeUnit.factor,
-                      color: (sensor['color'] as Color).withValues(alpha: 0.15),
+                      color: (sensor['color'] as Color).withValues( alpha:  0.15), 
                     ),
                     pointers: [
                       RangePointer(
