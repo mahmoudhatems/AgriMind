@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/features/home/presentation/widgets/tip_card.dart';
 import 'package:happyfarm/features/warehouseandbarn/presentation/manager/warehouse_cubit.dart';
 import 'package:happyfarm/features/warehouseandbarn/presentation/widgets/zone_section.dart';
@@ -22,12 +23,7 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
   int _tipIndex = 0;
   bool _syncedOnce = false;
 
-  final tips = [
-    "Keep barn ventilation active during hot days.",
-    "Ensure warehouse alarm is tested weekly.",
-    "Low humidity can damage stored materials.",
-    "Check flame detectors monthly in both zones."
-  ];
+  
 
   @override
   void initState() {
@@ -74,7 +70,7 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
 
   void _rotateTip() {
     if (!mounted) return;
-    setState(() => _tipIndex = (_tipIndex + 1) % tips.length);
+    setState(() =>  _tipIndex = (_tipIndex + 1) % StringManager.warehouseandbarnTips.length);
     Future.delayed(const Duration(seconds: 6), _rotateTip);
   }
 
@@ -187,7 +183,10 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
                     },
                   ]),
                   SizedBox(height: 20.h),
-                  TipCard(text: tips[_tipIndex], key: ValueKey(_tipIndex)),
+                 TipCard(
+                    text: StringManager.warehouseandbarnTips[_tipIndex],
+                    key: ValueKey(_tipIndex),
+                  ),
                 ],
               ),
             ),
