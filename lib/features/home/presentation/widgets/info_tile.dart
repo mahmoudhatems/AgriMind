@@ -178,7 +178,6 @@ class InfoTile extends StatelessWidget {
   }
 }
 
-// Optional: Create a responsive grid wrapper for multiple InfoTiles
 class ResponsiveInfoGrid extends StatelessWidget {
   final List<InfoTile> tiles;
   final double spacing;

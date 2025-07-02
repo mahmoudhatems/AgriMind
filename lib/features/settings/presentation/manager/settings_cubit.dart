@@ -30,7 +30,6 @@ class SettingsCubit extends Cubit<SettingsState> {
     final prefs = await SharedPreferences.getInstance();
 
     if (value) {
-      // Request permission (especially for Android 13+ & iOS)
       final permission = await Permission.notification.request();
       if (!permission.isGranted) return;
     }

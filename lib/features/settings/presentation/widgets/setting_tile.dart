@@ -29,8 +29,13 @@ class SettingTile extends StatelessWidget {
             children: [
               Icon(icon, color: ColorsManager.mainBlueGreen, size: 22.sp),
               SizedBox(width: 16.w),
-              Expanded(child: Text(title, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500))),
-              if (subtitle != null)
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                ),
+              ),
+              if (subtitle != null) 
                 Padding(
                   padding: EdgeInsets.only(right: 8.w),
                   child: Text(subtitle!, style: TextStyle(fontSize: 14.sp, color: Colors.grey)),

@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/features/home/presentation/widgets/info_tile.dart';
+import 'package:easy_localization/easy_localization.dart'; // Import for .tr()
+import 'package:happyfarm/core/utils/strings.dart'; // Import StringManager
 
 class SensorGrid extends StatelessWidget {
   final Map<String, dynamic> homeData;
@@ -14,33 +16,33 @@ class SensorGrid extends StatelessWidget {
     final sensors = [
       {
         "icon": Icons.local_fire_department,
-        "label": "Flame",
-        "value": (homeData['flame_detected'] == true) ? "Yes" : "No",
+        "label": StringManager.flame.tr(), // Localized
+        "value": (homeData['flame_detected'] == true) ? StringManager.yes.tr() : StringManager.no.tr(), // Localized
       },
       {
         "icon": Icons.speed,
-        "label": "Gas",
+        "label": StringManager.gas.tr(), // Localized
         "value": "${homeData['gas_level'] ?? "--"} ppm"
       },
       {
         "icon": Icons.water_drop,
-        "label": "Humidity",
+        "label": StringManager.humidity.tr(), // Localized
         "value": "${homeData['humidity'] ?? "--"}%"
       },
       {
         "icon": Icons.thermostat,
-        "label": "Temp",
+        "label": StringManager.temp.tr(), // Localized
         "value": "${homeData['temperature'] ?? "--"}°C"
       },
       {
         "icon": Icons.visibility,
-        "label": "Motion",
-        "value": (homeData['motion_detected'] == true) ? "Detected" : "None"
+        "label": StringManager.motion.tr(), // Localized
+        "value": (homeData['motion_detected'] == true) ? StringManager.detected.tr() : StringManager.none.tr(), // Localized
       },
       {
         "icon": Icons.window,
-        "label": "Window",
-        "value": (homeData['window_status'] == true) ? "Open" : "Closed"
+        "label": StringManager.window.tr(), // Localized
+        "value": (homeData['window_status'] == true) ? StringManager.open.tr() : StringManager.closed.tr(), // Localized
       },
     ];
 
@@ -51,7 +53,7 @@ class SensorGrid extends StatelessWidget {
           children: [
             Icon(Icons.sensors, color: ColorsManager.mainBlueGreen, size: 20.sp),
             SizedBox(width: 8.w),
-            Text("Environment & Sensors", style: Styles.styleText14BlackColofontJosefinSans),
+            Text(StringManager.environmentSensors.tr(), style: Styles.styleText14BlackColofontJosefinSans), 
           ],
         ),
         SizedBox(height: 16.h),

@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart'; // Import this
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happyfarm/core/utils/strings.dart';
 import 'package:happyfarm/features/home/presentation/widgets/tip_card.dart';
 import 'package:happyfarm/features/hydroponics/presentation/manager/hydroponics_cubit.dart';
 import 'package:happyfarm/features/hydroponics/presentation/widgets/hydro_device_controls.dart';
@@ -19,15 +21,6 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
   final _pumpSwitch = ValueNotifier(false);
   int _tipIndex = 0;
 
-  final List<String> _tips = [
-    "Ensure the pH level stays between 5.5 - 6.5 for optimal plant health.",
-    "Clean and check pump filters weekly to avoid clogs.",
-    "Keep water temperature between 18°C - 24°C.",
-    "Low water level may damage roots, refill when below 25%.",
-    "Use sensors to automate nutrient control and lighting.",
-    "Maintain TDS levels between 800-1200 ppm for optimal nutrient absorption."
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -39,12 +32,12 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
       HapticFeedback.lightImpact();
     });
 
-    Future.delayed(const Duration(seconds: 6), _rotateTip);
+    _rotateTip();
   }
 
   void _rotateTip() {
     if (!mounted) return;
-    setState(() => _tipIndex = (_tipIndex + 1) % _tips.length);
+    setState(() => _tipIndex = (_tipIndex + 1) % StringManager.hydroponicsTips.length);
     Future.delayed(const Duration(seconds: 6), _rotateTip);
   }
 
@@ -78,23 +71,26 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
               child: Column(
                 children: [
-                  HydroSensorSection(data: data),
+                  HydroSensorSection(data: data), 
                   SizedBox(height: 20.h),
-                  TDSCard(
+                  TDSCard( 
                     tdsValue: data.tds,
                     historicalTdsData: historicalTds,
                   ),
                   SizedBox(height: 20.h),
-                  HydroDeviceControls(pumpController: _pumpSwitch),
+                  HydroDeviceControls(pumpController: _pumpSwitch), 
                   SizedBox(height: 20.h),
-                  TipCard(text: _tips[_tipIndex], key: ValueKey(_tipIndex)),
+                  TipCard(
+                    text: StringManager.hydroponicsTips[_tipIndex].tr(),
+                    key: ValueKey(_tipIndex),
+                  ),
                 ],
               ),
             ),
           );
         } else if (state is HydroponicsError) {
           return Center(
-            child: Text(state.message, style: TextStyle(color: Colors.red)),
+            child: Text(state.message, style: TextStyle(color: Colors.red)), // Consider localizing error messages too
           );
         }
 

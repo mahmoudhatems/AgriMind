@@ -19,7 +19,7 @@ class HydroponicsLoaded extends HydroponicsState {
   const HydroponicsLoaded({required this.data, this.historicalTds = const []});
 
   @override
-  List<Object> get props => [data, historicalTds]; // Include historicalTds in props for Equatable
+  List<Object> get props => [data, historicalTds]; 
 }
 
 class HydroponicsError extends HydroponicsState {

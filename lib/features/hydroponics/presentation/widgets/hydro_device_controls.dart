@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/styles.dart';
-import 'package:happyfarm/features/home/presentation/widgets/switch_tile.dart';
+import 'package:happyfarm/features/home/presentation/widgets/switch_tile.dart'; 
+import 'package:easy_localization/easy_localization.dart'; 
+import 'package:happyfarm/core/utils/strings.dart';  
 
 class HydroDeviceControls extends StatelessWidget {
   final ValueNotifier<bool> pumpController;
@@ -18,7 +20,7 @@ class HydroDeviceControls extends StatelessWidget {
           children: [
             Icon(Icons.settings_remote, color: ColorsManager.mainBlueGreen, size: 20.sp),
             SizedBox(width: 8.w),
-            Text("Device Control", style: Styles.styleText14BlackColofontJosefinSans),
+            Text(StringManager.deviceControl.tr(), style: Styles.styleText14BlackColofontJosefinSans), 
           ],
         ),
         SizedBox(height: 16.h),
@@ -26,8 +28,8 @@ class HydroDeviceControls extends StatelessWidget {
           valueListenable: pumpController,
           builder: (context, value, _) {
             return SwitchTile(
-              label: "Water Pump",
-              subtitle: "Controls nutrient water circulation",
+              label: StringManager.waterPump.tr(), 
+              subtitle: StringManager.controlsWaterFlow.tr(),
               icon: Icons.water_drop,
               value: value,
               onChanged: (val) => pumpController.value = val,
