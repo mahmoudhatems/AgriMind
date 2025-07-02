@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart'; // Import this
+import 'package:easy_localization/easy_localization.dart'; 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -93,7 +93,6 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
 
           return RefreshIndicator(
             onRefresh: () async {
-              // Re-fetch data if needed or just simulate a refresh
               HapticFeedback.lightImpact();
               await Future.delayed(const Duration(milliseconds: 600));
             },
@@ -101,7 +100,7 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
               child: Column(
                 children: [
-                  ZoneSection(title: StringManager.warehouse.tr(), sensors: [ // Localized
+                  ZoneSection(title: StringManager.warehouse.tr(), sensors: [ 
                     {
                       "label": StringManager.temperature.tr(),
                       "value": "${warehouse.temperature}°C",
@@ -129,7 +128,7 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
                     },
                   ]),
                   SizedBox(height: 20.h),
-                  ZoneControls(title: StringManager.warehouseControls.tr(), switches: [ // Localized
+                  ZoneControls(title: StringManager.warehouseControls.tr(), switches: [ 
                     {
                       "label": StringManager.alarm.tr(),
                       "icon": Icons.notifications_active,
@@ -144,7 +143,7 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
                     },
                   ]),
                   SizedBox(height: 24.h),
-                  ZoneSection(title: StringManager.barn.tr(), sensors: [ // Localized
+                  ZoneSection(title: StringManager.barn.tr(), sensors: [ 
                     {
                       "label": StringManager.temperature.tr(),
                       "value": "${barn.temperature}°C",
@@ -167,7 +166,7 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
                     },
                   ]),
                   SizedBox(height: 20.h),
-                  ZoneControls(title: StringManager.barnControls.tr(), switches: [ // Localized
+                  ZoneControls(title: StringManager.barnControls.tr(), switches: [
                     {
                       "label": StringManager.fan.tr(),
                       "icon": Icons.ac_unit,
@@ -183,7 +182,7 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
                   ]),
                   SizedBox(height: 20.h),
                   TipCard(
-                    text: StringManager.warehouseandbarnTips[_tipIndex].tr(), // Localized tip
+                    text: StringManager.warehouseandbarnTips[_tipIndex].tr(), 
                     key: ValueKey(_tipIndex),
                   ),
                 ],
@@ -192,7 +191,7 @@ class _WarehouseBarnPageState extends State<WarehouseBarnPage> {
           );
         } else if (state is WarehouseBarnError) {
           return Center(
-              child: Text(state.message, style: TextStyle(color: Colors.red))); // Consider localizing
+              child: Text(state.message, style: TextStyle(color: Colors.red)));
         }
 
         return const Center(child: CircularProgressIndicator());

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 import 'package:happyfarm/core/utils/strings.dart';
-import 'package:happyfarm/core/utils/styles.dart';
 import 'package:happyfarm/features/settings/presentation/widgets/language_toggle_switch.dart';
 
 class LanguageSettingTile extends StatelessWidget {

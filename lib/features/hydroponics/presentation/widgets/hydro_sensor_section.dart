@@ -41,33 +41,32 @@ class HydroSensorSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Determine the specific color for PH based on its current value using the spectrum function
     final Color phDynamicColor = _getPhSpectrumColor(data.phLevel);
 
     final sensors = [
       {
-        "label": StringManager.humidity.tr(), // Localized
+        "label": StringManager.humidity.tr(), 
         "value": data.humidity,
         "unit": "%",
-        "color": Colors.blue, // You might want to theme these fixed colors too
+        "color": Colors.blue, 
         "icon": Icons.water_drop
       },
       {
-        "label": StringManager.temp.tr(), // Localized
+        "label": StringManager.temp.tr(), 
         "value": data.temperature,
         "unit": "°C",
         "color": Colors.orange,
         "icon": Icons.thermostat
       },
       {
-        "label": StringManager.phLevel.tr(), // Localized
+        "label": StringManager.phLevel.tr(), 
         "value": data.phLevel,
         "unit": "",
-        "color": phDynamicColor, // Use the dynamically determined spectrum color for PH
+        "color": phDynamicColor,
         "icon": Icons.science
       },
       {
-        "label": StringManager.water.tr(), // Localized
+        "label": StringManager.water.tr(), 
         "value": data.waterLevel,
         "unit": "%",
         "color": Colors.teal,
@@ -82,7 +81,7 @@ class HydroSensorSection extends StatelessWidget {
           children: [
             Icon(Icons.sensors, color: ColorsManager.mainBlueGreen, size: 20.sp),
             SizedBox(width: 8.w),
-            Text(StringManager.hydroponicsSensors.tr(), style: Styles.styleText14BlackColofontJosefinSans), // Localized
+            Text(StringManager.hydroponicsSensors.tr(), style: Styles.styleText14BlackColofontJosefinSans), 
           ],
         ),
         SizedBox(height: 20.h),
@@ -99,7 +98,7 @@ class HydroSensorSection extends StatelessWidget {
               value: (sensor['value'] as num).toDouble(),
               unit: sensor['unit'] as String,
               icon: sensor['icon'] as IconData,
-              color: sensor['color'] as Color, // Pass the dynamic color
+              color: sensor['color'] as Color,
             );
           }).toList(),
         ),

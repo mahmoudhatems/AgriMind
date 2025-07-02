@@ -20,7 +20,7 @@ class HydroDeviceControls extends StatelessWidget {
           children: [
             Icon(Icons.settings_remote, color: ColorsManager.mainBlueGreen, size: 20.sp),
             SizedBox(width: 8.w),
-            Text(StringManager.deviceControl.tr(), style: Styles.styleText14BlackColofontJosefinSans), // Localized
+            Text(StringManager.deviceControl.tr(), style: Styles.styleText14BlackColofontJosefinSans), 
           ],
         ),
         SizedBox(height: 16.h),
@@ -28,8 +28,8 @@ class HydroDeviceControls extends StatelessWidget {
           valueListenable: pumpController,
           builder: (context, value, _) {
             return SwitchTile(
-              label: StringManager.waterPump.tr(), // Localized
-              subtitle: StringManager.controlsWaterFlow.tr(), // Localized
+              label: StringManager.waterPump.tr(), 
+              subtitle: StringManager.controlsWaterFlow.tr(),
               icon: Icons.water_drop,
               value: value,
               onChanged: (val) => pumpController.value = val,

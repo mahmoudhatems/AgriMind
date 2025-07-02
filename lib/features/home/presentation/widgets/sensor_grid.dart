@@ -53,7 +53,7 @@ class SensorGrid extends StatelessWidget {
           children: [
             Icon(Icons.sensors, color: ColorsManager.mainBlueGreen, size: 20.sp),
             SizedBox(width: 8.w),
-            Text(StringManager.environmentSensors.tr(), style: Styles.styleText14BlackColofontJosefinSans), // Localized
+            Text(StringManager.environmentSensors.tr(), style: Styles.styleText14BlackColofontJosefinSans), 
           ],
         ),
         SizedBox(height: 16.h),

@@ -32,7 +32,6 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
       HapticFeedback.lightImpact();
     });
 
-    // Initial call to start tip rotation
     _rotateTip();
   }
 
@@ -72,17 +71,17 @@ class _HydroponicsPageState extends State<HydroponicsPage> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
               child: Column(
                 children: [
-                  HydroSensorSection(data: data), // HydroSensorSection will be updated below
+                  HydroSensorSection(data: data), 
                   SizedBox(height: 20.h),
-                  TDSCard( // TDSCard will be updated below
+                  TDSCard( 
                     tdsValue: data.tds,
                     historicalTdsData: historicalTds,
                   ),
                   SizedBox(height: 20.h),
-                  HydroDeviceControls(pumpController: _pumpSwitch), // HydroDeviceControls will be updated below
+                  HydroDeviceControls(pumpController: _pumpSwitch), 
                   SizedBox(height: 20.h),
                   TipCard(
-                    text: StringManager.hydroponicsTips[_tipIndex].tr(), // Localized tip
+                    text: StringManager.hydroponicsTips[_tipIndex].tr(),
                     key: ValueKey(_tipIndex),
                   ),
                 ],

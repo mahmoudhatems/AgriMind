@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happyfarm/core/routing/app_routing.dart';
 import 'package:happyfarm/core/utils/colors.dart';
 
-// العودة إلى StatelessWidget
 class HappyFarm extends StatelessWidget {
   const HappyFarm({super.key});
 

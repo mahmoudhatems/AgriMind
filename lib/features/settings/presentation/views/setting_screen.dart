@@ -27,15 +27,14 @@ class SettingScreen extends StatelessWidget {
         body: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(20.w),
-            // استخدام Builder لضمان تحديث الـ context الذي تستخدمه النصوص المترجمة
             child: Builder(
-              builder: (innerContext) { // استخدام innerContext هنا
+              builder: (innerContext) { 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildHeader(innerContext), // تمرير innerContext
+                    _buildHeader(innerContext), 
                     SizedBox(height: 40.h),
-                    _buildSettingsBody(innerContext), // تمرير innerContext
+                    _buildSettingsBody(innerContext), 
                   ],
                 );
               },

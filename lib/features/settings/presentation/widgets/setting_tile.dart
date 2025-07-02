@@ -5,7 +5,7 @@ import 'package:happyfarm/core/utils/colors.dart';
 class SettingTile extends StatelessWidget {
   final IconData icon;
   final String title;
-  final String? subtitle; // This will now hold our custom widget as a string
+  final String? subtitle;
   final VoidCallback onTap;
 
   const SettingTile({
@@ -35,7 +35,7 @@ class SettingTile extends StatelessWidget {
                   style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
                 ),
               ),
-              if (subtitle != null) // Keep this for standard subtitles
+              if (subtitle != null) 
                 Padding(
                   padding: EdgeInsets.only(right: 8.w),
                   child: Text(subtitle!, style: TextStyle(fontSize: 14.sp, color: Colors.grey)),

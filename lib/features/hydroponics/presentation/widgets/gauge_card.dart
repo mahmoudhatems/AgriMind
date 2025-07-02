@@ -55,8 +55,7 @@ class GaugeSensorCard extends StatelessWidget {
                   color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
-                child: Icon(icon,
-                    color: color, size: 16.sp), 
+                child: Icon(icon, color: color, size: 16.sp),
               ),
               Text(label,
                   style: TextStyle(
@@ -74,7 +73,7 @@ class GaugeSensorCard extends StatelessWidget {
                   RadialAxis(
                     minimum: 0,
                     maximum:
-                        gaugeMaxValue, // Dynamic max value based on sensor type
+                        gaugeMaxValue, 
                     showTicks: false,
                     showLabels: false,
                     axisLineStyle: AxisLineStyle(
@@ -82,27 +81,27 @@ class GaugeSensorCard extends StatelessWidget {
                       thicknessUnit: GaugeSizeUnit.factor,
                       color: color.withValues(
                           alpha:
-                              0.15), // Gauge background line uses dynamic color
+                              0.15), 
                     ),
                     pointers: [
                       RangePointer(
                         value: value.clamp(0,
-                            gaugeMaxValue), // Clamp value within gauge's min/max
+                            gaugeMaxValue), 
                         width: 0.22,
                         sizeUnit: GaugeSizeUnit.factor,
-                        color: color, // Gauge pointer uses dynamic color
+                        color: color, 
                         cornerStyle: CornerStyle.bothCurve,
                       ),
                     ],
                     annotations: [
                       GaugeAnnotation(
                         widget: Text(
-                          "${value.toStringAsFixed(int.parse(valueFormat))}$unit", // Dynamic decimal places
+                          "${value.toStringAsFixed(int.parse(valueFormat))}$unit", 
                           style: TextStyle(
                             fontSize: 14.sp,
-                            fontWeight: FontWeight.w500, // Slightly bolder
+                            fontWeight: FontWeight.w500, 
                             color:
-                                color, // **This text now uses the dynamic color!**
+                                color, 
                           ),
                         ),
                         positionFactor: 0.0,

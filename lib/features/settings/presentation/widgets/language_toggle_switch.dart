@@ -22,11 +22,11 @@ class LanguageToggleSwitch extends StatelessWidget {
         width: 80.w,
         height: 35.h,
         decoration: BoxDecoration(
-          color: isEnglish ? ColorsManager.mainBlueGreen : ColorsManager.textIconColorGray.withOpacity(0.5),
+          color: isEnglish ? ColorsManager.mainBlueGreen : ColorsManager.textIconColorGray.withValues ( alpha: 0.5),
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha:   0.1),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -46,7 +46,7 @@ class LanguageToggleSwitch extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      color: Colors.black.withValues(  alpha:  0.2),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
